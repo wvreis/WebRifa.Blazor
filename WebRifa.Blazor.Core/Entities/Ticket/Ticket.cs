@@ -49,4 +49,10 @@ public class Ticket : BaseEntity
     {
         State.UnmarkAsLoser(this);
     }
+
+    public void ChangeState(TicketState ticketState)
+    {
+        CurrentState = ticketState;
+        UpdatedAt = DateTime.Now;
+    }
 }

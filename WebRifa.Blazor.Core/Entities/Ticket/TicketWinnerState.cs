@@ -1,7 +1,7 @@
 ﻿using WebRifa.Blazor.Core.Interfaces;
 
 namespace WebRifa.Blazor.Core.Entities.Ticket;
-public class TicketWinnerState : Ticket, ITicketState
+public class TicketWinnerState : ITicketState
 {
     public void Cancel(Ticket ticket)
     {
@@ -25,6 +25,6 @@ public class TicketWinnerState : Ticket, ITicketState
 
     public void UnmarkAsWinner(Ticket ticket)
     {
-        ticket.CurrentState = Enums.TicketState.Valid;
+        ticket.ChangeState(Enums.TicketState.Valid);
     }
 }
