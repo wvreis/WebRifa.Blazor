@@ -1,10 +1,9 @@
-﻿using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Enums;
+﻿using WebRifa.Blazor.Core.Enums;
 using WebRifa.Blazor.Core.Interfaces;
 
 namespace WebRifa.Blazor.Core.Factories;
 public static class TicketStateFactory {
-    public static ITicketState GetTicketState(TicketState state)
+    public static ITicketState GetTicketState(this TicketState state)
     {
         switch (state) {
             case TicketState.Valid:

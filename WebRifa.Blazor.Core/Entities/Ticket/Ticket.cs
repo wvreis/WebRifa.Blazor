@@ -9,8 +9,8 @@ public class Ticket : BaseEntity
     public int Number { get; private set; }
     public string Observations { get; private set; } = string.Empty;
 
-    public TicketState CurrentState { get; set; }
-    public ITicketState State { get; set; } = new TicketValidState();
+    public TicketState CurrentState { get; private set; }
+    public ITicketState State { get; private set; } = new TicketValidState();
 
     public string BuyerId { get; private set; } = string.Empty;
     public Buyer? Buyer { get; private set; }
@@ -18,11 +18,11 @@ public class Ticket : BaseEntity
     public string RaffleId { get; private set; } = string.Empty;
     public Raffle? Raffle { get; private set; }
 
-    public Receipt? Receipt { get; private set; }
+    public Receipt.Receipt? Receipt { get; private set; }
 
     public Ticket()
     {
-        State = TicketStateFactory.GetTicketState(CurrentState);
+        State = CurrentState.GetTicketState();
     }
 
     public void Cancel()
