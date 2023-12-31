@@ -1,4 +1,4 @@
-﻿using WebRifa.Blazor.Core.Interfaces;
+﻿using WebRifa.Blazor.Core.Interfaces.States;
 
 namespace WebRifa.Blazor.Core.Entities.Ticket;
 public class TicketLoserState : Ticket, ITicketState

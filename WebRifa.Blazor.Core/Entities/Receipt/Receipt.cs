@@ -1,13 +1,16 @@
 ﻿using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Enums;
 using WebRifa.Blazor.Core.Factories;
-using WebRifa.Blazor.Core.Interfaces;
+using WebRifa.Blazor.Core.Interfaces.States;
 
 namespace WebRifa.Blazor.Core.Entities.Receipt;
 public class Receipt : BaseEntity
 {
     public ReceiptStates CurrentState { get; private set; }
     public IReceiptState State { get; private set; } = new ReceiptValidState();
+
+    public string BuyerId { get; private set; } = string.Empty;
+    public Buyer? Buyer { get; set; }
 
     public List<Ticket.Ticket> Tickets { get; private set; } = new();
 

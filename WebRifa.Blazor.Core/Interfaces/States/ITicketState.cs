@@ -1,8 +1,9 @@
 ﻿using WebRifa.Blazor.Core.Entities.Ticket;
 
-namespace WebRifa.Blazor.Core.Interfaces;
+namespace WebRifa.Blazor.Core.Interfaces.States;
 
-public interface ITicketState {
+public interface ITicketState
+{
     void Cancel(Ticket ticket);
     void MarkAsWinner(Ticket ticket);
     void MarkAsLoser(Ticket ticket);

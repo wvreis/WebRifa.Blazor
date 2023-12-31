@@ -6,7 +6,11 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
+using WebRifa.Blazor.Core.Interfaces.Repositories;
+using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Data;
+using WebRifa.Blazor.Repositories;
+using WebRifa.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,10 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IBuyerService, BuyerService>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;

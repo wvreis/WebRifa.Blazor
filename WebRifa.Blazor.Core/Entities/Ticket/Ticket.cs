@@ -1,7 +1,7 @@
 ﻿using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Enums;
 using WebRifa.Blazor.Core.Factories;
-using WebRifa.Blazor.Core.Interfaces;
+using WebRifa.Blazor.Core.Interfaces.States;
 
 namespace WebRifa.Blazor.Core.Entities.Ticket;
 public class Ticket : BaseEntity
@@ -18,6 +18,8 @@ public class Ticket : BaseEntity
     public string RaffleId { get; private set; } = string.Empty;
     public Raffle? Raffle { get; private set; }
 
+    public string DrawId { get; private set; } = string.Empty;
+    public Draw.Draw? Draw { get; private set; }
     public Receipt.Receipt? Receipt { get; private set; }
 
     public Ticket()
@@ -54,5 +56,10 @@ public class Ticket : BaseEntity
     {
         CurrentState = ticketState;
         UpdatedAt = DateTime.Now;
+    }
+
+    public void AddDraw(Draw.Draw draw)
+    {
+        Draw = draw;
     }
 }

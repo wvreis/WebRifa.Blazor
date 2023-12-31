@@ -6,7 +6,10 @@ public class Raffle : BaseEntity {
     public int TotalTicketNumber { get; private set; }
     public decimal TicketPrice { get; private set; }
     public string Observations { get; private set; } = string.Empty;
-    public DateTime DrawDate { get; set; }
+    public DateTime DrawDateTime { get; set; }
+
+    public List<Ticket.Ticket>? Tickets { get; private set; }
+
 
     public Raffle()
     {
