@@ -9,7 +9,7 @@ public class Ticket : BaseEntity
     public int Number { get; private set; }
     public string Observations { get; private set; } = string.Empty;
 
-    public TicketState CurrentState { get; private set; }
+    public TicketStates CurrentState { get; private set; }
     public ITicketState State { get; private set; } = new TicketValidState();
 
     public string BuyerId { get; private set; } = string.Empty;
@@ -50,7 +50,7 @@ public class Ticket : BaseEntity
         State.UnmarkAsLoser(this);
     }
 
-    public void ChangeState(TicketState ticketState)
+    public void ChangeState(TicketStates ticketState)
     {
         CurrentState = ticketState;
         UpdatedAt = DateTime.Now;

@@ -20,7 +20,7 @@ public class TicketLoserState : Ticket, ITicketState
 
     public void UnmarkAsLoser(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Valid);
+        ticket.ChangeState(Enums.TicketStates.Valid);
     }
 
     public void UnmarkAsWinner(Ticket ticket)

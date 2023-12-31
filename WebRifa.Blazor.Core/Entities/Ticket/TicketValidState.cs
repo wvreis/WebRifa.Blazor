@@ -5,26 +5,26 @@ public class TicketValidState : ITicketState
 {
     public void Cancel(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Canceled);
+        ticket.ChangeState(Enums.TicketStates.Canceled);
     }
 
     public void MarkAsLoser(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Loser);
+        ticket.ChangeState(Enums.TicketStates.Loser);
     }
 
     public void MarkAsWinner(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Winner);
+        ticket.ChangeState(Enums.TicketStates.Winner);
     }
 
     public void UnmarkAsLoser(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Valid);
+        ticket.ChangeState(Enums.TicketStates.Valid);
     }
 
     public void UnmarkAsWinner(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Valid);
+        ticket.ChangeState(Enums.TicketStates.Valid);
     }
 }

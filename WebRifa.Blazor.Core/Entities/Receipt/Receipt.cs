@@ -20,4 +20,10 @@ public class Receipt : BaseEntity
     {
         State.Cancel(this);
     }
+
+    public void ChangeState(ReceiptStates state)
+    {
+        CurrentState = state;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

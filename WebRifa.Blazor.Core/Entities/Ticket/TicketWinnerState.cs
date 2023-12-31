@@ -25,6 +25,6 @@ public class TicketWinnerState : ITicketState
 
     public void UnmarkAsWinner(Ticket ticket)
     {
-        ticket.ChangeState(Enums.TicketState.Valid);
+        ticket.ChangeState(Enums.TicketStates.Valid);
     }
 }

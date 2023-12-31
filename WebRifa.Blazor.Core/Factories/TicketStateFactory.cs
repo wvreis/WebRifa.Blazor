@@ -3,16 +3,16 @@ using WebRifa.Blazor.Core.Interfaces;
 
 namespace WebRifa.Blazor.Core.Factories;
 public static class TicketStateFactory {
-    public static ITicketState GetTicketState(this TicketState state)
+    public static ITicketState GetTicketState(this TicketStates state)
     {
         switch (state) {
-            case TicketState.Valid:
+            case TicketStates.Valid:
                 return new TicketValidState();
-            case TicketState.Winner:
+            case TicketStates.Winner:
                 return new TicketWinnerState();
-            case TicketState.Loser:
+            case TicketStates.Loser:
                 return new TicketLoserState();
-            case TicketState.Canceled:
+            case TicketStates.Canceled:
                 return new TicketCanceledState();
             default:
                 throw new ArgumentException("Choose a valid option.");

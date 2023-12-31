@@ -1,5 +1,5 @@
 ﻿namespace WebRifa.Blazor.Core.Enums;
-public enum TicketState {
+public enum TicketStates {
     Valid,
     Winner,
     Loser,
