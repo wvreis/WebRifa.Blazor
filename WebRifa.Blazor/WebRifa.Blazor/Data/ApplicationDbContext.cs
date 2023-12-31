@@ -12,30 +12,69 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(builder);
 
         builder.Entity<Raffle>().HasKey(x => x.Id);
-        
+
+        builder.Entity<Raffle>()
+            .Property(x => x.TicketPrice)
+            .HasPrecision(4);
+
         builder.Entity<Buyer>().HasKey(x => x.Id);
 
         #region TICKET
         builder.Entity<Ticket>().HasKey(x => x.Id);
-        
+
+        builder.Entity<Ticket>()
+            .Navigation(x => x.Buyer)
+            .AutoInclude();
+
+        builder.Entity<Ticket>()
+            .Navigation(x => x.Raffle)
+            .AutoInclude();
+
+        builder.Entity<Ticket>()
+            .Navigation(x => x.Receipt)
+            .AutoInclude();
+
         builder.Entity<Ticket>()
             .HasOne(x => x.Buyer)
             .WithMany(x => x.Tickets)
+            .HasForeignKey(x => x.BuyerId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Ticket>()
             .HasOne(x => x.Raffle)
             .WithMany(x => x.Tickets)
+            .HasForeignKey(x => x.RaffleId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Ticket>()
+            .HasOne(x => x.Draw)
+            .WithMany()
+            .HasForeignKey(x => x.DrawId) 
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Ticket>()
+            .Ignore(x => x.State);
         #endregion
 
         #region RECEIPT
         builder.Entity<Receipt>().HasKey(x => x.Id);
 
         builder.Entity<Receipt>()
+           .Navigation(x => x.Buyer)
+           .AutoInclude();
+
+        builder.Entity<Receipt>()
+           .Navigation(x => x.Tickets)
+           .AutoInclude();
+
+        builder.Entity<Receipt>()
             .HasOne(x => x.Buyer)
             .WithMany(x => x.Receipts)
+            .HasForeignKey(x => x.BuyerId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Receipt>()
+           .Ignore(x => x.State);
         #endregion
 
         #region DRAW

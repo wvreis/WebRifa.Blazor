@@ -9,7 +9,7 @@ public class Receipt : BaseEntity
     public ReceiptStates CurrentState { get; private set; }
     public IReceiptState State { get; private set; } = new ReceiptValidState();
 
-    public string BuyerId { get; private set; } = string.Empty;
+    public Guid BuyerId { get; private set; }
     public Buyer? Buyer { get; set; }
 
     public List<Ticket.Ticket> Tickets { get; private set; } = new();

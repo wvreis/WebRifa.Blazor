@@ -12,13 +12,13 @@ public class Ticket : BaseEntity
     public TicketStates CurrentState { get; private set; }
     public ITicketState State { get; private set; } = new TicketValidState();
 
-    public string BuyerId { get; private set; } = string.Empty;
+    public Guid BuyerId { get; private set; }
     public Buyer? Buyer { get; private set; }
 
-    public string RaffleId { get; private set; } = string.Empty;
+    public Guid RaffleId { get; private set; } 
     public Raffle? Raffle { get; private set; }
 
-    public string DrawId { get; private set; } = string.Empty;
+    public Guid DrawId { get; private set; }
     public Draw.Draw? Draw { get; private set; }
     public Receipt.Receipt? Receipt { get; private set; }
 

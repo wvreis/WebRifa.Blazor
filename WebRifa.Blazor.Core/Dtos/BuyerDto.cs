@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebRifa.Blazor.Dtos;
+namespace WebRifa.Blazor.Core.Dtos;
 
 public class BuyerDto {
     [Required]

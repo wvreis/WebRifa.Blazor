@@ -2,7 +2,9 @@
 public class Draw : BaseEntity {
     public DateTime RaffledAt { get; private set; } = DateTime.UtcNow;
 
-    public Ticket.Ticket RaffledTicket { get; set; }
+    public Ticket.Ticket? RaffledTicket { get; set; }
+
+    public Draw() { }
 
     public Draw(Ticket.Ticket ticket)
     {
