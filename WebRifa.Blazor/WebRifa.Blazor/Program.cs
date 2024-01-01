@@ -9,6 +9,7 @@ using WebRifa.Blazor.Components.Account;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Data;
+using WebRifa.Blazor.Exceptions;
 using WebRifa.Blazor.Repositories;
 using WebRifa.Blazor.Services;
 
@@ -78,6 +79,9 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();
 

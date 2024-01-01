@@ -1,9 +1,9 @@
 ﻿using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
-using AutoMapper;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Queries;
+using AutoMapper;
 
 namespace WebRifa.Blazor.Services;
 
@@ -24,7 +24,11 @@ public class BuyerService : IBuyerService {
         _buyerRepository = buyerRepository;
         _unitOfWork = unitOfWork;
 
-        _mapperConfiguration = new MapperConfiguration(cfg => cfg.CreateMap<Buyer, BuyerDto>());
+        _mapperConfiguration = new MapperConfiguration(cfg => {
+            cfg.CreateMap<Buyer, BuyerDto>();
+            cfg.CreateMap<BuyerDto, Buyer>();
+        });
+
         _mapper = _mapperConfiguration.CreateMapper();
     }
 

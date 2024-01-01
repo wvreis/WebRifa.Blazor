@@ -10,8 +10,7 @@ namespace WebRifa.Blazor.Repositories;
 
 public class BuyerRepository : BaseRepository<Buyer>, IBuyerRepository {
     public BuyerRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+    {}
 
     public async Task<List<Buyer>> SearchBuyersAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
     {
