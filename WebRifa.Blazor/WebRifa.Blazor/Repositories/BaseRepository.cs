@@ -19,11 +19,19 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity {
 
     public void Update(T entity)
     {
+        if (!EntityExists(entity)) {
+            throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe.");
+        }
+
         _context.Update(entity);
     }
 
     public void Delete(T entity)
     {
+        if (!EntityExists(entity)) {
+            throw new KeyNotFoundException( $"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
+        }
+
         _context.Remove(entity);
     }
 
@@ -36,5 +44,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity {
     public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _context.Set<T>().ToListAsync(cancellationToken);
+    }
+
+    bool EntityExists(T entity)
+    {
+        return _context.Set<T>().Any(e => e.Id == entity.Id);
     }
 }

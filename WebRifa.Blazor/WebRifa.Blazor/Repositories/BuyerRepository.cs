@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
-using WebRifa.Blazor.Core.Queries;
+using WebRifa.Blazor.Core.Queries.Buyer;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Data;
 

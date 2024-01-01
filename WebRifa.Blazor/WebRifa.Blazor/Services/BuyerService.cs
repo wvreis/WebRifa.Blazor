@@ -2,8 +2,8 @@
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Dtos;
-using WebRifa.Blazor.Core.Queries;
 using AutoMapper;
+using WebRifa.Blazor.Core.Queries.Buyer;
 
 namespace WebRifa.Blazor.Services;
 
@@ -73,6 +73,22 @@ public class BuyerService : IBuyerService {
             _logger.LogInformation("O Comprador {Id} foi adicionado.", buyer.Id);
 
             return buyer.Id;
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
+    public async Task UpdateBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken)
+    {
+        try {
+            Buyer buyer = _mapper?.Map<Buyer>(buyerDto) ?? throw new Exception();
+
+            _buyerRepository.Update(buyer);
+            await _unitOfWork.CommitAsync(cancellationToken);
+
+            _logger.LogInformation("O Comprador {Id} foi atualizado.", buyer.Id);
         }
         catch (Exception) {
 

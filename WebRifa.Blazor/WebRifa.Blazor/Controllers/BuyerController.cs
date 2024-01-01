@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
-using WebRifa.Blazor.Core.Queries;
+using WebRifa.Blazor.Core.Queries.Buyer;
 
 namespace WebRifa.Blazor.Controllers;
 
@@ -35,4 +36,10 @@ public class BuyerController : ControllerBase{
         return await _buyerService.AddBuyerAsync(buyerDto, cancellationToken);
     }
 
+    [HttpPut]
+    public async Task<ActionResult> UpdateBuyerAsync([FromBody] BuyerDto buyer, CancellationToken cancellationToken = default)
+    {
+        await _buyerService.UpdateBuyerAsync(buyer, cancellationToken);
+        return Ok();
+    }
 }
