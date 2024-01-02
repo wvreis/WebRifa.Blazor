@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace WebRifa.Blazor.Exceptions;
@@ -28,16 +29,14 @@ public class ExceptionMiddleware {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = GetStatusCodeAsync(ex);
 
-        var response = new
-        {
-            error = new
-            {
-                message = $"{ex.GetType().Name}: An error occurred while processing your request.",
-                details = ex.Message
-            }
+        var response = new ProblemDetails() {
+            Type = ex.GetType().Name,
+            Title = "An error occurred while processing your request.",
+            Detail = ex.Message,
+            Status = GetStatusCodeAsync(ex)
         };
 
-        _logger.LogError(response.ToString());
+        _logger.LogError(JsonConvert.SerializeObject(response, Formatting.Indented));
 
         return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
     }
