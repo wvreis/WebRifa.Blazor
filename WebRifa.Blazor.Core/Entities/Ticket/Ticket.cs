@@ -1,5 +1,4 @@
-﻿using WebRifa.Blazor.Core.Common;
-using WebRifa.Blazor.Core.Enums;
+﻿using WebRifa.Blazor.Core.Enums;
 using WebRifa.Blazor.Core.Factories;
 using WebRifa.Blazor.Core.Interfaces.States;
 
@@ -55,7 +54,7 @@ public class Ticket : BaseEntity
     public void ChangeState(TicketStates ticketState)
     {
         CurrentState = ticketState;
-        UpdatedAt = DateTime.Now;
+        Update();
     }
 
     public void AddDraw(Draw.Draw draw)

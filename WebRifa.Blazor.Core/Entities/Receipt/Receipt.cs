@@ -27,6 +27,6 @@ public class Receipt : BaseEntity
     public void ChangeState(ReceiptStates state)
     {
         CurrentState = state;
-        UpdatedAt = DateTime.UtcNow;
+        Update();
     }
 }
