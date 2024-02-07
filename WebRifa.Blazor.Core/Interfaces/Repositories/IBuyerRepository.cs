@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using WebRifa.Blazor.Core.Entities;
+﻿using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Queries.Buyer;
 
 namespace WebRifa.Blazor.Core.Interfaces.Repositories;

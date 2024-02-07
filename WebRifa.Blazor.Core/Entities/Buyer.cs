@@ -5,8 +5,9 @@ public class Buyer : BaseEntity {
     public string PhoneNumber { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
 
-    public List<Ticket.Ticket>? Tickets { get; private set; }
-    public List<Receipt.Receipt>? Receipts { get; private set; }
+    public List<Ticket>? Tickets { get; private set; }
+    public List<Receipt>? Receipts { get; private set; }
+    public List<BuyerTicketReceipt>? BuyerTicketReceipts { get; private set; }
 
     public Buyer()
     {

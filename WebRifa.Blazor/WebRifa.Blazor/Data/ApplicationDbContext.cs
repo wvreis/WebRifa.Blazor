@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Entities.Draw;
-using WebRifa.Blazor.Core.Entities.Receipt;
-using WebRifa.Blazor.Core.Entities.Ticket;
+using WebRifa.Blazor.Core.Entities.DrawEntities;
+using WebRifa.Blazor.Core.Entities.ReceiptEntities;
+using WebRifa.Blazor.Core.Entities.TicketEntities;
 
 namespace WebRifa.Blazor.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
@@ -23,22 +23,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Ticket>().HasKey(x => x.Id);
 
         builder.Entity<Ticket>()
-            .Navigation(x => x.Buyer)
-            .AutoInclude();
-
-        builder.Entity<Ticket>()
             .Navigation(x => x.Raffle)
             .AutoInclude();
 
         builder.Entity<Ticket>()
             .Navigation(x => x.Receipt)
             .AutoInclude();
-
-        builder.Entity<Ticket>()
-            .HasOne(x => x.Buyer)
-            .WithMany(x => x.Tickets)
-            .HasForeignKey(x => x.BuyerId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Ticket>()
             .HasOne(x => x.Raffle)
@@ -60,18 +50,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Receipt>().HasKey(x => x.Id);
 
         builder.Entity<Receipt>()
-           .Navigation(x => x.Buyer)
-           .AutoInclude();
-
-        builder.Entity<Receipt>()
            .Navigation(x => x.Tickets)
            .AutoInclude();
-
-        builder.Entity<Receipt>()
-            .HasOne(x => x.Buyer)
-            .WithMany(x => x.Receipts)
-            .HasForeignKey(x => x.BuyerId)
-            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Receipt>()
            .Ignore(x => x.State);
@@ -81,9 +61,28 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Draw>().HasKey(x => x.Id);
 
         builder.Entity<Draw>()
-            .HasOne(x => x.RaffledTicket)
+            .HasOne(x => x.DrawnTicket)
             .WithOne(x => x.Draw)
             .OnDelete(DeleteBehavior.Restrict);
+        #endregion
+
+        #region BUYERTICKETRECEIPT
+        builder.Entity<BuyerTicketReceipt>().HasKey(x => x.Id);
+
+        builder.Entity<BuyerTicketReceipt>()
+            .HasOne(x => x.Buyer)
+            .WithMany(x => x.BuyerTicketReceipts)
+            .HasForeignKey(x => x.BuyerId);
+
+        builder.Entity<BuyerTicketReceipt>()
+            .HasOne(x => x.Ticket)
+            .WithMany(x => x.BuyerTicketReceipt)
+            .HasForeignKey(x => x.TicketId); 
+
+        builder.Entity<BuyerTicketReceipt>()
+            .HasOne(x => x.Receipt)
+            .WithMany(x => x.BuyerTicketReceipt)
+            .HasForeignKey(x => x.ReceiptId); 
         #endregion
     }
 

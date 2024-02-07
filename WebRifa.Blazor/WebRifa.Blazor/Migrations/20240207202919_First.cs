@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebRifa.Blazor.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,26 +61,11 @@ namespace WebRifa.Blazor.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IdDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buyers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Draws",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    RaffledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IdDeleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Draws", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,13 +74,13 @@ namespace WebRifa.Blazor.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    TotalTicketNumber = table.Column<int>(type: "integer", nullable: false),
+                    TotalNumberOfTickets = table.Column<int>(type: "integer", nullable: false),
                     TicketPrice = table.Column<decimal>(type: "numeric(4)", precision: 4, nullable: false),
                     Observations = table.Column<string>(type: "text", nullable: false),
                     DrawDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IdDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,10 +199,10 @@ namespace WebRifa.Blazor.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CurrentState = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IdDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,8 +211,30 @@ namespace WebRifa.Blazor.Migrations
                         name: "FK_Receipts_Buyers_BuyerId",
                         column: x => x.BuyerId,
                         principalTable: "Buyers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Draws",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    RaffledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RaffleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DrawnTicketId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Draws", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Draws_Raffles_RaffleId",
+                        column: x => x.RaffleId,
+                        principalTable: "Raffles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,13 +245,13 @@ namespace WebRifa.Blazor.Migrations
                     Number = table.Column<int>(type: "integer", nullable: false),
                     Observations = table.Column<string>(type: "text", nullable: false),
                     CurrentState = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     RaffleId = table.Column<Guid>(type: "uuid", nullable: false),
                     DrawId = table.Column<Guid>(type: "uuid", nullable: false),
                     ReceiptId = table.Column<Guid>(type: "uuid", nullable: true),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IdDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,8 +260,7 @@ namespace WebRifa.Blazor.Migrations
                         name: "FK_Tickets_Buyers_BuyerId",
                         column: x => x.BuyerId,
                         principalTable: "Buyers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tickets_Draws_DrawId",
                         column: x => x.DrawId,
@@ -272,6 +278,41 @@ namespace WebRifa.Blazor.Migrations
                         column: x => x.ReceiptId,
                         principalTable: "Receipts",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BuyerTicketReceipt",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReceiptId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BuyerTicketReceipt", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BuyerTicketReceipt_Buyers_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "Buyers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BuyerTicketReceipt_Receipts_ReceiptId",
+                        column: x => x.ReceiptId,
+                        principalTable: "Receipts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BuyerTicketReceipt_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -310,6 +351,26 @@ namespace WebRifa.Blazor.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BuyerTicketReceipt_BuyerId",
+                table: "BuyerTicketReceipt",
+                column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BuyerTicketReceipt_ReceiptId",
+                table: "BuyerTicketReceipt",
+                column: "ReceiptId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BuyerTicketReceipt_TicketId",
+                table: "BuyerTicketReceipt",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Draws_RaffleId",
+                table: "Draws",
+                column: "RaffleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Receipts_BuyerId",
@@ -357,7 +418,7 @@ namespace WebRifa.Blazor.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "BuyerTicketReceipt");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -366,13 +427,16 @@ namespace WebRifa.Blazor.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Tickets");
+
+            migrationBuilder.DropTable(
                 name: "Draws");
 
             migrationBuilder.DropTable(
-                name: "Raffles");
+                name: "Receipts");
 
             migrationBuilder.DropTable(
-                name: "Receipts");
+                name: "Raffles");
 
             migrationBuilder.DropTable(
                 name: "Buyers");

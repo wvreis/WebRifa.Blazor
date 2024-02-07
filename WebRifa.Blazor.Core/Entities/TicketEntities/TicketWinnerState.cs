@@ -1,6 +1,6 @@
 ﻿using WebRifa.Blazor.Core.Interfaces.States;
 
-namespace WebRifa.Blazor.Core.Entities.Ticket;
+namespace WebRifa.Blazor.Core.Entities.TicketEntities;
 public class TicketWinnerState : ITicketState
 {
     public void Cancel(Ticket ticket)

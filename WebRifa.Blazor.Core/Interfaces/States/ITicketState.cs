@@ -1,4 +1,4 @@
-﻿using WebRifa.Blazor.Core.Entities.Ticket;
+﻿using WebRifa.Blazor.Core.Entities.TicketEntities;
 
 namespace WebRifa.Blazor.Core.Interfaces.States;
 

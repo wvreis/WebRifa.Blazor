@@ -2,7 +2,7 @@
 using WebRifa.Blazor.Core.Factories;
 using WebRifa.Blazor.Core.Interfaces.States;
 
-namespace WebRifa.Blazor.Core.Entities.Ticket;
+namespace WebRifa.Blazor.Core.Entities.TicketEntities;
 public class Ticket : BaseEntity
 {
     public int Number { get; private set; }
@@ -11,15 +11,14 @@ public class Ticket : BaseEntity
     public TicketStates CurrentState { get; private set; }
     public ITicketState State { get; private set; } = new TicketValidState();
 
-    public Guid BuyerId { get; private set; }
-    public Buyer? Buyer { get; private set; }
+    public List<BuyerTicketReceipt>? BuyerTicketReceipt { get; private set; }
 
     public Guid RaffleId { get; private set; } 
     public Raffle? Raffle { get; private set; }
 
     public Guid DrawId { get; private set; }
-    public Draw.Draw? Draw { get; private set; }
-    public Receipt.Receipt? Receipt { get; private set; }
+    public Draw? Draw { get; private set; }
+    public Receipt? Receipt { get; private set; }
 
     public Ticket()
     {
@@ -54,10 +53,10 @@ public class Ticket : BaseEntity
     public void ChangeState(TicketStates ticketState)
     {
         CurrentState = ticketState;
-        Update();
+        SetUpdatedAt();
     }
 
-    public void AddDraw(Draw.Draw draw)
+    public void AddDraw(DrawEntities.Draw draw)
     {
         Draw = draw;
     }

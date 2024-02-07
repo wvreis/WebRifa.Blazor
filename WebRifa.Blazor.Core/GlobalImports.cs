@@ -1,4 +1,5 @@
 ﻿global using WebRifa.Blazor.Core.Common;
-global using WebRifa.Blazor.Core.Entities.Receipt;
-global using WebRifa.Blazor.Core.Entities.Ticket;
-global using WebRifa.Blazor.Core.Entities.Draw;
+global using WebRifa.Blazor.Core.Entities;
+global using WebRifa.Blazor.Core.Entities.ReceiptEntities;
+global using WebRifa.Blazor.Core.Entities.TicketEntities;
+global using WebRifa.Blazor.Core.Entities.DrawEntities;

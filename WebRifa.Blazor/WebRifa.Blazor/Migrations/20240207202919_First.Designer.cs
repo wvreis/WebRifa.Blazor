@@ -12,8 +12,8 @@ using WebRifa.Blazor.Data;
 namespace WebRifa.Blazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231231182100_initial")]
-    partial class initial
+    [Migration("20240207202919_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,7 +170,7 @@ namespace WebRifa.Blazor.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IdDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
@@ -189,7 +189,42 @@ namespace WebRifa.Blazor.Migrations
                     b.ToTable("Buyers");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Draw.Draw", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.BuyerTicketReceipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuyerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ReceiptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("ReceiptId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("BuyerTicketReceipt");
+                });
+
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,8 +233,14 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IdDeleted")
+                    b.Property<Guid>("DrawnTicketId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid>("RaffleId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("RaffledAt")
                         .HasColumnType("timestamp with time zone");
@@ -208,6 +249,8 @@ namespace WebRifa.Blazor.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RaffleId");
 
                     b.ToTable("Draws");
                 });
@@ -228,7 +271,7 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("DrawDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IdDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Observations")
@@ -239,7 +282,7 @@ namespace WebRifa.Blazor.Migrations
                         .HasPrecision(4)
                         .HasColumnType("numeric(4)");
 
-                    b.Property<int>("TotalTicketNumber")
+                    b.Property<int>("TotalNumberOfTickets")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -250,13 +293,13 @@ namespace WebRifa.Blazor.Migrations
                     b.ToTable("Raffles");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Receipt.Receipt", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BuyerId")
+                    b.Property<Guid?>("BuyerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -265,7 +308,7 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<int>("CurrentState")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IdDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -278,13 +321,13 @@ namespace WebRifa.Blazor.Migrations
                     b.ToTable("Receipts");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Ticket.Ticket", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BuyerId")
+                    b.Property<Guid?>("BuyerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -296,7 +339,7 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<Guid>("DrawId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IdDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<int>("Number")
@@ -444,28 +487,60 @@ namespace WebRifa.Blazor.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Receipt.Receipt", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.BuyerTicketReceipt", b =>
                 {
                     b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", "Buyer")
-                        .WithMany("Receipts")
+                        .WithMany("BuyerTicketReceipts")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", "Receipt")
+                        .WithMany("BuyerTicketReceipt")
+                        .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", "Ticket")
+                        .WithMany("BuyerTicketReceipt")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Buyer");
+
+                    b.Navigation("Receipt");
+
+                    b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Ticket.Ticket", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
                 {
-                    b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", "Buyer")
-                        .WithMany("Tickets")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("WebRifa.Blazor.Core.Entities.Raffle", "Raffle")
+                        .WithMany()
+                        .HasForeignKey("RaffleId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebRifa.Blazor.Core.Entities.Draw.Draw", "Draw")
-                        .WithOne("RaffledTicket")
-                        .HasForeignKey("WebRifa.Blazor.Core.Entities.Ticket.Ticket", "DrawId")
+                    b.Navigation("Raffle");
+                });
+
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
+                {
+                    b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", null)
+                        .WithMany("Receipts")
+                        .HasForeignKey("BuyerId");
+                });
+
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
+                {
+                    b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("BuyerId");
+
+                    b.HasOne("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", "Draw")
+                        .WithOne("DrawnTicket")
+                        .HasForeignKey("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", "DrawId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -475,11 +550,9 @@ namespace WebRifa.Blazor.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WebRifa.Blazor.Core.Entities.Receipt.Receipt", "Receipt")
+                    b.HasOne("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", "Receipt")
                         .WithMany("Tickets")
                         .HasForeignKey("ReceiptId");
-
-                    b.Navigation("Buyer");
 
                     b.Navigation("Draw");
 
@@ -490,14 +563,16 @@ namespace WebRifa.Blazor.Migrations
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Buyer", b =>
                 {
+                    b.Navigation("BuyerTicketReceipts");
+
                     b.Navigation("Receipts");
 
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Draw.Draw", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
                 {
-                    b.Navigation("RaffledTicket");
+                    b.Navigation("DrawnTicket");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Raffle", b =>
@@ -505,9 +580,16 @@ namespace WebRifa.Blazor.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Receipt.Receipt", b =>
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
                 {
+                    b.Navigation("BuyerTicketReceipt");
+
                     b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
+                {
+                    b.Navigation("BuyerTicketReceipt");
                 });
 #pragma warning restore 612, 618
         }

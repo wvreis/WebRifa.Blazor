@@ -7,7 +7,8 @@ using WebRifa.Blazor.Core.Queries.Buyer;
 
 namespace WebRifa.Blazor.Services;
 
-public class BuyerService : IBuyerService {
+public class BuyerService : IBuyerService
+{
     private readonly ILogger _logger;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +25,8 @@ public class BuyerService : IBuyerService {
         _buyerRepository = buyerRepository;
         _unitOfWork = unitOfWork;
 
-        _mapperConfiguration = new MapperConfiguration(cfg => {
+        _mapperConfiguration = new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<Buyer, BuyerDto>();
             cfg.CreateMap<BuyerDto, Buyer>();
         });
@@ -34,14 +36,16 @@ public class BuyerService : IBuyerService {
 
     public async Task<List<BuyerDto>> SearchBuyerAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
     {
-        try {
+        try
+        {
             var buyers = await _buyerRepository.SearchBuyersAsync(query, cancellationToken);
 
             _logger.LogInformation("Pesquisa de Compradores executada.");
 
             return _mapper?.Map<List<Buyer>, List<BuyerDto>>(buyers) ?? throw new Exception();
         }
-        catch (Exception) {
+        catch (Exception)
+        {
 
             throw;
         }
@@ -49,14 +53,16 @@ public class BuyerService : IBuyerService {
 
     public async Task<BuyerDto> GetBuyerAsync(BuyerGetQuery query, CancellationToken cancellationToken)
     {
-        try {
+        try
+        {
             var buyer = await _buyerRepository.GetAsync(query.BuyerId, cancellationToken);
 
             _logger.LogInformation("Get de Comprador {BuyerId} executado.", query.BuyerId);
 
             return _mapper?.Map<BuyerDto>(buyer) ?? throw new Exception();
         }
-        catch (Exception) {
+        catch (Exception)
+        {
 
             throw;
         }
@@ -64,7 +70,8 @@ public class BuyerService : IBuyerService {
 
     public async Task<Guid> AddBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken)
     {
-        try {
+        try
+        {
             Buyer buyer = _mapper?.Map<Buyer>(buyerDto) ?? throw new Exception();
 
             await _buyerRepository.AddAsync(buyer, cancellationToken);
@@ -74,7 +81,8 @@ public class BuyerService : IBuyerService {
 
             return buyer.Id;
         }
-        catch (Exception) {
+        catch (Exception)
+        {
 
             throw;
         }
@@ -82,7 +90,8 @@ public class BuyerService : IBuyerService {
 
     public async Task UpdateBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken)
     {
-        try {
+        try
+        {
             Buyer buyer = _mapper?.Map<Buyer>(buyerDto) ?? throw new Exception();
 
             _buyerRepository.Update(buyer);
@@ -90,7 +99,8 @@ public class BuyerService : IBuyerService {
 
             _logger.LogInformation("O Comprador {Id} foi atualizado.", buyer.Id);
         }
-        catch (Exception) {
+        catch (Exception)
+        {
 
             throw;
         }
