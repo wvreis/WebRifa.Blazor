@@ -17,6 +17,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity {
         await _context.AddAsync(entity, cancellationToken);
     }
 
+    public async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken)
+    {
+        await _context.AddRangeAsync(entities, cancellationToken);
+    }
+
     public void Update(T entity)
     {
         if (!EntityExists(entity)) {

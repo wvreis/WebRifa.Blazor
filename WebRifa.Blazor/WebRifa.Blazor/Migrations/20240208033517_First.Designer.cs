@@ -12,7 +12,7 @@ using WebRifa.Blazor.Data;
 namespace WebRifa.Blazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240207202919_First")]
+    [Migration("20240208033517_First")]
     partial class First
     {
         /// <inheritdoc />

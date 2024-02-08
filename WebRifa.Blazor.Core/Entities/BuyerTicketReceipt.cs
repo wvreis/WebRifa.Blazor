@@ -20,9 +20,21 @@ public class BuyerTicketReceipt : BaseEntity
         Ticket ticket,
         Receipt receipt)
     {
+        BuyerId = buyer.Id;
+        TicketId = ticket.Id;
+        ReceiptId = receipt.Id;
         Buyer = buyer;
         Ticket = ticket;
         Receipt = receipt;
     }
 
+    public BuyerTicketReceipt(
+        Guid buyerId,
+        Guid ticketId,
+        Guid receiptId)
+    {
+        BuyerId = buyerId;
+        TicketId = ticketId;
+        ReceiptId = receiptId;
+    }
 }

@@ -9,7 +9,7 @@ namespace WebRifa.Blazor.Services;
 
 public class BuyerService : IBuyerService
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<BuyerService> _logger;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -27,8 +27,7 @@ public class BuyerService : IBuyerService
 
         _mapperConfiguration = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<Buyer, BuyerDto>();
-            cfg.CreateMap<BuyerDto, Buyer>();
+            cfg.CreateMap<Buyer, BuyerDto>().ReverseMap();
         });
 
         _mapper = _mapperConfiguration.CreateMapper();

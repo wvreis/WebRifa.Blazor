@@ -16,13 +16,23 @@ public class Ticket : BaseEntity
     public Guid RaffleId { get; private set; } 
     public Raffle? Raffle { get; private set; }
 
-    public Guid DrawId { get; private set; }
+    public Guid? DrawId { get; private set; }
     public Draw? Draw { get; private set; }
     public Receipt? Receipt { get; private set; }
 
     public Ticket()
     {
         State = CurrentState.GetTicketState();
+    }
+
+    public Ticket(
+        int number,
+        string observations,
+        Guid raffleId)
+    {
+        Number = number;
+        Observations = observations;
+        RaffleId = raffleId;
     }
 
     public void Cancel()

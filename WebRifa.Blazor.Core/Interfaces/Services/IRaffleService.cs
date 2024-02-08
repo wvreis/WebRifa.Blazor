@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.Commands;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Queries.Buyer;
 using WebRifa.Blazor.Core.Queries.Raffle;
 
@@ -9,4 +10,6 @@ public interface IRaffleService {
     Task<RaffleDto> GetRaffleAsync(RaffleGetQuery query, CancellationToken cancellationToken);
     Task<Guid> AddRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
     Task UpdateRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
+    Task<List<int>> GetFreeNumbersAsync(Guid raffleId, CancellationToken cancellationToken);
+    Task<bool> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken);
 }

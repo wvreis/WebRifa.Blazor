@@ -8,7 +8,7 @@ public class Raffle : BaseEntity {
     public string Observations { get; private set; } = string.Empty;
     public DateTime DrawDateTime { get; set; }
 
-    public List<TicketEntities.Ticket>? Tickets { get; private set; }
+    public List<Ticket>? Tickets { get; private set; }
 
 
     public Raffle()

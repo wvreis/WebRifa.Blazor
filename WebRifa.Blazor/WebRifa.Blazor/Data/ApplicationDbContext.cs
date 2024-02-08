@@ -15,16 +15,21 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Raffle>()
             .Property(x => x.TicketPrice)
-            .HasPrecision(4);
+            .HasColumnType("decimal(18,2)")
+            .HasPrecision(18, 2);
+
+        builder.Entity<Raffle>()
+            .Navigation(x => x.Tickets)
+            .AutoInclude();
 
         builder.Entity<Buyer>().HasKey(x => x.Id);
 
         #region TICKET
         builder.Entity<Ticket>().HasKey(x => x.Id);
 
-        builder.Entity<Ticket>()
-            .Navigation(x => x.Raffle)
-            .AutoInclude();
+        //builder.Entity<Ticket>()
+        //    .Navigation(x => x.Raffle)
+        //    .AutoInclude();
 
         builder.Entity<Ticket>()
             .Navigation(x => x.Receipt)
@@ -38,8 +43,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Ticket>()
             .HasOne(x => x.Draw)
-            .WithMany()
-            .HasForeignKey(x => x.DrawId) 
+            .WithOne(x => x.DrawnTicket)
+            .HasForeignKey<Ticket>(x => x.DrawId) 
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Ticket>()

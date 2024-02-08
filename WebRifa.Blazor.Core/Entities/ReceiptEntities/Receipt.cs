@@ -9,7 +9,7 @@ public class Receipt : BaseEntity
     public ReceiptStates CurrentState { get; private set; }
     public IReceiptState State { get; private set; } = new ReceiptValidState();
 
-    public List<BuyerTicketReceipt>? BuyerTicketReceipt { get; set; }
+    public List<BuyerTicketReceipt> BuyerTicketReceipt { get; set; } = new();
 
     public List<Ticket> Tickets { get; private set; } = new();
 
@@ -27,5 +27,10 @@ public class Receipt : BaseEntity
     {
         CurrentState = state;
         SetUpdatedAt();
+    }
+
+    public void AddBuyerTicketReceipt(BuyerTicketReceipt buyerTicketReceipt)
+    {
+        BuyerTicketReceipt.Add(buyerTicketReceipt);
     }
 }

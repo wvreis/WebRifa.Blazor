@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Queries.Buyer;
@@ -19,9 +18,9 @@ public class BuyerController : ControllerBase{
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<BuyerDto>>> SearchBuyer([FromQuery] BuyerSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<List<BuyerDto>>> SearchBuyerAsync([FromQuery] BuyerSearchQuery query, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation($"{nameof(SearchBuyer)} executado.");
+        _logger.LogInformation($"{nameof(SearchBuyerAsync)} executado.");
         return await _buyerService.SearchBuyerAsync(query, cancellationToken);
     }
 

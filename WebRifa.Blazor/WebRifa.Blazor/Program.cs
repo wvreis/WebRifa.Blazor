@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
+using WebRifa.Blazor.Core.Services;
 using WebRifa.Blazor.Data;
 using WebRifa.Blazor.Exceptions;
 using WebRifa.Blazor.Repositories;
@@ -26,8 +28,14 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
+builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IBuyerService, BuyerService>();
+builder.Services.AddScoped<IRaffleService, RaffleService>();
+builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
+builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -35,7 +43,10 @@ builder.Services.AddAuthentication(options => {
 })
     .AddIdentityCookies();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(opt => {
+    opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(SwaggerGenConfig());
