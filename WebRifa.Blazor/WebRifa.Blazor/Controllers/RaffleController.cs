@@ -35,6 +35,13 @@ public class RaffleController : ControllerBase
         return await _raffleService.GetRaffleAsync(query, cancellationToken);
     }
 
+    [HttpGet]
+    public async Task<ActionResult<HashSet<int>>> GetFreeNumbers([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(GetFreeNumbers)} executado");
+        return await _raffleService.GetFreeNumbersAsync(query, cancellationToken);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Guid>> AddRaffleAsync([FromBody] RaffleDto raffleDto, CancellationToken cancellationToken)
     {
@@ -47,6 +54,13 @@ public class RaffleController : ControllerBase
     {
         _logger.LogInformation($"{nameof(BuyRaffleTicketsAsync)} executado");
         return await _raffleService.BuyRaffleTicketsAsync(command, cancellationToken);    
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<int>> CarryOutTheDrawAsync([FromBody] CarryOutTheDrawCommand command, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(CarryOutTheDrawAsync)} executado");
+        return await _raffleService.CarryOutTheDrawAsync(command, cancellationToken);
     }
 
     [HttpPut]

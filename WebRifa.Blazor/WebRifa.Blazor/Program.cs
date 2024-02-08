@@ -36,6 +36,7 @@ builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IRaffleService, RaffleService>();
 builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
 builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
+builder.Services.AddScoped<IDrawRepository, DrawRepository>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;

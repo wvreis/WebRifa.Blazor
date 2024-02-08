@@ -9,4 +9,6 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository {
     public TicketRepository(ApplicationDbContext context) : base(context)
     {
     }
+
+    
 }

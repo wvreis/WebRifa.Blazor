@@ -19,6 +19,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasPrecision(18, 2);
 
         builder.Entity<Raffle>()
+            .HasMany(x => x.Tickets)
+            .WithOne(x => x.Raffle)
+            .HasForeignKey(x => x.RaffleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Raffle>()
             .Navigation(x => x.Tickets)
             .AutoInclude();
 
@@ -27,9 +33,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         #region TICKET
         builder.Entity<Ticket>().HasKey(x => x.Id);
 
-        //builder.Entity<Ticket>()
-        //    .Navigation(x => x.Raffle)
-        //    .AutoInclude();
+        builder.Entity<Ticket>()
+            .HasIndex(x => new { 
+                x.RaffleId, 
+                x.Number, 
+                x.IsDeleted 
+            })
+            .IsUnique();
+
+        builder.Entity<Ticket>()
+            .Navigation(x => x.BuyerTicketReceipt)
+            .AutoInclude();
 
         builder.Entity<Ticket>()
             .Navigation(x => x.Receipt)

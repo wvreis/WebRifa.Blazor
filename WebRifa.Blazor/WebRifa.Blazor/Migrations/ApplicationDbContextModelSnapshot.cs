@@ -183,7 +183,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buyers");
+                    b.ToTable("Buyers", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.BuyerTicketReceipt", b =>
@@ -218,7 +218,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("BuyerTicketReceipt");
+                    b.ToTable("BuyerTicketReceipt", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
@@ -249,7 +249,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("RaffleId");
 
-                    b.ToTable("Draws");
+                    b.ToTable("Draws", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Raffle", b =>
@@ -287,7 +287,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Raffles");
+                    b.ToTable("Raffles", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
@@ -315,7 +315,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("BuyerId");
 
-                    b.ToTable("Receipts");
+                    b.ToTable("Receipts", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
@@ -362,11 +362,12 @@ namespace WebRifa.Blazor.Migrations
                     b.HasIndex("DrawId")
                         .IsUnique();
 
-                    b.HasIndex("RaffleId");
-
                     b.HasIndex("ReceiptId");
 
-                    b.ToTable("Tickets");
+                    b.HasIndex("RaffleId", "Number", "IsDeleted")
+                        .IsUnique();
+
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Data.ApplicationUser", b =>

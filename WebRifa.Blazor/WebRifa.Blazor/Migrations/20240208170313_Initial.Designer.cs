@@ -12,8 +12,8 @@ using WebRifa.Blazor.Data;
 namespace WebRifa.Blazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240208033517_First")]
-    partial class First
+    [Migration("20240208170313_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -279,8 +279,8 @@ namespace WebRifa.Blazor.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("TicketPrice")
-                        .HasPrecision(4)
-                        .HasColumnType("numeric(4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TotalNumberOfTickets")
                         .HasColumnType("integer");
@@ -336,7 +336,7 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<int>("CurrentState")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("DrawId")
+                    b.Property<Guid?>("DrawId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -365,9 +365,10 @@ namespace WebRifa.Blazor.Migrations
                     b.HasIndex("DrawId")
                         .IsUnique();
 
-                    b.HasIndex("RaffleId");
-
                     b.HasIndex("ReceiptId");
+
+                    b.HasIndex("RaffleId", "Number", "IsDeleted")
+                        .IsUnique();
 
                     b.ToTable("Tickets");
                 });
@@ -541,8 +542,7 @@ namespace WebRifa.Blazor.Migrations
                     b.HasOne("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", "Draw")
                         .WithOne("DrawnTicket")
                         .HasForeignKey("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", "DrawId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebRifa.Blazor.Core.Entities.Raffle", "Raffle")
                         .WithMany("Tickets")

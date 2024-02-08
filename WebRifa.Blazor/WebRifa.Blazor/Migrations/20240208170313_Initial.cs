@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebRifa.Blazor.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,7 +75,7 @@ namespace WebRifa.Blazor.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     TotalNumberOfTickets = table.Column<int>(type: "integer", nullable: false),
-                    TicketPrice = table.Column<decimal>(type: "numeric(4)", precision: 4, nullable: false),
+                    TicketPrice = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     Observations = table.Column<string>(type: "text", nullable: false),
                     DrawDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -246,7 +246,7 @@ namespace WebRifa.Blazor.Migrations
                     Observations = table.Column<string>(type: "text", nullable: false),
                     CurrentState = table.Column<int>(type: "integer", nullable: false),
                     RaffleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DrawId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DrawId = table.Column<Guid>(type: "uuid", nullable: true),
                     ReceiptId = table.Column<Guid>(type: "uuid", nullable: true),
                     BuyerId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -389,9 +389,10 @@ namespace WebRifa.Blazor.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_RaffleId",
+                name: "IX_Tickets_RaffleId_Number_IsDeleted",
                 table: "Tickets",
-                column: "RaffleId");
+                columns: new[] { "RaffleId", "Number", "IsDeleted" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_ReceiptId",

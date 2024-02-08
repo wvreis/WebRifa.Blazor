@@ -11,7 +11,7 @@ public class Ticket : BaseEntity
     public TicketStates CurrentState { get; private set; }
     public ITicketState State { get; private set; } = new TicketValidState();
 
-    public List<BuyerTicketReceipt>? BuyerTicketReceipt { get; private set; }
+    public List<BuyerTicketReceipt> BuyerTicketReceipt { get; private set; } = new();
 
     public Guid RaffleId { get; private set; } 
     public Raffle? Raffle { get; private set; }
@@ -66,8 +66,13 @@ public class Ticket : BaseEntity
         SetUpdatedAt();
     }
 
-    public void AddDraw(DrawEntities.Draw draw)
+    public void AddDraw(Draw draw)
     {
         Draw = draw;
+    }
+
+    public void AddBuyerTicketReceipt(BuyerTicketReceipt buyerTicketReceipt)
+    {        
+        BuyerTicketReceipt?.Add(buyerTicketReceipt);
     }
 }

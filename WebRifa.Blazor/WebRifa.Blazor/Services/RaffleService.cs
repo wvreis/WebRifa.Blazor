@@ -2,7 +2,6 @@
 using WebRifa.Blazor.Core.Commands;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Queries.Raffle;
@@ -70,11 +69,25 @@ public class RaffleService : IRaffleService
         }
     }
 
-    public async Task<List<int>> GetFreeNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
+    public async Task<int> CarryOutTheDrawAsync(CarryOutTheDrawCommand command, CancellationToken cancellationToken)
     {
         try {
-            _logger.LogInformation("Get Números disponíveis executado para a rifa {raffleId}", raffleId);
-            return await _raffleCoreService.GetFreeNumbersAsync(raffleId, cancellationToken);
+            _logger.LogInformation("Sorteio executado para a rifa {RaflleId}", command.RaflleId);
+            var drawnTicketNumber  = await _raffleCoreService.CarryOutTheDrawAsync(command.RaflleId, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
+            return drawnTicketNumber;
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
+    public async Task<HashSet<int>> GetFreeNumbersAsync(RaffleGetQuery query, CancellationToken cancellationToken)
+    {
+        try {
+            _logger.LogInformation("Get Números disponíveis executado para a rifa {raffleId}", query.Id);
+            return await _raffleCoreService.GetFreeNumbersAsync(query.Id, cancellationToken);
         }
         catch (Exception) {
 

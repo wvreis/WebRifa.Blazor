@@ -10,14 +10,11 @@ public class Draw : BaseEntity {
 
     public Draw() { }
 
-    public Draw(TicketEntities.Ticket ticket, Raffle raffle)
+    public Draw(Ticket ticket, Raffle raffle)
     {
         Raffle = raffle;
+        RaffleId = ticket.Id;
         DrawnTicket = ticket;
-    }
-
-    public void CarryOutTheDraw()
-    {
-
+        DrawnTicketId = ticket.Id;
     }
 }
