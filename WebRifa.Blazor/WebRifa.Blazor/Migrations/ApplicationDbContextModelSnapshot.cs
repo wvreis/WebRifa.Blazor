@@ -183,7 +183,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buyers", (string)null);
+                    b.ToTable("Buyers");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.BuyerTicketReceipt", b =>
@@ -212,13 +212,14 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("ReceiptId");
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("BuyerTicketReceipt", (string)null);
+                    b.HasIndex("BuyerId", "TicketId", "ReceiptId", "IsDeleted")
+                        .IsUnique();
+
+                    b.ToTable("BuyerTicketReceipt");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
@@ -249,7 +250,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("RaffleId");
 
-                    b.ToTable("Draws", (string)null);
+                    b.ToTable("Draws");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Raffle", b =>
@@ -287,16 +288,13 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Raffles", (string)null);
+                    b.ToTable("Raffles");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BuyerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -313,18 +311,13 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
-                    b.ToTable("Receipts", (string)null);
+                    b.ToTable("Receipts");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BuyerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -357,8 +350,6 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId");
-
                     b.HasIndex("DrawId")
                         .IsUnique();
 
@@ -367,7 +358,7 @@ namespace WebRifa.Blazor.Migrations
                     b.HasIndex("RaffleId", "Number", "IsDeleted")
                         .IsUnique();
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Data.ApplicationUser", b =>
@@ -490,19 +481,19 @@ namespace WebRifa.Blazor.Migrations
                     b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", "Buyer")
                         .WithMany("BuyerTicketReceipts")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", "Receipt")
                         .WithMany("BuyerTicketReceipt")
                         .HasForeignKey("ReceiptId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", "Ticket")
                         .WithMany("BuyerTicketReceipt")
                         .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Buyer");
@@ -523,19 +514,8 @@ namespace WebRifa.Blazor.Migrations
                     b.Navigation("Raffle");
                 });
 
-            modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
-                {
-                    b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", null)
-                        .WithMany("Receipts")
-                        .HasForeignKey("BuyerId");
-                });
-
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
                 {
-                    b.HasOne("WebRifa.Blazor.Core.Entities.Buyer", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("BuyerId");
-
                     b.HasOne("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", "Draw")
                         .WithOne("DrawnTicket")
                         .HasForeignKey("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", "DrawId")
@@ -561,10 +541,6 @@ namespace WebRifa.Blazor.Migrations
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Buyer", b =>
                 {
                     b.Navigation("BuyerTicketReceipts");
-
-                    b.Navigation("Receipts");
-
-                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>

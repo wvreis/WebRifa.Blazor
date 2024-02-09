@@ -89,19 +89,35 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<BuyerTicketReceipt>().HasKey(x => x.Id);
 
         builder.Entity<BuyerTicketReceipt>()
+            .HasIndex(x => new { 
+                x.BuyerId,
+                x.TicketId,
+                x.ReceiptId,
+                x.IsDeleted
+            })
+            .IsUnique();
+
+        builder.Entity<BuyerTicketReceipt>()
+            .Navigation(x => x.Buyer)
+            .AutoInclude();
+
+        builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Buyer)
             .WithMany(x => x.BuyerTicketReceipts)
-            .HasForeignKey(x => x.BuyerId);
+            .HasForeignKey(x => x.BuyerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Ticket)
             .WithMany(x => x.BuyerTicketReceipt)
-            .HasForeignKey(x => x.TicketId); 
+            .HasForeignKey(x => x.TicketId)
+            .OnDelete(DeleteBehavior.Restrict); 
 
         builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Receipt)
             .WithMany(x => x.BuyerTicketReceipt)
-            .HasForeignKey(x => x.ReceiptId); 
+            .HasForeignKey(x => x.ReceiptId)
+            .OnDelete(DeleteBehavior.Restrict); 
         #endregion
     }
 

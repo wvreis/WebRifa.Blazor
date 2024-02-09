@@ -1,6 +1,4 @@
 ﻿using WebRifa.Blazor.Core.Commands;
-using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 
 namespace WebRifa.Blazor.Core.Services;
@@ -30,7 +28,7 @@ public class RaffleCoreService : IRaffleCoreService {
         var freeNumbers = await GetFreeNumbersAsync(command.RaffleId, cancellationToken);
         bool areAllNumbersAvailable = command.NumbersToBuy.All(n => freeNumbers.Contains(n));
 
-        if (areAllNumbersAvailable) {
+        if (!areAllNumbersAvailable) {
             throw new InvalidOperationException("Não foi possível registrar a compra, pois todos os números precisam estar disponíveis.");
         }
 
@@ -38,9 +36,8 @@ public class RaffleCoreService : IRaffleCoreService {
         Buyer buyer = await _buyerRepository.GetAsync(command.BuyerId, cancellationToken);
 
         foreach (var number in command.NumbersToBuy) {
-            var ticket = new Ticket(number, command.Observations, command.RaffleId); 
-            ticket.AddBuyerTicketReceipt(new(buyer, ticket, receipt));
-            receipt.Tickets.Add(ticket); 
+            var ticket = new Ticket(number, command.Observations, command.RaffleId);
+            receipt.Tickets.Add(ticket);
         }
 
         foreach (var ticket in receipt.Tickets) {
