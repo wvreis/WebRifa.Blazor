@@ -7,5 +7,5 @@ public class BuyerTicketReceiptDto {
     public TicketDto Ticket { get; set; } = new();
 
     public Guid ReceiptId { get; set; }
-    //public ReceiptDto Receipt { get; set; } = new();
+    public ReceiptDto Receipt { get; set; } = new();
 }

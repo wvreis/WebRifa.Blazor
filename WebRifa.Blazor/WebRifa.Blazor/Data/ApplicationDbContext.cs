@@ -102,6 +102,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .AutoInclude();
 
         builder.Entity<BuyerTicketReceipt>()
+            .Navigation(x => x.Ticket)
+            .AutoInclude();
+
+        builder.Entity<BuyerTicketReceipt>()
+            .Navigation(x => x.Receipt)
+            .AutoInclude();
+
+        builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Buyer)
             .WithMany(x => x.BuyerTicketReceipts)
             .HasForeignKey(x => x.BuyerId)

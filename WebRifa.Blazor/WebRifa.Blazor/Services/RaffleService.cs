@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using WebRifa.Blazor.Core.Commands;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
-using WebRifa.Blazor.Core.Queries.Raffle;
+using WebRifa.Blazor.Core.Requests.Commands;
+using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Core.Services;
 
 namespace WebRifa.Blazor.Services;
@@ -15,26 +15,20 @@ public class RaffleService : IRaffleService
     private readonly IRaffleRepository _raffleRepository;
     private readonly IRaffleCoreService _raffleCoreService;
     private readonly IUnitOfWork _unitOfWork;
-
-    private MapperConfiguration _mapperConfiguration;
-    private IMapper? _mapper;
+    private readonly IMapper _mapper;
 
     public RaffleService(
         ILogger<RaffleService> logger,
         IUnitOfWork unitOfWork,
         IRaffleRepository raffleRepository,
-        IRaffleCoreService raffleCoreService)
+        IRaffleCoreService raffleCoreService,
+        IMapper mapper)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _raffleRepository = raffleRepository;
         _raffleCoreService = raffleCoreService;
-
-        _mapperConfiguration = new MapperConfiguration(cfg => {
-            cfg.CreateMap<Raffle, RaffleDto>().ReverseMap();
-        });
-
-        _mapper = _mapperConfiguration.CreateMapper();
+        _mapper = mapper;
     }
 
     public async Task<Guid> AddRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken)

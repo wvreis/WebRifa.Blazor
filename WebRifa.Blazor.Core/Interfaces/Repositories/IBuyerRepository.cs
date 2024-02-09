@@ -1,5 +1,5 @@
 ﻿using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Queries.Buyer;
+using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 
 namespace WebRifa.Blazor.Core.Interfaces.Repositories;
 

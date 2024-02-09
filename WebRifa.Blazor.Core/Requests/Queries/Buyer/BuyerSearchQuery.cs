@@ -1,4 +1,4 @@
-﻿namespace WebRifa.Blazor.Core.Queries.Buyer;
+﻿namespace WebRifa.Blazor.Core.Requests.Queries.Buyer;
 
 public class BuyerSearchQuery
 {

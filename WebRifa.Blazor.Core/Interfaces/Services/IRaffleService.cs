@@ -1,7 +1,6 @@
-﻿using WebRifa.Blazor.Core.Commands;
-using WebRifa.Blazor.Core.Dtos;
-using WebRifa.Blazor.Core.Queries.Buyer;
-using WebRifa.Blazor.Core.Queries.Raffle;
+﻿using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Requests.Commands;
+using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 
 namespace WebRifa.Blazor.Core.Interfaces.Services;
 

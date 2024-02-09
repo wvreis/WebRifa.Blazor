@@ -1,5 +1,5 @@
-﻿using WebRifa.Blazor.Core.Commands;
-using WebRifa.Blazor.Core.Interfaces.Repositories;
+﻿using WebRifa.Blazor.Core.Interfaces.Repositories;
+using WebRifa.Blazor.Core.Requests.Commands;
 
 namespace WebRifa.Blazor.Core.Services;
 public class RaffleCoreService : IRaffleCoreService {
@@ -37,11 +37,11 @@ public class RaffleCoreService : IRaffleCoreService {
 
         foreach (var number in command.NumbersToBuy) {
             var ticket = new Ticket(number, command.Observations, command.RaffleId);
-            receipt.Tickets.Add(ticket);
+            receipt.AddTicket(ticket);
         }
 
         foreach (var ticket in receipt.Tickets) {
-            receipt.AddBuyerTicketReceipt(new(buyer, ticket, receipt));
+            receipt.AddBuyerTicketReceipt(new BuyerTicketReceipt(buyer, ticket, receipt));
         }
 
         await _receiptRepository.AddAsync(receipt, cancellationToken);

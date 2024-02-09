@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -7,6 +8,10 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
+using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Entities;
+using WebRifa.Blazor.Core.Entities.ReceiptEntities;
+using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Services;
@@ -45,6 +50,15 @@ builder.Services.AddAuthentication(options => {
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
     .AddIdentityCookies();
+
+builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
+    cfg.CreateMap<Buyer, BuyerDto>().ReverseMap();
+    cfg.CreateMap<Raffle, RaffleDto>().ReverseMap();
+    cfg.CreateMap<Ticket, TicketDto>().ReverseMap();
+    cfg.CreateMap<BuyerTicketReceipt, BuyerTicketReceiptDto>().ReverseMap();
+    cfg.CreateMap<Receipt, ReceiptDto>().ReverseMap();
+})
+    .CreateMapper());
 
 builder.Services.AddControllers().AddNewtonsoftJson(opt => {
     opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;

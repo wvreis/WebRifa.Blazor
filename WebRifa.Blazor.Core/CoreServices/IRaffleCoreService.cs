@@ -1,4 +1,4 @@
-﻿using WebRifa.Blazor.Core.Commands;
+﻿using WebRifa.Blazor.Core.Requests.Commands;
 
 namespace WebRifa.Blazor.Core.Services;
 public interface IRaffleCoreService {

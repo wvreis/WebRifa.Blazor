@@ -29,6 +29,11 @@ public class Receipt : BaseEntity
         SetUpdatedAt();
     }
 
+    public void AddTicket(Ticket ticket)
+    {
+        Tickets.Add(ticket);
+    }
+
     public void AddBuyerTicketReceipt(BuyerTicketReceipt buyerTicketReceipt)
     {
         BuyerTicketReceipt.Add(buyerTicketReceipt);

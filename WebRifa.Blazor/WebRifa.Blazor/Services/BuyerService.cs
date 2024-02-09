@@ -3,7 +3,7 @@ using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Dtos;
 using AutoMapper;
-using WebRifa.Blazor.Core.Queries.Buyer;
+using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 
 namespace WebRifa.Blazor.Services;
 
@@ -12,25 +12,18 @@ public class BuyerService : IBuyerService
     private readonly ILogger<BuyerService> _logger;
     private readonly IBuyerRepository _buyerRepository;
     private readonly IUnitOfWork _unitOfWork;
-
-    private MapperConfiguration _mapperConfiguration;
-    private IMapper? _mapper;
+    private readonly IMapper? _mapper;
 
     public BuyerService(
         ILogger<BuyerService> logger,
         IBuyerRepository buyerRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper? mapper)
     {
         _logger = logger;
         _buyerRepository = buyerRepository;
         _unitOfWork = unitOfWork;
-
-        _mapperConfiguration = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<Buyer, BuyerDto>().ReverseMap();
-        });
-
-        _mapper = _mapperConfiguration.CreateMapper();
+        _mapper = mapper;
     }
 
     public async Task<List<BuyerDto>> SearchBuyerAsync(BuyerSearchQuery query, CancellationToken cancellationToken)

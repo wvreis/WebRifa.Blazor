@@ -4,7 +4,7 @@ using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
-using WebRifa.Blazor.Core.Queries.Ticket;
+using WebRifa.Blazor.Core.Requests.Queries.Ticket;
 using WebRifa.Blazor.Repositories;
 
 namespace WebRifa.Blazor.Services;
@@ -14,25 +14,18 @@ public class TicketService : ITicketService
     private readonly ILogger<TicketService> _logger;
     private readonly ITicketRepository _ticketRepository;
     private readonly IUnitOfWork _unitOfWork;
-
-    private MapperConfiguration _mapperConfiguration;
-    private IMapper? _mapper;
+    private readonly IMapper _mapper;
 
     public TicketService(
         ILogger<TicketService> logger,
         ITicketRepository ticketRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _logger = logger;
         _ticketRepository = ticketRepository;
         _unitOfWork = unitOfWork;
-
-        _mapperConfiguration = new MapperConfiguration(cfg => {
-            cfg.CreateMap<Ticket, TicketDto>().ReverseMap();
-            cfg.CreateMap<BuyerTicketReceipt, BuyerTicketReceiptDto>().ReverseMap();
-        });
-
-        _mapper = _mapperConfiguration.CreateMapper();
+        _mapper = mapper;
     }
 
     public async Task<Guid> AddTicketAsync(TicketDto ticketDto, CancellationToken cancellationToken)

@@ -1,4 +1,4 @@
-﻿using WebRifa.Blazor.Core.Queries.Raffle;
+﻿using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 
 namespace WebRifa.Blazor.Core.Interfaces.Repositories;
 

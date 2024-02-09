@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
-using WebRifa.Blazor.Core.Queries.Ticket;
+using WebRifa.Blazor.Core.Requests.Queries.Ticket;
 
 namespace WebRifa.Blazor.Controllers;
 
