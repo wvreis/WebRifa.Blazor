@@ -6,7 +6,7 @@ public class Draw : BaseEntity {
     public Raffle? Raffle { get; private set; }
 
     public Guid DrawnTicketId { get; private set; }
-    public TicketEntities.Ticket? DrawnTicket { get; private set; }
+    public Ticket? DrawnTicket { get; private set; }
 
     public Draw() { }
 

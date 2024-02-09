@@ -40,7 +40,7 @@ public class RaffleService : IRaffleService
     public async Task<Guid> AddRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken)
     {
         try {
-            Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new Exception("");
+            Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new ArgumentNullException();
 
             await _raffleRepository.AddAsync(raffle, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
@@ -127,11 +127,17 @@ public class RaffleService : IRaffleService
 
     public async Task UpdateRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken)
     {
-        Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new Exception();
+        try {
+            Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new Exception();
 
-        _raffleRepository.Update(raffle);
-        await _unitOfWork.CommitAsync(cancellationToken);
+            _raffleRepository.Update(raffle);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
-        _logger.LogInformation("A Rifa {Id} foi atualizada.", raffleDto.Id);
+            _logger.LogInformation("A Rifa {Id} foi atualizada.", raffleDto.Id);
+        }
+        catch (Exception) {
+
+            throw;
+        }
     }
 }

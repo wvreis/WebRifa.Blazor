@@ -6,5 +6,5 @@ public class RaffleDto {
     public decimal TicketPrice { get; set; }
     public string Observations { get; set; } = string.Empty;
     public DateTime DrawDateTime { get; set; }
-    public List<Ticket>? Tickets { get; set; }
+    //public List<Ticket>? Tickets { get; set; }
 }

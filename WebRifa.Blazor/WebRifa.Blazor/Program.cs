@@ -30,12 +30,13 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
 builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IRaffleService, RaffleService>();
+builder.Services.AddScoped<ITicketService, TicketService>();    
 builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
-builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 builder.Services.AddScoped<IDrawRepository, DrawRepository>();
 
 builder.Services.AddAuthentication(options => {
