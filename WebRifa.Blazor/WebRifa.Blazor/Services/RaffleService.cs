@@ -124,7 +124,7 @@ public class RaffleService : IRaffleService
         try {
             Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new Exception();
 
-            _raffleRepository.Update(raffle);
+            await _raffleRepository.UpdateAsync(raffle, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             _logger.LogInformation("A Rifa {Id} foi atualizada.", raffleDto.Id);

@@ -11,7 +11,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(builder);
 
+        #region RAFFLE
         builder.Entity<Raffle>().HasKey(x => x.Id);
+
+        builder.Entity<Raffle>().HasQueryFilter(x => !x.IsDeleted);
 
         builder.Entity<Raffle>()
             .Property(x => x.TicketPrice)
@@ -27,11 +30,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Raffle>()
             .Navigation(x => x.Tickets)
             .AutoInclude();
+        #endregion
 
+        #region BUYER
         builder.Entity<Buyer>().HasKey(x => x.Id);
+        #endregion
 
         #region TICKET
         builder.Entity<Ticket>().HasKey(x => x.Id);
+
+        builder.Entity<Ticket>().HasQueryFilter(x => !x.IsDeleted);
 
         builder.Entity<Ticket>()
             .HasIndex(x => new { 
@@ -68,6 +76,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         #region RECEIPT
         builder.Entity<Receipt>().HasKey(x => x.Id);
 
+        builder.Entity<Receipt>().HasQueryFilter(x => !x.IsDeleted);
+
         builder.Entity<Receipt>()
            .Navigation(x => x.Tickets)
            .AutoInclude();
@@ -79,6 +89,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         #region DRAW
         builder.Entity<Draw>().HasKey(x => x.Id);
 
+        builder.Entity<Draw>().HasQueryFilter(x => !x.IsDeleted);
+
         builder.Entity<Draw>()
             .HasOne(x => x.DrawnTicket)
             .WithOne(x => x.Draw)
@@ -88,6 +100,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         #region BUYERTICKETRECEIPT
         builder.Entity<BuyerTicketReceipt>().HasKey(x => x.Id);
 
+        builder.Entity<BuyerTicketReceipt>().HasQueryFilter(x => !x.IsDeleted);
+
         builder.Entity<BuyerTicketReceipt>()
             .HasIndex(x => new { 
                 x.BuyerId,
@@ -96,18 +110,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 x.IsDeleted
             })
             .IsUnique();
-
-        builder.Entity<BuyerTicketReceipt>()
-            .Navigation(x => x.Buyer)
-            .AutoInclude();
-
-        builder.Entity<BuyerTicketReceipt>()
-            .Navigation(x => x.Ticket)
-            .AutoInclude();
-
-        builder.Entity<BuyerTicketReceipt>()
-            .Navigation(x => x.Receipt)
-            .AutoInclude();
 
         builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Buyer)

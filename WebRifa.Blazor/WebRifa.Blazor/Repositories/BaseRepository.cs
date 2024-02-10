@@ -22,18 +22,18 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity {
         await _context.AddRangeAsync(entities, cancellationToken);
     }
 
-    public void Update(T entity)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
-        if (!EntityExists(entity)) {
+        if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe.");
         }
 
         _context.Update(entity);
     }
 
-    public void Delete(T entity)
+    public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
-        if (!EntityExists(entity)) {
+        if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
             throw new KeyNotFoundException( $"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
         }
 
@@ -51,8 +51,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity {
         return await _context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    bool EntityExists(T entity)
+    public Task<bool> EntityExistsAsync(Guid entityId, CancellationToken cancellationToken)
     {
-        return _context.Set<T>().Any(e => e.Id == entity.Id);
+        return _context.Set<T>().AnyAsync(e => e.Id == entityId);
     }
 }

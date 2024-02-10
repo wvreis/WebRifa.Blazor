@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using WebRifa.Blazor.Core.Dtos;
-using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Queries.Ticket;
-using WebRifa.Blazor.Repositories;
 
 namespace WebRifa.Blazor.Services;
 
@@ -78,7 +76,7 @@ public class TicketService : ITicketService
         try {
             Ticket ticket = _mapper?.Map<Ticket>(ticketDto) ?? throw new Exception();
 
-            _ticketRepository.Update(ticket);
+            await _ticketRepository.UpdateAsync(ticket, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             _logger.LogInformation("A Rifa {Id} foi atualizada.", ticketDto.Id);

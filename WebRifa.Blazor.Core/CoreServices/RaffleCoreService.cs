@@ -57,7 +57,7 @@ public class RaffleCoreService : IRaffleCoreService {
         var drawnTicketNumber = usedNumbers.ToList()[randomIndex];
         var drawnTicket = raffle?.Tickets?.FirstOrDefault(t => t.Number.Equals(drawnTicketNumber));
 
-        raffle?.Tickets?.ForEach(ticket => {
+        raffle?.Tickets?.ForEach(async ticket => {
             if (ticket.Number == drawnTicketNumber) {
                 ticket.MarkAsWinner();
             }
@@ -65,7 +65,7 @@ public class RaffleCoreService : IRaffleCoreService {
                 ticket.MarkAsLoser();
             }
 
-            _ticketRepository.Update(ticket);
+            await _ticketRepository.UpdateAsync(ticket, cancellationToken);
         });
 
         if (raffle is null || drawnTicket is null) {

@@ -86,7 +86,7 @@ public class BuyerService : IBuyerService
         {
             Buyer buyer = _mapper?.Map<Buyer>(buyerDto) ?? throw new Exception();
 
-            _buyerRepository.Update(buyer);
+            await _buyerRepository.UpdateAsync(buyer, cancellationToken);
             await _unitOfWork.CommitAsync(cancellationToken);
 
             _logger.LogInformation("O Comprador {Id} foi atualizado.", buyer.Id);
