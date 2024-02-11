@@ -1,0 +1,50 @@
+﻿@page "/raffles"
+@using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
+@inject IRaffleBlazorService _raffleService
+
+<h3>Compradores</h3>
+
+@if (!Raffles.Any()) {
+    <p>Carregando...</p>
+}
+else {
+    <div>
+        <a href="./raffle">Novo Cadastro</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Preço do Bilhete</th>
+                <th>Total de Bilhetes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var raffle in Raffles) {
+                <tr>
+                    <td>@raffle.Description</td>
+                    <td>@raffle.TicketPrice</td>
+                    <td>@raffle.TotalNumberOfTickets</td>
+                    <td>
+                        <a href="@GetEditLink(raffle)">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<RaffleDto> Raffles { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Raffles = await _raffleService.GetAllRafflesAsync();
+    }
+
+    public string GetEditLink(RaffleDto raffleDto) =>
+        $"/raffle/{raffleDto.Id}";
+}

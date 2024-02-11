@@ -1,0 +1,51 @@
+﻿@page "/buyers"
+@attribute [StreamRendering]
+@using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
+@inject IBuyerBlazorService _buyerService
+
+<h3>Compradores</h3>
+
+@if (!Buyers.Any()) {
+    <p>Carregando...</p>
+}
+else {
+    <div>
+        <a href="./buyer">Novo Cadastro</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var buyer in Buyers) {
+                <tr>
+                    <td>@buyer.Name</td>
+                    <td>@buyer.PhoneNumber</td>
+                    <td>@buyer.Email</td>
+                    <td>
+                        <a href="@GetEditLink(buyer)">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public List<BuyerDto> Buyers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Buyers = await _buyerService.GetAllBuyersAsync();
+    }
+    
+    public string GetEditLink(BuyerDto buyerDto) => 
+        $"/buyer/{buyerDto.Id}";
+}

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using WebRifa.Blazor.BlazorServices;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
@@ -31,6 +33,9 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<IBuyerBlazorService, BuyerBlazorService>();
+builder.Services.AddScoped<IRaffleBlazorService, RaffleBlazorService>();
 
 builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
 builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
@@ -79,6 +84,19 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddScoped(s => {
+    try {
+        var uriHelper = s.GetRequiredService<NavigationManager>();
+        return new HttpClient {
+            BaseAddress = new Uri(uriHelper.BaseUri)
+        };
+    }
+    catch {
+        return new();
+    }
+    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
+});
 
 var app = builder.Build();
 

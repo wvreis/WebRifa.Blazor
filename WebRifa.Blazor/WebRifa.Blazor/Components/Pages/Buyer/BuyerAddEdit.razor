@@ -1,0 +1,79 @@
+﻿@page "/buyer"
+@page "/buyer/{Id}"
+@rendermode InteractiveServer
+@using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
+@using WebRifa.Blazor.Core.Requests.Queries.Buyer
+@inject IBuyerBlazorService _buyerService
+@inject NavigationManager _navigationManager
+
+<h3>Editar Comprador</h3>
+
+@if (Buyer is null) {
+    <p>Carregando...</p>
+}
+else {
+    <EditForm Model="Buyer" OnValidSubmit="Save" >
+        <DataAnnotationsValidator/>
+
+        <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" class="form-control" id="name" @bind="Buyer!.Name" />
+            <ValidationMessage For="() => Buyer.Name" />
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNumber">Telefone:</label>
+            <input type="text" class="form-control" id="phoneNumber" @bind="Buyer!.PhoneNumber" />
+            <ValidationMessage For="() => Buyer.PhoneNumber"/>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" class="form-control" id="email" @bind="Buyer!.Email" />
+            <ValidationMessage For="() => Buyer.Email" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </EditForm>
+
+}
+
+@code {
+    [Parameter] 
+    public string? Id { get; set; }
+
+    public BuyerDto? Buyer { get; set; }
+    public BuyerGetQuery BuyerGetQuery { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id is null) {
+            Buyer = new();
+        }
+        else {
+            Guid.TryParse(Id, out Guid result);
+            BuyerGetQuery.BuyerId = result;
+            Buyer = await _buyerService.GetBuyerAsync(BuyerGetQuery);
+        }
+    }
+
+    public async Task Save()
+    {
+        HttpResponseMessage result;
+
+        if (Id is null) {
+            result = await _buyerService.AddBuyerAsync(Buyer!);
+        }
+        else {
+            result = await _buyerService.UpdateBuyerAsync(Buyer!);
+        }
+
+        if (result.IsSuccessStatusCode) {
+            _navigationManager.NavigateTo("buyers");
+        }
+        else {
+           
+        }
+    }
+}
