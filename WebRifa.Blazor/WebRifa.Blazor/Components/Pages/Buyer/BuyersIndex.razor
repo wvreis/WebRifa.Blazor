@@ -6,13 +6,17 @@
 
 <h3>Compradores</h3>
 
-@if (!Buyers.Any()) {
+<div>
+    <a href="./buyer">Novo Cadastro</a>
+</div>
+
+@if (Buyers is null) {
     <p>Carregando...</p>
 }
+else if (!Buyers!.Any()) {
+    <p>Não há Compradores Cadastrados</p>
+}
 else {
-    <div>
-        <a href="./buyer">Novo Cadastro</a>
-    </div>
 
     <table class="table">
         <thead>
@@ -39,7 +43,7 @@ else {
 }
 
 @code {
-    public List<BuyerDto> Buyers { get; set; } = new();
+    public List<BuyerDto>? Buyers { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

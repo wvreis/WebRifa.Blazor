@@ -7,7 +7,7 @@
 @inject IBuyerBlazorService _buyerService
 @inject NavigationManager _navigationManager
 
-<h3>Editar Comprador</h3>
+<h3>@GetPageHeader() Comprador</h3>
 
 @if (Buyer is null) {
     <p>Carregando...</p>
@@ -48,7 +48,7 @@ else {
 
     protected override async Task OnInitializedAsync()
     {
-        if (Id is null) {
+        if (IsNew()) {
             Buyer = new();
         }
         else {
@@ -73,7 +73,10 @@ else {
             _navigationManager.NavigateTo("buyers");
         }
         else {
-           
+            //to-do: put action with card pop up.
         }
     }
+
+    bool IsNew() => Id is null ? true : false;
+    string GetPageHeader() => IsNew() ? "Adicionando" : "Editando";
 }

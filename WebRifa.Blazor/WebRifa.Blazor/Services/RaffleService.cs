@@ -80,8 +80,8 @@ public class RaffleService : IRaffleService
     public async Task<HashSet<int>> GetFreeNumbersAsync(RaffleGetQuery query, CancellationToken cancellationToken)
     {
         try {
-            _logger.LogInformation("Get Números disponíveis executado para a rifa {raffleId}", query.Id);
-            return await _raffleCoreService.GetFreeNumbersAsync(query.Id, cancellationToken);
+            _logger.LogInformation("Get Números disponíveis executado para a rifa {raffleId}", query.RaffleId);
+            return await _raffleCoreService.GetFreeNumbersAsync(query.RaffleId, cancellationToken);
         }
         catch (Exception) {
 
@@ -92,9 +92,9 @@ public class RaffleService : IRaffleService
     public async Task<RaffleDto> GetRaffleAsync(RaffleGetQuery query, CancellationToken cancellationToken)
     {
         try {
-            var raffle = await _raffleRepository.GetAsync(query.Id, cancellationToken);
+            var raffle = await _raffleRepository.GetAsync(query.RaffleId, cancellationToken);
 
-            _logger.LogInformation("Get de Rifa {Id} executado", query.Id);
+            _logger.LogInformation("Get de Rifa {Id} executado", query.RaffleId);
 
             return _mapper?.Map<RaffleDto>(raffle) ?? throw new Exception();
         }

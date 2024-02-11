@@ -1,24 +1,29 @@
 ﻿@page "/raffles"
+@attribute [StreamRendering]
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @inject IRaffleBlazorService _raffleService
 
-<h3>Compradores</h3>
+<h3>Rifas</h3>
 
-@if (!Raffles.Any()) {
+<div>
+    <a href="./raffle">Novo Cadastro</a>
+</div>
+
+@if (Raffles is null) {
     <p>Carregando...</p>
 }
+else if (!Raffles!.Any()) {
+    <p>Não há Rifas Cadastradas.</p>
+}
 else {
-    <div>
-        <a href="./raffle">Novo Cadastro</a>
-    </div>
-
     <table class="table">
         <thead>
             <tr>
                 <th>Descrição</th>
                 <th>Preço do Bilhete</th>
                 <th>Total de Bilhetes</th>
+                <th>Data do Sorteio</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,6 +33,7 @@ else {
                     <td>@raffle.Description</td>
                     <td>@raffle.TicketPrice</td>
                     <td>@raffle.TotalNumberOfTickets</td>
+                    <td>@raffle.DrawDateTime.ToShortDateString()</td>
                     <td>
                         <a href="@GetEditLink(raffle)">Editar</a>
                     </td>
@@ -38,7 +44,7 @@ else {
 }
 
 @code {
-    public List<RaffleDto> Raffles { get; set; } = new();
+    public List<RaffleDto>? Raffles { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

@@ -5,6 +5,6 @@ public class RaffleDto {
     public int TotalNumberOfTickets { get; set; }
     public decimal TicketPrice { get; set; }
     public string Observations { get; set; } = string.Empty;
-    public DateTime DrawDateTime { get; set; }
+    public DateTime DrawDateTime { get; set; } = DateTime.UtcNow;
     //public List<Ticket>? Tickets { get; set; }
 }
