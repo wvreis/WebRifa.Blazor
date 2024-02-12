@@ -12,7 +12,7 @@ using WebRifa.Blazor.Data;
 namespace WebRifa.Blazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240209175542_Initial")]
+    [Migration("20240212182907_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -166,6 +166,9 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -201,6 +204,9 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -234,6 +240,9 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("DrawnTicketId")
                         .HasColumnType("uuid");
 
@@ -264,6 +273,9 @@ namespace WebRifa.Blazor.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -303,6 +315,9 @@ namespace WebRifa.Blazor.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("CurrentState")
                         .HasColumnType("integer");
 
@@ -325,6 +340,9 @@ namespace WebRifa.Blazor.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("CurrentState")
                         .HasColumnType("integer");

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands;
@@ -6,26 +7,20 @@ using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 
 namespace WebRifa.Blazor.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class RaffleController : ControllerBase
-{
-    private readonly ILogger<RaffleController> _logger;
-    private readonly IRaffleService _raffleService;
-
-    public RaffleController(
-        ILogger<RaffleController> logger,
-        IRaffleService raffleService)
-    {
-        _logger = logger;
-        _raffleService = raffleService;
-    }
+public class RaffleController(
+    ILogger<RaffleController> logger,
+    IRaffleService raffleService) : ControllerBase {
+    private readonly ILogger<RaffleController> _logger = logger;
+    private readonly IRaffleService _raffleService = raffleService;
 
     [HttpGet]
     public async Task<ActionResult<List<RaffleDto>>> SearchRaffleAsync([FromQuery] RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(SearchRaffleAsync)} executado");
-        return await _raffleService.SearchRaffleAsync(query, cancellationToken);    
+        return await _raffleService.SearchRaffleAsync(query, cancellationToken);
     }
 
     [HttpGet]
@@ -53,7 +48,7 @@ public class RaffleController : ControllerBase
     public async Task<ActionResult<bool>> BuyRaffleTicketsAsync([FromBody] BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(BuyRaffleTicketsAsync)} executado");
-        return await _raffleService.BuyRaffleTicketsAsync(command, cancellationToken);    
+        return await _raffleService.BuyRaffleTicketsAsync(command, cancellationToken);
     }
 
     [HttpPost]

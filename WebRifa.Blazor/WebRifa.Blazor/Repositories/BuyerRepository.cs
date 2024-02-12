@@ -5,13 +5,13 @@ using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 using WebRifa.Blazor.Data;
+using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 
-public class BuyerRepository : BaseRepository<Buyer>, IBuyerRepository {
-    public BuyerRepository(ApplicationDbContext context) : base(context)
-    {}
-
+public class BuyerRepository(
+    ApplicationDbContext context, 
+    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Buyer>(context, customUserIdProvider), IBuyerRepository {
     public async Task<List<Buyer>> SearchBuyersAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Buyer, bool>> Search = buyer =>

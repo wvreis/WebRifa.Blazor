@@ -4,15 +4,21 @@ using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.DrawEntities;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
 using WebRifa.Blazor.Core.Entities.TicketEntities;
+using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Data;
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options) {
+public class ApplicationDbContext(
+    DbContextOptions<ApplicationDbContext> options,    
+    ICustomUserIdProvider userIdProvider) : IdentityDbContext<ApplicationUser>(options) {
+    
+    private readonly ICustomUserIdProvider _userIdProvider = userIdProvider;    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder);
+        base.OnModelCreating(builder);               
 
         #region RAFFLE
-        builder.Entity<Raffle>().HasKey(x => x.Id);
+        builder.Entity<Raffle>().HasKey(x => x.Id);        
 
         builder.Entity<Raffle>().HasQueryFilter(x => !x.IsDeleted);
 
@@ -33,7 +39,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         #endregion
 
         #region BUYER
-        builder.Entity<Buyer>().HasKey(x => x.Id);
+        builder.Entity<Buyer>().HasKey(b => b.Id);
+
+        builder.Entity<Buyer>().HasIndex(b => b.CreatedBy);        
         #endregion
 
         #region TICKET
@@ -42,10 +50,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Ticket>().HasQueryFilter(x => !x.IsDeleted);
 
         builder.Entity<Ticket>()
-            .HasIndex(x => new { 
-                x.RaffleId, 
-                x.Number, 
-                x.IsDeleted 
+            .HasIndex(x => new
+            {
+                x.RaffleId,
+                x.Number,
+                x.IsDeleted
             })
             .IsUnique();
 
@@ -66,7 +75,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<Ticket>()
             .HasOne(x => x.Draw)
             .WithOne(x => x.DrawnTicket)
-            .HasForeignKey<Ticket>(x => x.DrawId) 
+            .HasForeignKey<Ticket>(x => x.DrawId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Ticket>()
@@ -103,7 +112,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<BuyerTicketReceipt>().HasQueryFilter(x => !x.IsDeleted);
 
         builder.Entity<BuyerTicketReceipt>()
-            .HasIndex(x => new { 
+            .HasIndex(x => new
+            {
                 x.BuyerId,
                 x.TicketId,
                 x.ReceiptId,
@@ -121,14 +131,31 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(x => x.Ticket)
             .WithMany(x => x.BuyerTicketReceipt)
             .HasForeignKey(x => x.TicketId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Receipt)
             .WithMany(x => x.BuyerTicketReceipt)
             .HasForeignKey(x => x.ReceiptId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
         #endregion
+
+        this.SetGlobalQueryForUser(builder);
+    }
+
+    private void SetGlobalQueryForUser(ModelBuilder builder)
+    {
+        builder.Entity<Raffle>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+        builder.Entity<Buyer>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+        builder.Entity<Ticket>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+        builder.Entity<Receipt>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+        builder.Entity<Draw>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+        builder.Entity<BuyerTicketReceipt>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
+    }
+
+    private Guid GetCurrentUserId()
+    {        
+        return _userIdProvider.GetUserIdAsync().GetAwaiter().GetResult();
     }
 
     public override DbSet<ApplicationUser> Users { get; set; }

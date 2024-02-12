@@ -5,14 +5,14 @@ using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Data;
+using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 
-public class RaffleRepository : BaseRepository<Raffle>, IRaffleRepository 
+public class RaffleRepository(
+    ApplicationDbContext context,
+    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Raffle>(context, customUserIdProvider), IRaffleRepository 
 {
-    public RaffleRepository(ApplicationDbContext context) : base(context)
-    {}
-
     public async Task<List<Raffle>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Raffle, bool>> Search = raffle =>

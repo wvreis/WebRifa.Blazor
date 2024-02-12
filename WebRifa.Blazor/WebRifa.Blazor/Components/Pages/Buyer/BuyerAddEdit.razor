@@ -1,6 +1,8 @@
-﻿@page "/buyer"
+﻿@attribute [Authorize]
+@page "/buyer"
 @page "/buyer/{Id}"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @using WebRifa.Blazor.Core.Requests.Queries.Buyer

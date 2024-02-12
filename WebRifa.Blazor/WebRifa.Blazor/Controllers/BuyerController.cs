@@ -1,21 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 
 namespace WebRifa.Blazor.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class BuyerController : ControllerBase{
-    private readonly ILogger<BuyerController> _logger;
-    private readonly IBuyerService _buyerService;
-
-    public BuyerController(ILogger<BuyerController> logger, IBuyerService buyerService)
-    {
-        _logger = logger;
-        _buyerService = buyerService;
-    }
+public class BuyerController(
+    ILogger<BuyerController> logger,
+    IBuyerService buyerService) : ControllerBase{
+    private readonly ILogger<BuyerController> _logger = logger;
+    private readonly IBuyerService _buyerService = buyerService;
 
     [HttpGet]
     public async Task<ActionResult<List<BuyerDto>>> SearchBuyerAsync([FromQuery] BuyerSearchQuery query, CancellationToken cancellationToken = default)

@@ -21,6 +21,7 @@ using WebRifa.Blazor.Data;
 using WebRifa.Blazor.Exceptions;
 using WebRifa.Blazor.Repositories;
 using WebRifa.Blazor.Services;
+using WebRifa.Blazor.Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddTransient<ICustomUserIdProvider, CustomUserIdProvider>();
 
 builder.Services.AddScoped<IBuyerBlazorService, BuyerBlazorService>();
 builder.Services.AddScoped<IRaffleBlazorService, RaffleBlazorService>();
@@ -74,8 +76,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(SwaggerGenConfig());
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -88,9 +89,19 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddScoped(s => {
     try {
         var uriHelper = s.GetRequiredService<NavigationManager>();
-        return new HttpClient {
+        var httpContext = s.GetRequiredService<IHttpContextAccessor>();
+        var httpClient = new HttpClient {
             BaseAddress = new Uri(uriHelper.BaseUri)
         };
+
+        var cookieValue = 
+            httpContext?.HttpContext?.Request.Headers
+                .FirstOrDefault(x => x.Key == "Cookie").Value
+                .ToString();
+
+        httpClient.DefaultRequestHeaders.Add("Cookie", cookieValue);
+
+        return httpClient;
     }
     catch {
         return new();
@@ -126,6 +137,9 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 app.MapControllers();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

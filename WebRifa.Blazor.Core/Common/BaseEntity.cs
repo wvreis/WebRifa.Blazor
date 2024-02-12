@@ -5,6 +5,12 @@ public abstract class BaseEntity
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; }
     public bool IsDeleted { get; private set; }
+    public Guid? CreatedBy { get; private set; }
+
+    public void SetCreatedBy(Guid userId)
+    {
+        CreatedBy = userId;
+    }
 
     public void SetUpdatedAt() {
         UpdatedAt = DateTime.UtcNow;

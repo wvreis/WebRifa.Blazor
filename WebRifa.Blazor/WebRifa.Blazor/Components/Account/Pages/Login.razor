@@ -9,6 +9,7 @@
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject HttpClient HttpClient
 
 <PageTitle>Log in</PageTitle>
 
@@ -93,7 +94,9 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
+            HttpClient.DefaultRequestHeaders.Add("Cookie", HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Cookie").Value.ToString());
             RedirectManager.RedirectTo(ReturnUrl);
+            
         }
         else if (result.RequiresTwoFactor)
         {

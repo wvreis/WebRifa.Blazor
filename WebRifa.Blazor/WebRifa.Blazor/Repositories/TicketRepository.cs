@@ -5,16 +5,16 @@ using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Ticket;
 using WebRifa.Blazor.Data;
+using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 
-public class TicketRepository : BaseRepository<Ticket>, ITicketRepository {
-    private readonly IRaffleRepository _raffleRepository;
-
-    public TicketRepository(ApplicationDbContext context, IRaffleRepository raffleRepository) : base(context)
-    {
-        _raffleRepository = raffleRepository;
-    }
+public class TicketRepository(
+    ApplicationDbContext context, 
+    IRaffleRepository raffleRepository,
+    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Ticket>(context, customUserIdProvider), ITicketRepository {
+    
+    private readonly IRaffleRepository _raffleRepository = raffleRepository;
 
     public async Task<List<Ticket>> GetTicketsByRaffleIdAsync(
         GetTicketByRaffleIdQuery query,
