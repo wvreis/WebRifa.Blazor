@@ -65,4 +65,12 @@ public class RaffleController(
         await _raffleService.UpdateRaffleAsync(raffleDto, cancellationToken);
         return Ok();
     }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteRaffleAsync([FromBody] RaffleDto raffleDto, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(DeleteRaffleAsync)} executado");
+        await _raffleService.DeleteRaffleAsync(raffleDto, cancellationToken);
+        return NoContent();
+    }
 }

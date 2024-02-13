@@ -8,4 +8,5 @@ public interface IBuyerService {
     Task<BuyerDto> GetBuyerAsync(BuyerGetQuery query, CancellationToken cancellationToken);
     Task<Guid> AddBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken);
     Task UpdateBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken);
+    Task DeleteBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken);
 }

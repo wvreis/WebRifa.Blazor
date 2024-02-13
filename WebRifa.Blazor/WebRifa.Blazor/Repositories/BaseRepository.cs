@@ -14,11 +14,16 @@ public class BaseRepository<T>(
     public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {        
         entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
+
         await _context.AddAsync(entity, cancellationToken);
     }
 
     public async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken)
     {
+        if (!entities.Any()) {
+            throw new InvalidOperationException("A lista não contém elementos.");
+        }
+
         entities.ForEach(async e => {
             e.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
         });
@@ -28,22 +33,39 @@ public class BaseRepository<T>(
 
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
-        entity.SetUpdatedAt();
-
         if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe.");
         }
 
+        entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
+        entity.SetUpdatedAt();
         _context.Update(entity);
     }
 
     public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
         if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
-            throw new KeyNotFoundException( $"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
+            throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
         }
 
+        entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
         entity.MarkAsDeleted();
+    }
+
+    public async Task DeleteRangeAsync(List<T> entities, CancellationToken cancellationToken)
+    {
+        if (!entities.Any()) {
+            throw new InvalidOperationException("A lista não contém elementos.");
+        }
+
+        bool allEntitiesExist = _context.Set<T>().All(t => entities.Select(ent => ent.Id).Contains(t.Id));
+        if (!allEntitiesExist) {
+            throw new KeyNotFoundException($"Todas as entidades da lista devem existir no banco de dados.");
+        }
+
+        await _context.Set<T>()
+            .Where(t => entities.Select(ent => ent.Id).Contains(t.Id))
+            .ExecuteUpdateAsync(setPropCall => setPropCall.SetProperty(p => p.IsDeleted, true));
     }
 
     public async Task<T> GetAsync(Guid id, CancellationToken cancellationToken)

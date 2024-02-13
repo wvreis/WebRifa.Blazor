@@ -2,5 +2,5 @@
 
 public interface IReceiptRepository : IBaseRepository<Receipt> 
 {
-
+    Task<List<Receipt>> GetReceiptsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken);
 }

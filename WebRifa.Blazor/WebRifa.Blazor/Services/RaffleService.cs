@@ -134,4 +134,19 @@ public class RaffleService : IRaffleService
             throw;
         }
     }
+
+    public async Task DeleteRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken)
+    {
+        try {
+            Raffle raffle = _mapper?.Map<Raffle>(raffleDto) ?? throw new Exception();
+
+            await _raffleCoreService.DeleteRaffleAsync(raffle.Id, cancellationToken);
+
+            _logger.LogInformation("A Rifa {Id} foi deletada.", raffleDto.Id);
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
 }

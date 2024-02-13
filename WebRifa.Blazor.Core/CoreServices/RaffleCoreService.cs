@@ -98,4 +98,14 @@ public class RaffleCoreService : IRaffleCoreService {
 
         return usedNumbers;
     }
+
+    public async Task DeleteRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
+    {
+        Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
+        List<Receipt> receipts = await _receiptRepository.GetReceiptsFromRaffleAsync(raffleId, cancellationToken);
+
+        await _ticketRepository.DeleteRangeAsync(raffle.Tickets ?? new(), cancellationToken);
+        await _receiptRepository.DeleteRangeAsync(receipts, cancellationToken);
+        await _raffleRepository.DeleteAsync(raffle, cancellationToken);
+    }
 }

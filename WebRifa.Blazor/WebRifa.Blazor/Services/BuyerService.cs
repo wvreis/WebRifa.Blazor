@@ -98,4 +98,19 @@ public class BuyerService : IBuyerService
         }
     }
 
+    public async Task DeleteBuyerAsync(BuyerDto buyerDto, CancellationToken cancellationToken)
+    {
+        try {
+            Buyer buyer = _mapper?.Map<Buyer>(buyerDto) ?? throw new Exception();
+
+            await _buyerRepository.DeleteAsync(buyer, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
+
+            _logger.LogInformation("O Comprador {Id} foi deletado.", buyer.Id);
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
 }
