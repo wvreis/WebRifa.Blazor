@@ -1,5 +1,4 @@
-﻿using WebRifa.Blazor.Core.Dtos;
-using WebRifa.Blazor.Core.Interfaces.Repositories;
+﻿using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Requests.Commands;
 
 namespace WebRifa.Blazor.Core.Services;

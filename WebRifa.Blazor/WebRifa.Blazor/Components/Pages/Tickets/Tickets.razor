@@ -1,0 +1,58 @@
+﻿@page "/tickets"
+@using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
+@inject IBuyerBlazorService _buyerService
+@inject IRaffleBlazorService _raffleService
+@rendermode InteractiveServer
+
+@if (Raffles is null) {
+    <p>Carregando...</p>
+} else if (!Raffles.Any()){
+    <p>Não há Rifas Cadastradas.</p>
+}
+else {
+    <div class="form-group row">
+        <label class="col-2 col-form-label" for="PartnerInput">Rifa:</label>
+        <input id="raffleInput" list="raffles" @onchange="RaffleInputOnChange"/>
+    
+        <DataList class="col-4" id="raffles">
+            @foreach (var raffle in Raffles) {
+                <option value="@raffle.Description"></option>
+            }
+        </DataList>
+
+        @if (SelectedRaffle is not null) {
+            <label class="col-auto col-form-label">
+                @($"Rifa: {SelectedRaffle.Description}, Preço do Bilhete: {SelectedRaffle.TicketPrice}")
+            </label>
+        }
+    </div>
+}
+
+
+<div class="container">
+    <h1>Lista de Posições na Rifa</h1>
+    <ul>
+        @for (var i = 1; i <= 100; i++) {
+            <li>@i</li>
+        }
+    </ul>
+</div>
+
+@code {
+    public List<RaffleDto>? Raffles { get; set; }
+    public RaffleDto? SelectedRaffle { get; set; }
+    public List<BuyerDto>? Buyers { get; set; }
+    public BuyerDto? SelectedBuyer { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Raffles = await _raffleService.GetAllRafflesAsync();
+        Buyers = await _buyerService.GetAllBuyersAsync();
+    }
+
+    void RaffleInputOnChange(EventArgs args)
+    {
+        SelectedRaffle = Raffles.First(x => x.Id == Guid.Parse(args.ToString()));
+    }
+}

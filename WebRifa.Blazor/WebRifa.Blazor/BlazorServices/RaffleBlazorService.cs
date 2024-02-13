@@ -1,4 +1,5 @@
 ﻿using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Requests.Commands;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Helpers;
 
@@ -40,5 +41,12 @@ public class RaffleBlazorService : IRaffleBlazorService {
         return await _httpClient.PutAsJsonAsync(
             $"{baseURI}/UpdateRaffle?Id={raffleDto.Id}",
             raffleDto);
+    }
+
+    public async Task<HttpResponseMessage> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command)
+    {
+        return await _httpClient.PostAsJsonAsync(
+            $"{baseURI}/BuyRaffleTickets", 
+            command);
     }
 }
