@@ -27,7 +27,6 @@ public class TicketRepository(
             throw new KeyNotFoundException($"Rifa com Id {query.RaffleId} não existe");
         }
 
-        //AutoInclude Navigation Disabled for BuyerTicketReceipt. Need to use explicit Include method.
         var result = await _context.Tickets
             .Include(x => x.BuyerTicketReceipt)
                 .ThenInclude(x => x.Buyer)

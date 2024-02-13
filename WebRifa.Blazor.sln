@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebRifa.Blazor.Client", "We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebRifa.Blazor.Core", "WebRifa.Blazor.Core\WebRifa.Blazor.Core.csproj", "{4742BDD6-746E-4315-8DF3-6A14531737DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRifa.Blazor.Core.UnitTests", "WebRifa.Blazor.Core.UnitTests\WebRifa.Blazor.Core.UnitTests.csproj", "{FEA7DDAF-CF13-4C3A-AC35-F53A2AC9AD1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4742BDD6-746E-4315-8DF3-6A14531737DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4742BDD6-746E-4315-8DF3-6A14531737DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4742BDD6-746E-4315-8DF3-6A14531737DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA7DDAF-CF13-4C3A-AC35-F53A2AC9AD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA7DDAF-CF13-4C3A-AC35-F53A2AC9AD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA7DDAF-CF13-4C3A-AC35-F53A2AC9AD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA7DDAF-CF13-4C3A-AC35-F53A2AC9AD1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

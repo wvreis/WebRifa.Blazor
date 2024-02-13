@@ -48,7 +48,19 @@ public class BaseRepository<T>(
             throw new InvalidOperationException("A lista não contém elementos.");
         }
 
-        bool allEntitiesExist = _context.Set<T>().All(t => entities.Select(ent => ent.Id).Contains(t.Id));
+        var entitiesIds = entities
+            .Select(e => e.Id)
+            .ToList();
+
+        var entitiesIdsOnDatabase = _context.Set<T>()
+            .Where(t => entitiesIds
+                .Contains(t.Id))
+                .Select(t => t.Id)
+            .ToList();
+
+        bool allEntitiesExist = entitiesIds
+            .All(eId => entitiesIdsOnDatabase.Contains(eId));
+
         if (!allEntitiesExist) {
             throw new KeyNotFoundException($"Todas as entidades da lista devem existir no banco de dados.");
         }

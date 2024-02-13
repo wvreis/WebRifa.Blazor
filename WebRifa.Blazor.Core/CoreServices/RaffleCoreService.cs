@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Interfaces.Repositories;
+﻿using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Requests.Commands;
 
 namespace WebRifa.Blazor.Core.Services;
@@ -8,19 +9,22 @@ public class RaffleCoreService : IRaffleCoreService {
     private readonly IRaffleRepository _raffleRepository;
     private readonly ITicketRepository _ticketRepository;
     private readonly IDrawRepository _drawRepository;
+    private readonly IBuyerTicketReceiptRepository _buyerTicketReceiptRepository;
 
     public RaffleCoreService(
         IReceiptRepository receiptRepository,
         IBuyerRepository buyerRepository,
         IRaffleRepository raffleRepository,
         ITicketRepository ticketRepository,
-        IDrawRepository drawRepository)
+        IDrawRepository drawRepository,
+        IBuyerTicketReceiptRepository buyerTicketReceiptRepository)
     {
         _receiptRepository = receiptRepository;
         _buyerRepository = buyerRepository;
         _raffleRepository = raffleRepository;
         _ticketRepository = ticketRepository;
         _drawRepository = drawRepository;
+        _buyerTicketReceiptRepository = buyerTicketReceiptRepository;
     }
 
     public async Task BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
@@ -103,9 +107,11 @@ public class RaffleCoreService : IRaffleCoreService {
     {
         Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
         List<Receipt> receipts = await _receiptRepository.GetReceiptsFromRaffleAsync(raffleId, cancellationToken);
+        List<BuyerTicketReceipt> buyerTicketReceipts = receipts.SelectMany(r => r.BuyerTicketReceipt).ToList();
 
         await _ticketRepository.DeleteRangeAsync(raffle.Tickets ?? new(), cancellationToken);
         await _receiptRepository.DeleteRangeAsync(receipts, cancellationToken);
+        await _buyerTicketReceiptRepository.DeleteRangeAsync(buyerTicketReceipts, cancellationToken);
         await _raffleRepository.DeleteAsync(raffle, cancellationToken);
     }
 }
