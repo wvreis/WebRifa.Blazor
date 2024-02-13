@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.DrawEntities;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
@@ -153,9 +154,27 @@ public class ApplicationDbContext(
         builder.Entity<BuyerTicketReceipt>().HasQueryFilter(b => b.CreatedBy == GetCurrentUserId());
     }
 
+    private void SetCreatedByForEntities()
+    {
+        var currentUserId = GetCurrentUserId();
+        var entities = ChangeTracker.Entries()
+            .Where(x => x.State == EntityState.Added && x.Entity is BaseEntity)
+            .Select(x => x.Entity as BaseEntity);
+
+        foreach (var entity in entities) {
+            entity!.SetCreatedBy(currentUserId);
+        }
+    }
+
     private Guid GetCurrentUserId()
     {        
         return _userIdProvider.GetUserIdAsync().GetAwaiter().GetResult();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        SetCreatedByForEntities();
+        return base.SaveChangesAsync(cancellationToken);
     }
 
     public override DbSet<ApplicationUser> Users { get; set; }

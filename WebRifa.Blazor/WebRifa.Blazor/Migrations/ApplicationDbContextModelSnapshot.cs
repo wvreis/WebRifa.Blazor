@@ -188,7 +188,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("Buyers");
+                    b.ToTable("Buyers", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.BuyerTicketReceipt", b =>
@@ -227,7 +227,7 @@ namespace WebRifa.Blazor.Migrations
                     b.HasIndex("BuyerId", "TicketId", "ReceiptId", "IsDeleted")
                         .IsUnique();
 
-                    b.ToTable("BuyerTicketReceipt");
+                    b.ToTable("BuyerTicketReceipt", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.DrawEntities.Draw", b =>
@@ -261,7 +261,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasIndex("RaffleId");
 
-                    b.ToTable("Draws");
+                    b.ToTable("Draws", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.Raffle", b =>
@@ -302,7 +302,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Raffles");
+                    b.ToTable("Raffles", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.ReceiptEntities.Receipt", b =>
@@ -328,7 +328,7 @@ namespace WebRifa.Blazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Receipts");
+                    b.ToTable("Receipts", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Core.Entities.TicketEntities.Ticket", b =>
@@ -378,7 +378,7 @@ namespace WebRifa.Blazor.Migrations
                     b.HasIndex("RaffleId", "Number", "IsDeleted")
                         .IsUnique();
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("WebRifa.Blazor.Data.ApplicationUser", b =>

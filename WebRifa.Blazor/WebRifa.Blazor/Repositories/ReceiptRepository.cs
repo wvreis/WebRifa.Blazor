@@ -9,13 +9,12 @@ using WebRifa.Blazor.Services.UserServices;
 namespace WebRifa.Blazor.Repositories;
 
 public class ReceiptRepository(
-    ApplicationDbContext context,
-    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Receipt>(context, customUserIdProvider), IReceiptRepository {
+    ApplicationDbContext context) : BaseRepository<Receipt>(context), IReceiptRepository {
 
     public async Task<List<Receipt>> GetReceiptsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
     {
         Expression<Func<Receipt, bool>> fromRaffleId = receipt =>
-            receipt.BuyerTicketReceipt.Any(btr => btr.Ticket.RaffleId == raffleId);
+            receipt.BuyerTicketReceipt.Any(btr => btr.Ticket!.RaffleId == raffleId);
 
         var result = await _context.Receipts
             .Where(fromRaffleId)

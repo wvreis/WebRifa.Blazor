@@ -11,8 +11,7 @@ namespace WebRifa.Blazor.Repositories;
 
 public class TicketRepository(
     ApplicationDbContext context, 
-    IRaffleRepository raffleRepository,
-    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Ticket>(context, customUserIdProvider), ITicketRepository {
+    IRaffleRepository raffleRepository) : BaseRepository<Ticket>(context), ITicketRepository {
     
     private readonly IRaffleRepository _raffleRepository = raffleRepository;
 

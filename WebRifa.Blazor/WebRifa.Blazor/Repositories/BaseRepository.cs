@@ -6,15 +6,11 @@ using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Core.Repositories;
 public class BaseRepository<T>(
-    ApplicationDbContext context,
-    ICustomUserIdProvider customUserIdProvider) : IBaseRepository<T> where T : BaseEntity {
+    ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity {
     protected readonly ApplicationDbContext _context = context;
-    private readonly ICustomUserIdProvider _customUserIdProvider = customUserIdProvider;
 
     public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {        
-        entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
-
         await _context.AddAsync(entity, cancellationToken);
     }
 
@@ -23,10 +19,6 @@ public class BaseRepository<T>(
         if (!entities.Any()) {
             throw new InvalidOperationException("A lista não contém elementos.");
         }
-
-        entities.ForEach(async e => {
-            e.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
-        });
 
         await _context.AddRangeAsync(entities, cancellationToken);
     }
@@ -37,7 +29,6 @@ public class BaseRepository<T>(
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe.");
         }
 
-        entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
         entity.SetUpdatedAt();
         _context.Update(entity);
     }
@@ -48,7 +39,6 @@ public class BaseRepository<T>(
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
         }
 
-        entity.SetCreatedBy(await _customUserIdProvider.GetUserIdAsync());
         entity.MarkAsDeleted();
     }
 

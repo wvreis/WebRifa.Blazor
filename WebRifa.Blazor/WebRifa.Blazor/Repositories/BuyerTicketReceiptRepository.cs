@@ -7,6 +7,5 @@ using WebRifa.Blazor.Services.UserServices;
 namespace WebRifa.Blazor.Repositories;
 
 public class BuyerTicketReceiptRepository(
-    ApplicationDbContext context,
-    ICustomUserIdProvider customUserIdProvider) : BaseRepository<BuyerTicketReceipt>(context, customUserIdProvider), IBuyerTicketReceiptRepository {
+    ApplicationDbContext context) : BaseRepository<BuyerTicketReceipt>(context), IBuyerTicketReceiptRepository {
 }

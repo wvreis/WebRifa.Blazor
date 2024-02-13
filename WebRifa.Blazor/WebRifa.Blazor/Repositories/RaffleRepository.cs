@@ -10,8 +10,7 @@ using WebRifa.Blazor.Services.UserServices;
 namespace WebRifa.Blazor.Repositories;
 
 public class RaffleRepository(
-    ApplicationDbContext context,
-    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Raffle>(context, customUserIdProvider), IRaffleRepository 
+    ApplicationDbContext context) : BaseRepository<Raffle>(context), IRaffleRepository 
 {
     public async Task<List<Raffle>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
     {

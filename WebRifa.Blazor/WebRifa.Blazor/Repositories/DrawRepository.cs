@@ -7,6 +7,5 @@ using WebRifa.Blazor.Services.UserServices;
 namespace WebRifa.Blazor.Repositories;
 
 public class DrawRepository(
-    ApplicationDbContext context,
-    ICustomUserIdProvider customUserIdProvider) : BaseRepository<Draw>(context, customUserIdProvider), IDrawRepository {
+    ApplicationDbContext context) : BaseRepository<Draw>(context), IDrawRepository {
 }
