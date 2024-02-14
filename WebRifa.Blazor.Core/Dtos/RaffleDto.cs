@@ -5,6 +5,19 @@ public class RaffleDto {
     public int TotalNumberOfTickets { get; set; }
     public decimal TicketPrice { get; set; }
     public string Observations { get; set; } = string.Empty;
-    public DateTime DrawDateTime { get; set; } = DateTime.UtcNow;
+
+    DateTime drawDateTime;
+    public DateTime DrawDateTime { 
+        get => 
+            drawDateTime == DateTime.MinValue ? 
+            DateTime.UtcNow : 
+            drawDateTime;
+
+        set => 
+            drawDateTime = value == DateTime.MinValue ? 
+            drawDateTime.ToUniversalTime() : 
+            value.ToUniversalTime();
+    }
+
     //public List<Ticket>? Tickets { get; set; }
 }

@@ -12,6 +12,12 @@
 
 .raffle-input {
     min-width: 21em;
+    display: block;
+}
+
+.buyer-input {
+    min-width: 21em;
+    display: block;
 }
 
 h1 {
@@ -34,6 +40,10 @@ li {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+}
+
+.available-number {
+    background-color: green;
 }
 
 .unavailable-number {
