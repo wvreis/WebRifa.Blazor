@@ -8,4 +8,5 @@ public interface IRaffleBlazorService {
     Task<RaffleDto> GetRaffleAsync(RaffleGetQuery RaffleGetQuery);
     Task<HttpResponseMessage> AddRaffleAsync(RaffleDto RaffleDto);
     Task<HttpResponseMessage> UpdateRaffleAsync(RaffleDto RaffleDto);
+    Task<List<int>> GetFreeNumbers(RaffleGetQuery raffleGetQuery);
 }

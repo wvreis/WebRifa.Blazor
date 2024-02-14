@@ -158,7 +158,9 @@ public class ApplicationDbContext(
     {
         var currentUserId = GetCurrentUserId();
         var entities = ChangeTracker.Entries()
-            .Where(x => x.State == EntityState.Added && x.Entity is BaseEntity)
+            .Where(x => 
+                (x.State == EntityState.Added || x.State == EntityState.Modified) && 
+                x.Entity is BaseEntity)
             .Select(x => x.Entity as BaseEntity);
 
         foreach (var entity in entities) {

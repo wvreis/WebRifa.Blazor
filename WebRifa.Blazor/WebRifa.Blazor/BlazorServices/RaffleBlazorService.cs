@@ -29,6 +29,13 @@ public class RaffleBlazorService : IRaffleBlazorService {
             $"{QueryStringBuilderHelper.GenerateQueryString(raffleGetQuery)}") ?? new();
     }
 
+    public async Task<List<int>> GetFreeNumbers(RaffleGetQuery raffleGetQuery)
+    {
+        return await _httpClient.GetFromJsonAsync<List<int>>(
+            $"{baseURI}/GetFreeNumbers" +
+            $"{QueryStringBuilderHelper.GenerateQueryString(raffleGetQuery)}") ?? new();
+    }
+
     public async Task<HttpResponseMessage> AddRaffleAsync(RaffleDto raffleDto)
     {
         return await _httpClient.PostAsJsonAsync(
@@ -49,4 +56,6 @@ public class RaffleBlazorService : IRaffleBlazorService {
             $"{baseURI}/BuyRaffleTickets", 
             command);
     }
+
+
 }

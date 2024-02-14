@@ -10,6 +10,10 @@
     padding: 20px;
 }
 
+.raffle-input {
+    min-width: 21em;
+}
+
 h1 {
     text-align: center;
 }
@@ -25,11 +29,15 @@ ul {
 li {
     width: calc(10% - 20px);
     min-width: 8em;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+}
+
+.unavailable-number {
+    background-color: red;
 }
 
 @media screen and (max-width: 600px) {

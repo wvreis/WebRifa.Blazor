@@ -31,9 +31,9 @@ public class RaffleController(
     }
 
     [HttpGet]
-    public async Task<ActionResult<HashSet<int>>> GetFreeNumbers([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
+    public async Task<ActionResult<HashSet<int>>> GetFreeNumbersAsync([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(GetFreeNumbers)} executado");
+        _logger.LogInformation($"{nameof(GetFreeNumbersAsync)} executado");
         return await _raffleService.GetFreeNumbersAsync(query, cancellationToken);
     }
 
