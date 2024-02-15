@@ -1,7 +1,6 @@
-﻿@attribute [Authorize]
-@page "/buyers"
+﻿@page "/buyers"
 @attribute [StreamRendering]
-@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @inject IBuyerBlazorService _buyerService

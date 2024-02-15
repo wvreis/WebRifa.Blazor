@@ -21,4 +21,11 @@ public class TicketController(
         _logger.LogInformation($"{nameof(GetTicketsByRaffleIdAsync)} executado.");
         return await _ticketService.GetTicketsByRaffleIdAsync(query, cancellationToken);
     }
+
+    [HttpGet]
+    public async Task<List<TicketDto>> GetAllTicketsAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(GetTicketsByRaffleIdAsync)} executado.");
+        return await _ticketService.GetAlTicketsAsync(cancellationToken);
+    }
 }

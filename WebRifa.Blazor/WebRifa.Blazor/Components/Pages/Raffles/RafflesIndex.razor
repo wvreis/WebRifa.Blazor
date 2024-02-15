@@ -1,5 +1,6 @@
 ﻿@page "/raffles"
 @attribute [StreamRendering]
+@attribute [Authorize]
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @inject IRaffleBlazorService _raffleService

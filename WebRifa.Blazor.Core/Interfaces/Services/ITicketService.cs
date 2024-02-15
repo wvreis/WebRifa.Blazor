@@ -5,6 +5,7 @@ namespace WebRifa.Blazor.Core.Interfaces.Services;
 
 public interface ITicketService {
     Task<TicketDto> GetTicketAsync(TicketGetQuery query, CancellationToken cancellationToken);
+    Task<List<TicketDto>> GetAlTicketsAsync(CancellationToken cancellationToken);
     Task<List<TicketDto>> GetTicketsByRaffleIdAsync(GetTicketByRaffleIdQuery query, CancellationToken cancellationToken);
     Task<Guid> AddTicketAsync(TicketDto ticketDto, CancellationToken cancellationToken);
     Task UpdateTicketAsync(TicketDto ticketDto, CancellationToken cancellationToken);

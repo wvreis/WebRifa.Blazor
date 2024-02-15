@@ -1,189 +1,37 @@
-﻿@page "/tickets"
-@using WebRifa.Blazor.BlazorServices
+﻿@using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
-@using WebRifa.Blazor.Core.Requests.Commands
-@inject IBuyerBlazorService _buyerService
-@inject IRaffleBlazorService _raffleService
-@inject NavigationManager _navigationManager
-@rendermode InteractiveServer
+@inject IReceiptBlazorService _receiptService
 
-<div class="container">
-    @if (IsLoading()) {
-        <p>Carregando...</p>
-    } else if (!Raffles?.Any() ?? new()){
-        <p>Não há Rifas Cadastradas.</p>
-    }
-    else {
-        <EditForm Model="buyCommand" OnValidSubmit="ConfirmBuyAsync">
-            <DataAnnotationsValidator/>
-            <ValidationSummary/>
+<h3>Bilhetes</h3>
 
-            <div class="">
-                <label class="" for="raffle-input">Rifa:</label>
-                <input class="raffle-input" id="raffleInput" list="raffles" @onchange="RaffleInputOnChange" />
-    
-                <dataList class="col-4" id="raffles">
-                    @foreach (var raffle in Raffles ?? new()) {
-                        <option value="@raffle.Id">@raffle.Description</option>
-                    }
-                </dataList>
-
-                @if (SelectedRaffle is not null) {
-                    <label class="col-auto col-form-label">
-                        @($"Descrição: {SelectedRaffle.Description} | Preço do Bilhete: {SelectedRaffle.TicketPrice}")
-                    </label>
-                }
-            </div>
-            <br />
-
-            @if (SelectedRaffle is not null) {
-                <div class="">
-                    <label class="" for="buyer-input">Comprador:</label>
-                    <input class="buyer-input" id="buyerInput" list="buyers" @onchange="BuyerInputOnChenge" />
-
-                    <dataList class="col-4" id="buyers">
-                        @foreach (var buyer in Buyers ?? new()) {
-                            <option value="@buyer.Id">@buyer.Name</option>
-                        }
-                    </dataList>
-
-                    @if (SelectedBuyer is not null) {
-                        <label class="col-auto col-form-label">
-                            @($"Nome: {SelectedBuyer.Name} | Telefone: {SelectedBuyer.PhoneNumber}")
-                        </label>
-                    }
-                </div>
+@if (Receipts is null) {
+    <p>Carregando...</p>
+}
+else if (!Receipts!.Any()) {
+    <p>Não há Bilhetes Cadastradas.</p>
+}
+else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var receipt in Receipts) {
+                <tr>
+                    <td>@receipt.Id</td>
+                </tr>
             }
-
-            @if (buyCommand.NumbersToBuy.Any()) {
-                <p>Números selecionados: @string.Join(", ", buyCommand.NumbersToBuy)</p>
-                <button>Finalizar Compra</button>
-            }
-
-            @if (Numbers.Any()) {
-                <h1>Lista de Posições na Rifa</h1>
-                <ul>
-                    @foreach (var number in Numbers) {
-                        <li class="@GetNumberClass(number)" @onclick="(() => AddOrRemoveNumber(number))">@number</li>
-                    }
-                </ul>
-            }
-        </EditForm>
-    }
-</div>
+        </tbody>
+    </table>
+}
 
 @code {
-    public List<RaffleDto>? Raffles { get; set; }
-    public List<BuyerDto>? Buyers { get; set; }
-    public RaffleDto? SelectedRaffle { get; set; }
-    public BuyerDto? SelectedBuyer { get; set; }
-    public List<int> Numbers { get; set; } = new();
-    public List<int> FreeNumbers { get; set; } = new();
-    public BuyRaffleTicketsCommand buyCommand { get; set; } = new();
+    public List<ReceiptDto>? Receipts { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Raffles = await _raffleService.GetAllRafflesAsync();
-        Buyers = await _buyerService.GetAllBuyersAsync();
+        Receipts = await _receiptService.GetAllReceiptsAsync();
     }
-
-    async Task ConfirmBuyAsync()
-    {
-        buyCommand.Observations = string.Empty; //to-do: create field.
-
-        var result = await _raffleService.BuyRaffleTicketsAsync(buyCommand);
-        if (result.IsSuccessStatusCode) {
-            _navigationManager.NavigateTo("");
-        }
-        else {
-
-        }
-    }
-
-    async void RaffleInputOnChange(ChangeEventArgs args)
-    {
-        if (string.IsNullOrEmpty(args.Value!.ToString()) || Raffles is null) {
-            CleanScreen();
-            return;
-        }
-
-        Guid.TryParse(args.Value.ToString(), out Guid raffleId);
-        SelectedRaffle = Raffles.First(x => x.Id == raffleId);
-        buyCommand.RaffleId = SelectedRaffle.Id;
-        FreeNumbers = await _raffleService.GetFreeNumbers(new(){RaffleId = raffleId});
-        Numbers = Enumerable.Range(1, SelectedRaffle.TotalNumberOfTickets).ToList();
-        StateHasChanged();
-    }
-
-    void BuyerInputOnChenge(ChangeEventArgs args)
-    {
-        if (string.IsNullOrEmpty(args.Value!.ToString()) || Buyers is null) {
-            CleanSelectedBuyer();
-            return;
-        }
-
-        Guid.TryParse(args.Value.ToString(), out Guid buyerId);
-        SelectedBuyer = Buyers.First(x => x.Id == buyerId);
-        buyCommand.BuyerId = SelectedBuyer.Id;
-        StateHasChanged();
-    }
-
-    void CleanScreen()
-    {
-        Numbers = new();
-        buyCommand.NumbersToBuy = new();
-        SelectedRaffle = null;
-        SelectedBuyer = null;
-    }
-
-    void CleanSelectedBuyer()
-    {
-        SelectedBuyer = null;
-        buyCommand.NumbersToBuy = new();
-    }
-
-    void AddSelectedNumber(int number)
-    {
-        buyCommand.NumbersToBuy.Add(number);
-    }
-
-    void RemoveSelectedNumber(int number)
-    {
-        buyCommand.NumbersToBuy.Remove(number);
-    }
-
-    void AddOrRemoveNumber(int number)
-    {
-        if (!IsSelectedNumber(number) && IsFreeNumber(number)) {
-            AddSelectedNumber(number);
-        }
-        else {
-            RemoveSelectedNumber(number);
-        }
-
-        StateHasChanged();
-    }
-
-    bool IsFreeNumber(int number) => 
-        FreeNumbers.Contains(number);
-
-    bool IsSelectedNumber(int number) =>
-        buyCommand.NumbersToBuy.Contains(number);
-
-    string GetNumberClass(int number)
-    {
-        if (!IsFreeNumber(number)) {
-            return "unavailable-number";
-        }
-
-        if (IsSelectedNumber(number)) {
-            return "available-number";
-        }
-
-        return string.Empty;
-    }
-
-    bool IsLoading() =>
-        Raffles is null &&
-        Buyers is null;
 }
