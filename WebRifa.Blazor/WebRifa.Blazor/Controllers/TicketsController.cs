@@ -9,10 +9,10 @@ namespace WebRifa.Blazor.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class TicketController(
-    ILogger<TicketController> logger,
+public class TicketsController(
+    ILogger<TicketsController> logger,
     ITicketService ticketService) : ControllerBase {
-    private readonly ILogger<TicketController> _logger = logger;
+    private readonly ILogger<TicketsController> _logger = logger;
     private readonly ITicketService _ticketService = ticketService;
 
     [HttpGet]

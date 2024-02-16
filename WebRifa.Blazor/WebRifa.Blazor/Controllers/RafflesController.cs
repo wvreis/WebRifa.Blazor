@@ -10,10 +10,10 @@ namespace WebRifa.Blazor.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class RaffleController(
-    ILogger<RaffleController> logger,
+public class RafflesController(
+    ILogger<RafflesController> logger,
     IRaffleService raffleService) : ControllerBase {
-    private readonly ILogger<RaffleController> _logger = logger;
+    private readonly ILogger<RafflesController> _logger = logger;
     private readonly IRaffleService _raffleService = raffleService;
 
     [HttpGet]

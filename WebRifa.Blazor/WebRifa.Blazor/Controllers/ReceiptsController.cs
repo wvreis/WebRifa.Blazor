@@ -9,10 +9,10 @@ namespace WebRifa.Blazor.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ReceiptController(
-    ILogger<ReceiptController> logger, IReceiptService receiptService) : ControllerBase {
+public class ReceiptsController(
+    ILogger<ReceiptsController> logger, IReceiptService receiptService) : ControllerBase {
 
-    private readonly ILogger<ReceiptController> _logger = logger;
+    private readonly ILogger<ReceiptsController> _logger = logger;
     private readonly IReceiptService _receiptService = receiptService;
 
     [HttpGet]
@@ -20,6 +20,13 @@ public class ReceiptController(
     {
         _logger.LogInformation($"{nameof(GetAllReceiptsAsync)} executado.");
         return await _receiptService.GetAllReceiptsAsync(cancellationToken);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<ReceiptDto>> GetReceiptAsync([FromQuery] ReceiptGetQuery query, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(GetReceiptAsync)} executado.");
+        return await _receiptService.GetReceiptAsync(query, cancellationToken);
     }
 
     [HttpGet]

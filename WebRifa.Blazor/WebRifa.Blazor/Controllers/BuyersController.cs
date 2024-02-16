@@ -10,10 +10,10 @@ namespace WebRifa.Blazor.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class BuyerController(
-    ILogger<BuyerController> logger,
+public class BuyersController(
+    ILogger<BuyersController> logger,
     IBuyerService buyerService) : ControllerBase{
-    private readonly ILogger<BuyerController> _logger = logger;
+    private readonly ILogger<BuyersController> _logger = logger;
     private readonly IBuyerService _buyerService = buyerService;
 
     [HttpGet]

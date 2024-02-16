@@ -4,15 +4,10 @@ using WebRifa.Blazor.Helpers;
 
 namespace WebRifa.Blazor.BlazorServices;
 
-public class BuyerBlazorService : IBuyerBlazorService {
-    private readonly HttpClient _httpClient;
+public class BuyerBlazorService(HttpClient httpClient) : IBuyerBlazorService {
+    private readonly HttpClient _httpClient = httpClient;
 
-    const string baseURI = "api/buyer";
-
-    public BuyerBlazorService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+    const string baseURI = "api/buyers";
 
     public async Task<List<BuyerDto>> GetAllBuyersAsync(BuyerSearchQuery? buyerSearchQuery = null)
     {

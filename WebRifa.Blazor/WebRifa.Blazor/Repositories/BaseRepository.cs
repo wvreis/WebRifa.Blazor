@@ -9,12 +9,12 @@ public class BaseRepository<T>(
     ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity {
     protected readonly ApplicationDbContext _context = context;
 
-    public async Task AddAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task AddAsync(T entity, CancellationToken cancellationToken)
     {        
         await _context.AddAsync(entity, cancellationToken);
     }
 
-    public async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken)
+    public virtual async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken)
     {
         if (!entities.Any()) {
             throw new InvalidOperationException("A lista não contém elementos.");
@@ -23,7 +23,7 @@ public class BaseRepository<T>(
         await _context.AddRangeAsync(entities, cancellationToken);
     }
 
-    public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
         if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe.");
@@ -33,7 +33,7 @@ public class BaseRepository<T>(
         _context.Update(entity);
     }
 
-    public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
         if (!await EntityExistsAsync(entity.Id, cancellationToken)) {
             throw new KeyNotFoundException($"Entidade do Tipo {typeof(T).Name} com Id {entity.Id} não existe." );
@@ -42,7 +42,7 @@ public class BaseRepository<T>(
         entity.MarkAsDeleted();
     }
 
-    public async Task DeleteRangeAsync(List<T> entities, CancellationToken cancellationToken)
+    public virtual async Task DeleteRangeAsync(List<T> entities, CancellationToken cancellationToken)
     {
         if (!entities.Any()) {
             throw new InvalidOperationException("A lista não contém elementos.");
@@ -70,7 +70,7 @@ public class BaseRepository<T>(
             .ExecuteUpdateAsync(setPropCall => setPropCall.SetProperty(p => p.IsDeleted, true));
     }
 
-    public async Task<T> GetAsync(Guid id, CancellationToken cancellationToken)
+    public virtual async Task<T> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         return result ?? throw new NullReferenceException($"Entidade com Id {id} não encontrada.");
@@ -81,7 +81,7 @@ public class BaseRepository<T>(
         return await _context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public Task<bool> EntityExistsAsync(Guid entityId, CancellationToken cancellationToken)
+    public virtual Task<bool> EntityExistsAsync(Guid entityId, CancellationToken cancellationToken)
     {
         return _context.Set<T>().AnyAsync(e => e.Id == entityId);
     }

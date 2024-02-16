@@ -1,8 +1,10 @@
 ﻿using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 
 namespace WebRifa.Blazor.BlazorServices;
 
 public interface IReceiptBlazorService {
     Task<List<ReceiptDto>> GetAllReceiptsAsync();
-    Task<ReceiptDto> GetReceiptAsync();
+    Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query);
+    Task<ReceiptDto> GetReceiptAsync(ReceiptGetQuery query);
 }

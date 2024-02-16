@@ -21,6 +21,18 @@ public class ReceiptRepository(
             .ToListAsync();
     }
 
+    public override async Task<Receipt> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _context.Receipts
+            .IgnoreAutoIncludes()
+            .Include(x => x.BuyerTicketReceipt)
+                .ThenInclude(x => x.Buyer)
+            .Include(x => x.Tickets)
+                .ThenInclude(x => x.Raffle)
+            .Where(receipt => receipt.Id == id)
+            .SingleAsync();
+    }
+
     public async Task<List<Receipt>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Receipt, bool>> buyerIdFilter = receipt =>

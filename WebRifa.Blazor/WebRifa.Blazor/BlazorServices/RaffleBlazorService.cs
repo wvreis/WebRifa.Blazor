@@ -8,7 +8,7 @@ namespace WebRifa.Blazor.BlazorServices;
 public class RaffleBlazorService : IRaffleBlazorService {
     private readonly HttpClient _httpClient;
 
-    const string baseURI = "api/raffle";
+    const string baseURI = "api/raffles";
     
     public RaffleBlazorService(HttpClient httpClient)
     {
