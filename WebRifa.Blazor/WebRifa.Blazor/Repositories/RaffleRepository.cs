@@ -5,7 +5,6 @@ using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Data;
-using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 
@@ -22,6 +21,27 @@ public class RaffleRepository(
         var result = await _context.Raffles
             .Where(Search)
             .ToListAsync(cancellationToken);
+
+        return result;
+    }
+
+    public async Task<HashSet<int>> GetUsedNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
+    {        
+        var result = await _context.Tickets
+            .Where(ticket => !ticket.IsDeleted)
+            .Where(ticket => ticket.RaffleId == raffleId)
+            .Select(ticket => ticket.Number)
+            .ToListAsync(cancellationToken);
+
+        return result.ToHashSet();
+    }
+
+    public async Task<int> GetTotalNumberOfTicketsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
+    {
+        var result = await _context.Raffles
+            .Where(raffle => raffle.Id == raffleId)
+            .Select(raffle => raffle.TotalNumberOfTickets)
+            .FirstOrDefaultAsync(cancellationToken);
 
         return result;
     }

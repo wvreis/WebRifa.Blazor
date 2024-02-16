@@ -2,7 +2,6 @@
 using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Data;
-using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Core.Repositories;
 public class BaseRepository<T>(
@@ -40,6 +39,7 @@ public class BaseRepository<T>(
         }
 
         entity.MarkAsDeleted();
+        _context.Update(entity);
     }
 
     public virtual async Task DeleteRangeAsync(List<T> entities, CancellationToken cancellationToken)

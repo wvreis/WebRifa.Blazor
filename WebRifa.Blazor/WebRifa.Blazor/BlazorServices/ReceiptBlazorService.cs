@@ -30,11 +30,10 @@ public class ReceiptBlazorService(
             $"{QueryStringBuilderHelper.GenerateQueryString(query)}") ?? new();
     }
 
-    public async Task<HttpResponseMessage> DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation)
+    public async Task<HttpResponseMessage> DeleteReceiptAsync(ReceiptDeleteCommand command)
     {
-        return await httpClient.PostAsJsonAsync<ReceiptDeleteCommand>(
+        return await httpClient.DeleteAsync(
             $"{baseURI}/DeleteReceipt" +
-            $"{QueryStringBuilderHelper.GenerateQueryString(command)}",
-            null!);
+            $"{QueryStringBuilderHelper.GenerateQueryString(command)}");
     }
 }

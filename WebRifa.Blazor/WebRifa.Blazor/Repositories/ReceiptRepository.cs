@@ -18,18 +18,20 @@ public class ReceiptRepository(
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
+            .Where(receipt => !receipt.IsDeleted)
             .ToListAsync();
     }
 
     public override async Task<Receipt> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Receipts
-            .IgnoreAutoIncludes()
+            .IgnoreAutoIncludes()            
             .Include(x => x.BuyerTicketReceipt)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
             .Where(receipt => receipt.Id == id)
+            .Where(receipt =>  !receipt.IsDeleted)
             .SingleAsync();
     }
 
@@ -52,6 +54,7 @@ public class ReceiptRepository(
                 .ThenInclude(x => x.Raffle)
             .Where(buyerIdFilter)
             .Where(raffleIdFilter)
+            .Where(receipt => !receipt.IsDeleted)
             .ToListAsync(cancellationToken);
 
         return result;
@@ -68,6 +71,7 @@ public class ReceiptRepository(
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
             .Where(fromRaffleId)
+            .Where(receipt => !receipt.IsDeleted)
             .ToListAsync();
 
         return result;

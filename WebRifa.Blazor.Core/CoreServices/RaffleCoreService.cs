@@ -84,22 +84,17 @@ public class RaffleCoreService : IRaffleCoreService {
 
     public async Task<HashSet<int>> GetFreeNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
     {
-        Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
-
+        int totalNumberOfTickets = await _raffleRepository.GetTotalNumberOfTicketsFromRaffleAsync(raffleId, cancellationToken);
         HashSet<int> usedNumbers = await GetUsedNumbersAsync(raffleId, cancellationToken);
-
-        HashSet<int> availableNumbers = new HashSet<int>(Enumerable.Range(1, raffle.TotalNumberOfTickets).Except(usedNumbers));
+        HashSet<int> availableNumbers = new HashSet<int>(Enumerable.Range(1, totalNumberOfTickets).Except(usedNumbers));
 
         return availableNumbers;
     }
 
     public async Task<HashSet<int>> GetUsedNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
     {
-        Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
-
-        HashSet<int> usedNumbers = raffle.Tickets?.Select(t => t.Number).ToHashSet() ?? new();
-
-        return usedNumbers;
+        var result = await _raffleRepository.GetUsedNumbersAsync(raffleId, cancellationToken);
+        return result;
     }
 
     public async Task DeleteRaffleAsync(Guid raffleId, CancellationToken cancellationToken)

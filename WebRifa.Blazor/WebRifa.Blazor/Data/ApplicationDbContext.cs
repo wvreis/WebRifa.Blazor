@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.DrawEntities;
@@ -16,12 +17,13 @@ public class ApplicationDbContext(
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder);
+        base.OnModelCreating(builder);        
 
         #region RAFFLE
         builder.Entity<Raffle>().HasKey(x => x.Id);        
 
-        builder.Entity<Raffle>().HasQueryFilter(x => !x.IsDeleted);
+        builder.Entity<Raffle>().HasQueryFilter(x => 
+            !x.IsDeleted);
 
         builder.Entity<Raffle>()
             .Property(x => x.TicketPrice)
@@ -42,7 +44,9 @@ public class ApplicationDbContext(
         #region BUYER
         builder.Entity<Buyer>().HasKey(b => b.Id);
 
-        builder.Entity<Buyer>().HasIndex(b => b.CreatedBy);        
+        builder.Entity<Buyer>().HasIndex(b => b.CreatedBy);   
+        
+        builder.Entity<Buyer>().HasQueryFilter(b => !b.IsDeleted);
         #endregion
 
         #region TICKET

@@ -10,6 +10,7 @@ using WebRifa.Blazor.BlazorServices;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
+using WebRifa.Blazor.Core.CoreServices;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
@@ -50,9 +51,11 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IRaffleService, RaffleService>();
 builder.Services.AddScoped<ITicketService, TicketService>();    
-builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
 builder.Services.AddScoped<IDrawRepository, DrawRepository>();
 builder.Services.AddScoped<IReceiptService, ReceiptService>();
+
+builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
+builder.Services.AddScoped<IReceiptCoreService, ReceiptCoreService>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;

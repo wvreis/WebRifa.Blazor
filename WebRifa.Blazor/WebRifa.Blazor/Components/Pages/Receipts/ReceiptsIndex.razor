@@ -1,6 +1,6 @@
 ﻿@page "/receipts"
 @using WebRifa.Blazor.BlazorServices
-@attribute [StreamRendering]
+@rendermode InteractiveServer
 @attribute [Authorize]
 @inject IReceiptBlazorService receiptService
 
@@ -31,7 +31,7 @@ else {
                     <td>@receipt.BuyerName</td>
                     <td>@GetNumbersAsString(receipt)</td>
                     <td>
-                        <button>Excluir Recibo</button>
+                        <button @onclick="(() => DeleteReceiptAsync(receipt.Id))">Excluir Recibo</button>
                     </td>
                 </tr>
             }

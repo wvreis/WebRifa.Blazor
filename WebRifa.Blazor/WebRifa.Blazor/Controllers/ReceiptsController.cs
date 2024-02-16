@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
+using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 
 namespace WebRifa.Blazor.Controllers;
@@ -34,5 +35,13 @@ public class ReceiptsController(
     {
         _logger.LogInformation($"{nameof(GetFilteredReceiptsAsync)} executado.");
         return await _receiptService.GetFilteredReceiptsAsync(query, cancellationToken);
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteReceiptAsync([FromQuery] ReceiptDeleteCommand command, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(DeleteReceiptAsync)} foi executado.");
+        await _receiptService.DeleteReceiptAsync(command, cancellationToken);
+        return NoContent();
     }
 }
