@@ -51,6 +51,7 @@ builder.Services.AddScoped<IRaffleService, RaffleService>();
 builder.Services.AddScoped<ITicketService, TicketService>();    
 builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
 builder.Services.AddScoped<IDrawRepository, DrawRepository>();
+builder.Services.AddScoped<IReceiptService, ReceiptService>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -63,7 +64,37 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
     cfg.CreateMap<Raffle, RaffleDto>().ReverseMap();
     cfg.CreateMap<Ticket, TicketDto>().ReverseMap();
     cfg.CreateMap<BuyerTicketReceipt, BuyerTicketReceiptDto>().ReverseMap();
-    cfg.CreateMap<Receipt, ReceiptDto>().ReverseMap();
+    cfg.CreateMap<Receipt, ReceiptDto>()
+        .ForMember(
+            m => m.BuyerId,
+            map => map.MapFrom(prop =>
+                prop.BuyerTicketReceipt != null ?
+                prop.BuyerTicketReceipt.FirstOrDefault()!.BuyerId :
+                new Guid()))
+        .ForMember(
+            m => m.RaffleId,
+            map => map.MapFrom(prop =>
+                prop.Tickets.FirstOrDefault()!.RaffleId))
+        .ForMember(
+            m => m.BuyerName,
+            map => map.MapFrom(prop => 
+                prop.BuyerTicketReceipt != null ?
+                prop.BuyerTicketReceipt.FirstOrDefault()!.Buyer!.Name :
+                string.Empty))
+        .ForMember(
+            m => m.RaffleDescription,
+            map => map.MapFrom(prop =>
+                prop.Tickets.FirstOrDefault()!.Raffle != null ?
+                prop.Tickets.FirstOrDefault()!.Raffle!.Description :
+                string.Empty))
+        .ForMember(
+            m => m.TicketsNumbers,
+            map => map.MapFrom(prop =>
+                prop.BuyerTicketReceipt
+                    .Select(btr => btr.Ticket)
+                    .Select(t => t!.Number)
+                    .ToList())) 
+        .ReverseMap();
 })
     .CreateMapper());
 

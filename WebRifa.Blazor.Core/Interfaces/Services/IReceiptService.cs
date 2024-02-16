@@ -1,9 +1,10 @@
-﻿using WebRifa.Blazor.Core.Requests.Queries.Buyer;
+﻿using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
+using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 
 namespace WebRifa.Blazor.Core.Interfaces.Services;
 public interface IReceiptService {
-    Task<List<Receipt>> GetAllReceiptsAsync(CancellationToken cancellation);
-    Task<List<Receipt>> GetReceiptsByRaffleAsync(RaffleGetQuery query, CancellationToken cancellation);
-    Task<List<Receipt>> GetReceiptsByBuyerAsync(BuyerGetQuery query, CancellationToken cancellation);
+    Task<List<ReceiptDto>> GetAllReceiptsAsync(CancellationToken cancellation);
+    Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellation);
+    Task<List<ReceiptDto>> GetReceiptsFromRaffleAsync(RaffleGetQuery query, CancellationToken cancellation);
 }

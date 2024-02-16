@@ -16,7 +16,7 @@ public class ApplicationDbContext(
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder);               
+        base.OnModelCreating(builder);
 
         #region RAFFLE
         builder.Entity<Raffle>().HasKey(x => x.Id);        
@@ -61,7 +61,8 @@ public class ApplicationDbContext(
 
         builder.Entity<Ticket>()
             .Navigation(x => x.BuyerTicketReceipt)
-            .AutoInclude();
+            .AutoInclude()
+            .EnableLazyLoading();        
 
         builder.Entity<Ticket>()
             .Navigation(x => x.Receipt)

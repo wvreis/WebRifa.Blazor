@@ -76,7 +76,7 @@ public class BaseRepository<T>(
         return result ?? throw new NullReferenceException($"Entidade com Id {id} não encontrada.");
     }
 
-    public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _context.Set<T>().ToListAsync(cancellationToken);
     }

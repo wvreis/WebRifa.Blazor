@@ -42,7 +42,7 @@ public class RaffleCoreServices
         Buyer buyer = new();
 
         var buyerRepositoryMock = new Mock<IBuyerRepository>();
-        buyerRepositoryMock.Setup(repo => repo.GetAsync(command.BuyerId, It.IsAny<CancellationToken>()))
+        buyerRepositoryMock.Setup(repo => repo.GetAsync(command.BuyerId.Value, It.IsAny<CancellationToken>()))
                             .ReturnsAsync(buyer);
 
         var receiptRepositoryMock = new Mock<IReceiptRepository>();
@@ -82,7 +82,7 @@ public class RaffleCoreServices
 
         var buyerRepositoryMock = new Mock<IBuyerRepository>();
         buyerRepositoryMock
-            .Setup(repo => repo.GetAsync(command.BuyerId, It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.GetAsync(command.BuyerId.Value, It.IsAny<CancellationToken>()))
             .ReturnsAsync(buyer);
 
         var service = new RaffleCoreService(
