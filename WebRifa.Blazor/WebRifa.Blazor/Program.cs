@@ -38,6 +38,7 @@ builder.Services.AddTransient<ICustomUserIdProvider, CustomUserIdProvider>();
 
 builder.Services.AddScoped<IBuyerBlazorService, BuyerBlazorService>();
 builder.Services.AddScoped<IRaffleBlazorService, RaffleBlazorService>();
+builder.Services.AddScoped<IReceiptBlazorService, ReceiptBlazorService>();
 
 builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
 builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
@@ -92,7 +93,8 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
             map => map.MapFrom(prop =>
                 prop.BuyerTicketReceipt
                     .Select(btr => btr.Ticket)
-                    .Select(t => t!.Number)
+                    .Select(ticket => ticket!.Number)
+                    .OrderBy(number => number)
                     .ToList())) 
         .ReverseMap();
 })

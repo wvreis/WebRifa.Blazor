@@ -1,6 +1,6 @@
-﻿using WebRifa.Blazor.Core.Requests.Queries.Buyer;
+﻿using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 
 namespace WebRifa.Blazor.Core.CoreServices;
 public interface IReceiptCoreService {
-    Task GetReceiptsFromBuyer(BuyerGetQuery query, CancellationToken cancellation);
+    Task DeleteReceipt(ReceiptDeleteCommand command, CancellationToken cancellation);
 }

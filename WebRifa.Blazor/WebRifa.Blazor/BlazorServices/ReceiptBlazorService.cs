@@ -1,4 +1,5 @@
 ﻿using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 using WebRifa.Blazor.Helpers;
 
@@ -27,5 +28,13 @@ public class ReceiptBlazorService(
         return await httpClient.GetFromJsonAsync<ReceiptDto>(
             $"{baseURI}/GetReceipt" +
             $"{QueryStringBuilderHelper.GenerateQueryString(query)}") ?? new();
+    }
+
+    public async Task<HttpResponseMessage> DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation)
+    {
+        return await httpClient.PostAsJsonAsync<ReceiptDeleteCommand>(
+            $"{baseURI}/DeleteReceipt" +
+            $"{QueryStringBuilderHelper.GenerateQueryString(command)}",
+            null!);
     }
 }

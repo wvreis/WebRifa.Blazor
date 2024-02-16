@@ -1,0 +1,40 @@
+﻿@page "/receipts"
+@using WebRifa.Blazor.BlazorServices
+@attribute [StreamRendering]
+@attribute [Authorize]
+@inject IReceiptBlazorService receiptService
+
+<h3>Recibos</h3>
+
+@if (Receipts is null) {
+    <p>Carregando...</p>
+}
+else if (!Receipts!.Any()) {
+    <p>Não há Recibos Cadastradas.</p>
+}
+else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descrição da Rifa</th>
+                <th>Comprador</th>
+                <th>Números Selecionados</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var receipt in Receipts) {
+                <tr>
+                    <td>@receipt.Id</td>
+                    <td>@receipt.RaffleDescription</td>
+                    <td>@receipt.BuyerName</td>
+                    <td>@GetNumbersAsString(receipt)</td>
+                    <td>
+                        <button>Excluir Recibo</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using WebRifa.Blazor.Core.CoreServices;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
+using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 
@@ -11,10 +13,12 @@ public class ReceiptService(
     ILogger<ReceiptService> logger,
     IReceiptRepository receiptRepository,
     IUnitOfWork unitOfWork,
-    IMapper mapper) : IReceiptService {
+    IMapper mapper,
+    IReceiptCoreService receiptCoreService) : IReceiptService {
 
     private readonly ILogger<ReceiptService> _logger = logger;
     private readonly IReceiptRepository _receiptRepository = receiptRepository;
+    private readonly IReceiptCoreService _receiptCoreService = receiptCoreService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
@@ -31,7 +35,7 @@ public class ReceiptService(
         }
     }
 
-    public async Task<ReceiptDto> GetReceiptAsync(ReceiptGetQuery query ,CancellationToken cancellation)
+    public async Task<ReceiptDto> GetReceiptAsync(ReceiptGetQuery query, CancellationToken cancellation)
     {
         try {
             var receipt = await _receiptRepository.GetAsync(query.ReceiptId, cancellation);
@@ -63,6 +67,18 @@ public class ReceiptService(
             var receipts = await _receiptRepository.GetReceiptsFromRaffleAsync(query.RaffleId, cancellation);
             _logger.LogInformation($"{nameof(GetReceiptsFromRaffleAsync)} executado.");
             return _mapper.Map<List<ReceiptDto>>(receipts);
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
+    public async Task DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation)
+    {
+        try {
+            _logger.LogInformation($"{nameof(DeleteReceiptAsync)} executado");
+            await _receiptCoreService.DeleteReceipt(command, cancellation);
         }
         catch (Exception) {
 
