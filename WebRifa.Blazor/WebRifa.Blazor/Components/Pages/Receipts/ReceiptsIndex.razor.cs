@@ -1,6 +1,7 @@
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
+using WebRifa.Blazor.Helpers;
 
 namespace WebRifa.Blazor.Components.Pages.Receipts;
 public partial class ReceiptsIndex() {
@@ -14,6 +15,11 @@ public partial class ReceiptsIndex() {
 
     public async Task DeleteReceiptAsync(Guid receiptId)
     {
+        bool confirmedDeletion = await JS.ShowConfirmationMessage("Deseja confirmar a exclusão?");
+        if (!confirmedDeletion) {
+            return;
+        }
+
         ReceiptDeleteCommand command = new() { 
             ReceiptId = receiptId 
         };
