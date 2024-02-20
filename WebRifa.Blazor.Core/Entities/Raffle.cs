@@ -16,6 +16,22 @@ public class Raffle : BaseEntity {
         
     }
 
+    public Raffle(
+        string description,
+        int totalNumberOfTickets,
+        decimal ticketPrice,
+        string observations,
+        DateTime drawDateTime,
+        List<Ticket>? tickets)
+    {
+        Description = description;
+        TotalNumberOfTickets = totalNumberOfTickets;
+        TicketPrice = ticketPrice;
+        Observations = observations;
+        DrawDateTime = drawDateTime;
+        Tickets = tickets;
+    }
+
     void Update(
         string? description,
         int? totalNumberOfTickets,
