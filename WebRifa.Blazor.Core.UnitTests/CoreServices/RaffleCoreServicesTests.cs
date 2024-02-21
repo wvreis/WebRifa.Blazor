@@ -1,6 +1,4 @@
-using Castle.Components.DictionaryAdapter.Xml;
 using Moq;
-using System.Runtime.CompilerServices;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.DrawEntities;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
@@ -8,11 +6,10 @@ using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Requests.Commands;
 using WebRifa.Blazor.Core.Services;
-using Xunit.Sdk;
 
 namespace WebRifa.Blazor.Core.UnitTests.CoreServices;
 
-public class RaffleCoreServicesTest
+public class RaffleCoreServicesTests
 {
     private readonly Mock<IReceiptRepository> _receiptRepositoryMock;
     private readonly Mock<IBuyerRepository> _buyerRepositoryMock;
@@ -21,7 +18,7 @@ public class RaffleCoreServicesTest
     private readonly Mock<IDrawRepository> _drawRepositoryMock;
     private readonly Mock<IBuyerTicketReceiptRepository> _buyerTicketReceiptRepositoryMock;
 
-    public RaffleCoreServicesTest()
+    public RaffleCoreServicesTests()
     {
         _receiptRepositoryMock = new Mock<IReceiptRepository>();
         _buyerRepositoryMock = new Mock<IBuyerRepository>();

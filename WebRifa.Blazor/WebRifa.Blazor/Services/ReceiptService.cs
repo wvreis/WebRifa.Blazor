@@ -78,7 +78,7 @@ public class ReceiptService(
     {
         try {
             _logger.LogInformation($"{nameof(DeleteReceiptAsync)} executado");
-            await _receiptCoreService.DeleteReceipt(command, cancellation);
+            await _receiptCoreService.DeleteReceiptAsync(command, cancellation);
             await _unitOfWork.CommitAsync(cancellation);
         }
         catch (Exception) {

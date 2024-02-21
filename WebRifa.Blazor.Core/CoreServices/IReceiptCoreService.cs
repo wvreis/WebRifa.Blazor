@@ -2,5 +2,5 @@
 
 namespace WebRifa.Blazor.Core.CoreServices;
 public interface IReceiptCoreService {
-    Task DeleteReceipt(ReceiptDeleteCommand command, CancellationToken cancellation);
+    Task DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation);
 }
