@@ -72,8 +72,8 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
         .ForMember(
             m => m.BuyerId,
             map => map.MapFrom(prop =>
-                prop.BuyerTicketReceipt != null ?
-                prop.BuyerTicketReceipt.FirstOrDefault()!.BuyerId :
+                prop.BuyerTicketReceipts != null ?
+                prop.BuyerTicketReceipts.FirstOrDefault()!.BuyerId :
                 new Guid()))
         .ForMember(
             m => m.RaffleId,
@@ -82,8 +82,8 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
         .ForMember(
             m => m.BuyerName,
             map => map.MapFrom(prop => 
-                prop.BuyerTicketReceipt != null ?
-                prop.BuyerTicketReceipt.FirstOrDefault()!.Buyer!.Name :
+                prop.BuyerTicketReceipts != null ?
+                prop.BuyerTicketReceipts.FirstOrDefault()!.Buyer!.Name :
                 string.Empty))
         .ForMember(
             m => m.RaffleDescription,
@@ -94,7 +94,7 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
         .ForMember(
             m => m.TicketsNumbers,
             map => map.MapFrom(prop =>
-                prop.BuyerTicketReceipt
+                prop.BuyerTicketReceipts
                     .Select(btr => btr.Ticket)
                     .Select(ticket => ticket!.Number)
                     .OrderBy(number => number)

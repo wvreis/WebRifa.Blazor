@@ -28,11 +28,13 @@ public class Ticket : BaseEntity
     public Ticket(
         int number,
         string observations,
-        Guid raffleId)
+        Guid raffleId,
+        List<BuyerTicketReceipt>? buyerTicketReceipt = null)
     {
         Number = number;
         Observations = observations;
         RaffleId = raffleId;
+        BuyerTicketReceipt = buyerTicketReceipt is not null ? buyerTicketReceipt : new();
     }
 
     public void Cancel()

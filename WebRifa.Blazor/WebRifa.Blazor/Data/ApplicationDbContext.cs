@@ -141,7 +141,7 @@ public class ApplicationDbContext(
 
         builder.Entity<BuyerTicketReceipt>()
             .HasOne(x => x.Receipt)
-            .WithMany(x => x.BuyerTicketReceipt)
+            .WithMany(x => x.BuyerTicketReceipts)
             .HasForeignKey(x => x.ReceiptId)
             .OnDelete(DeleteBehavior.Restrict);
         #endregion

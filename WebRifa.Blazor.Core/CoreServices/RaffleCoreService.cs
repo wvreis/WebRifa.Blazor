@@ -99,13 +99,26 @@ public class RaffleCoreService : IRaffleCoreService {
 
     public async Task DeleteRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
     {
-        Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
-        List<Receipt> receipts = await _receiptRepository.GetReceiptsFromRaffleAsync(raffleId, cancellationToken);
-        List<BuyerTicketReceipt> buyerTicketReceipts = receipts.SelectMany(r => r.BuyerTicketReceipt).ToList();
+        Raffle? raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
+        if (raffle is null) {
+            throw new NullReferenceException();
+        }
 
-        await _ticketRepository.DeleteRangeAsync(raffle.Tickets ?? new(), cancellationToken);
-        await _receiptRepository.DeleteRangeAsync(receipts, cancellationToken);
-        await _buyerTicketReceiptRepository.DeleteRangeAsync(buyerTicketReceipts, cancellationToken);
+        List<Receipt> receipts = await _receiptRepository.GetReceiptsFromRaffleAsync(raffleId, cancellationToken);
+        List<BuyerTicketReceipt> buyerTicketReceipts = receipts.SelectMany(r => r.BuyerTicketReceipts).ToList();
+
+        if (raffle.Tickets is not null && raffle.Tickets!.Any()) {
+            await _ticketRepository.DeleteRangeAsync(raffle.Tickets, cancellationToken);
+        }
+
+        if (receipts.Any()) {
+            await _receiptRepository.DeleteRangeAsync(receipts, cancellationToken);
+        }
+
+        if (buyerTicketReceipts.Any()) {
+            await _buyerTicketReceiptRepository.DeleteRangeAsync(buyerTicketReceipts, cancellationToken);
+        }
+
         await _raffleRepository.DeleteAsync(raffle, cancellationToken);
     }
 }

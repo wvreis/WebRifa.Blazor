@@ -14,7 +14,7 @@ public class ReceiptRepository(
     {
         return await _context.Receipts
             .IgnoreAutoIncludes()
-            .Include(x => x.BuyerTicketReceipt)
+            .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
@@ -26,7 +26,7 @@ public class ReceiptRepository(
     {
         return await _context.Receipts
             .IgnoreAutoIncludes()            
-            .Include(x => x.BuyerTicketReceipt)
+            .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
@@ -39,16 +39,16 @@ public class ReceiptRepository(
     {
         Expression<Func<Receipt, bool>> buyerIdFilter = receipt =>
             query.BuyerId.HasValue ?
-            receipt.BuyerTicketReceipt!.FirstOrDefault()!.BuyerId == query.BuyerId : 
+            receipt.BuyerTicketReceipts!.FirstOrDefault()!.BuyerId == query.BuyerId : 
             true;
 
         Expression<Func<Receipt, bool>> raffleIdFilter = receipt =>
             query.RaffleId.HasValue ?
-            receipt.BuyerTicketReceipt!.FirstOrDefault()!.Ticket!.RaffleId == query.RaffleId :
+            receipt.BuyerTicketReceipts!.FirstOrDefault()!.Ticket!.RaffleId == query.RaffleId :
             true;
         
         var result = await _context.Receipts
-            .Include(x => x.BuyerTicketReceipt)
+            .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
@@ -63,10 +63,10 @@ public class ReceiptRepository(
     public async Task<List<Receipt>> GetReceiptsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
     {
         Expression<Func<Receipt, bool>> fromRaffleId = receipt =>
-            receipt.BuyerTicketReceipt.Any(btr => btr.Ticket!.RaffleId == raffleId);
+            receipt.BuyerTicketReceipts.Any(btr => btr.Ticket!.RaffleId == raffleId);
 
         var result = await _context.Receipts
-            .Include(x => x.BuyerTicketReceipt)
+            .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
                 .ThenInclude(x => x.Raffle)
