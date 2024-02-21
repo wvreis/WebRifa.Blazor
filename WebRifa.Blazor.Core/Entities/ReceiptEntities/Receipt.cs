@@ -12,11 +12,9 @@ public class Receipt : BaseEntity
 
     public List<Ticket> Tickets { get; private set; } = new();
 
-    public Receipt(
-        List<BuyerTicketReceipt>? buyerTicketReceipts = null)
+    public Receipt()
     {
         State = CurrentState.GetReceiptState();
-        BuyerTicketReceipts = buyerTicketReceipts ?? new();
     }
 
     public void Cancel()

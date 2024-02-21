@@ -294,7 +294,16 @@ public class RaffleCoreServicesTests
 
     private Receipt GetReceipt(List<BuyerTicketReceipt>? buyerTicketReceipts = null)
     {
-        return new Receipt(buyerTicketReceipts);
+        var receipt = new Receipt();
+        if (buyerTicketReceipts is null) {
+            return receipt;
+        }
+
+        foreach (var brt in buyerTicketReceipts) {
+            receipt.AddBuyerTicketReceipt(brt);
+        }
+
+        return receipt;
     }
 
     private BuyerTicketReceipt GetBuyerTicketReceipt(
