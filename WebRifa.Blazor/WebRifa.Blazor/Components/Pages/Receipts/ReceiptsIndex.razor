@@ -1,7 +1,9 @@
 ﻿@page "/receipts"
 @using WebRifa.Blazor.BlazorServices
-@rendermode InteractiveServer
+
 @attribute [Authorize]
+@rendermode InteractiveServer
+
 @inject IReceiptBlazorService receiptService
 @inject IJSRuntime JS
 

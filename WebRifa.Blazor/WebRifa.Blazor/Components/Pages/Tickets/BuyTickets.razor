@@ -1,11 +1,15 @@
 ﻿@page "/buy-tickets"
+
 @attribute [Authorize]
+
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @using WebRifa.Blazor.Core.Requests.Commands
+
 @inject IBuyerBlazorService _buyerService
 @inject IRaffleBlazorService _raffleService
 @inject NavigationManager _navigationManager
+
 @rendermode InteractiveServer
 
 <div class="container">
@@ -15,61 +19,89 @@
         <p>Não há Rifas Cadastradas.</p>
     }
     else {
-        <EditForm Model="buyCommand" OnValidSubmit="ConfirmBuyAsync">
-            <DataAnnotationsValidator/>
-            <ValidationSummary/>
+        <div class="raffle-body">
+            <div class="raffle-buyer-fields">
+                <EditForm Model="buyCommand" OnValidSubmit="ConfirmBuyAsync">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
 
-            <div class="">
-                <label class="" for="raffle-input">Rifa:</label>
-                <input class="raffle-input" id="raffleInput" list="raffles" @onchange="RaffleInputOnChange" />
-    
-                <dataList class="col-4" id="raffles">
-                    @foreach (var raffle in Raffles ?? new()) {
-                        <option value="@raffle.Id">@raffle.Description</option>
+                    <div class="raffle-input">
+                        <input 
+                            placeholder="Rifa" 
+                            id="raffleInput" 
+                            list="raffles" 
+                            @onchange="RaffleInputOnChange" />
+
+                        <dataList id="raffles">
+                            @foreach (var raffle in Raffles ?? new()) {
+                                <option value="@raffle.Id">@raffle.Description</option>
+                            }
+                        </dataList>
+
+                        @if (SelectedRaffle is not null) {
+                            <label>
+                                @($"Descrição: {SelectedRaffle.Description}")
+                            </label>
+                            <label>
+                                @($"Preço do Bilhete: {SelectedRaffle.TicketPrice}")
+                            </label>
+                        }
+                    </div>                    
+
+                    <br />
+
+                    @if (SelectedRaffle is not null) {
+                        <div class="buyer-input">
+
+                            <input 
+                                placeholder="Comprador" 
+                                id="buyerInput" 
+                                list="buyers" 
+                                @onchange="BuyerInputOnChenge" />
+
+                            <dataList id="buyers">
+                                @foreach (var buyer in Buyers ?? new()) {
+                                    <option value="@buyer.Id">@buyer.Name</option>
+                                }
+                            </dataList>
+
+                            @if (SelectedBuyer is not null) {
+                                <label>
+                                    @($"Nome: {SelectedBuyer.Name}")
+                                </label>
+                                <label>
+                                    @($"Telefone: {SelectedBuyer.PhoneNumber}")
+                                </label>
+                            }
+                        </div>
                     }
-                </dataList>
 
-                @if (SelectedRaffle is not null) {
-                    <label class="col-auto col-form-label">
-                        @($"Descrição: {SelectedRaffle.Description} | Preço do Bilhete: {SelectedRaffle.TicketPrice}")
-                    </label>
+                    <br/>
+                    <div class="info-container">
+                        <p>Números selecionados</p>
+
+                        @if (buyCommand.NumbersToBuy.Any()) {
+                            <p>@string.Join(", ", buyCommand.NumbersToBuy)</p>
+
+                            @if (SelectedBuyer is not null) {
+                                <button>Finalizar Compra</button>
+                            }
+                        }
+                    </div>
+                </EditForm>
+            </div>
+
+            <div class="raffle-numbers">
+                @if (Numbers.Any()) {
+                    <h1>Lista de Posições na Rifa</h1>
+                    <ul>
+                        @foreach (var number in Numbers) {
+                            <li class="@GetNumberClass(number)" @onclick="(() => AddOrRemoveNumber(number))">@number</li>
+                        }
+                    </ul>
                 }
             </div>
-            <br />
-
-            @if (SelectedRaffle is not null) {
-                <div class="">
-                    <label class="" for="buyer-input">Comprador:</label>
-                    <input class="buyer-input" id="buyerInput" list="buyers" @onchange="BuyerInputOnChenge" />
-
-                    <dataList class="col-4" id="buyers">
-                        @foreach (var buyer in Buyers ?? new()) {
-                            <option value="@buyer.Id">@buyer.Name</option>
-                        }
-                    </dataList>
-
-                    @if (SelectedBuyer is not null) {
-                        <label class="col-auto col-form-label">
-                            @($"Nome: {SelectedBuyer.Name} | Telefone: {SelectedBuyer.PhoneNumber}")
-                        </label>
-                    }
-                </div>
-            }
-
-            @if (buyCommand.NumbersToBuy.Any()) {
-                <p>Números selecionados: @string.Join(", ", buyCommand.NumbersToBuy)</p>
-                <button>Finalizar Compra</button>
-            }
-
-            @if (Numbers.Any()) {
-                <h1>Lista de Posições na Rifa</h1>
-                <ul>
-                    @foreach (var number in Numbers) {
-                        <li class="@GetNumberClass(number)" @onclick="(() => AddOrRemoveNumber(number))">@number</li>
-                    }
-                </ul>
-            }
-        </EditForm>
+        </div>
     }
 </div>
 
@@ -178,7 +210,11 @@
         }
 
         if (IsSelectedNumber(number)) {
-            return "available-number";
+            return "selected-number";
+        } 
+
+        if (IsFreeNumber(number) && !IsSelectedNumber(number)) {
+            return "available-number";            
         }
 
         return string.Empty;

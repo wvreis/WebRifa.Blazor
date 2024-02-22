@@ -5,44 +5,94 @@
 }
 
 .container {
-    max-width: 90%;
+    max-width: 95%;
     margin: 0 auto;
     padding: 20px;
 }
 
-.raffle-input {
-    min-width: 21em;
-    display: block;
+.info-container {
+    background-color: #eee;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.buyer-input {
-    min-width: 21em;
-    display: block;
+.info-container > p {
+    text-align: center;
 }
+
+.info-container > label {
+    text-align: center;
+}
+
+.raffle-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.raffle-buyer-fields {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+/*    border: 1px solid #ccc;*/
+    padding: 10px;
+}
+
+.raffle-numbers {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+/*    border: 1px solid #ccc;*/
+    padding: 10px;
+}
+
+.raffle-input input,
+.buyer-input input{
+    width: calc(100% - 10px);
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
 
 h1 {
     text-align: center;
 }
 
-ul {
+ul {    
     padding: 0;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
 }
 
 li {
     width: calc(10% - 20px);
-    min-width: 8em;
-    margin-bottom: 10px;
+    min-width: 6em;
+    margin: 5px 5px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
 }
+    
+.available-number:hover {
+        background-color: dodgerblue;
+    }
 
-.available-number {
+.selected-number {
     background-color: green;
 }
 
@@ -53,5 +103,27 @@ li {
 @media screen and (max-width: 600px) {
     li {
         width: calc(20% - 20px);
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .raffle-body {
+        display: block;
+    }
+
+    .raffle-buyer-fields {
+        max-width: 100%;
+        display: block;
+    }
+
+    .raffle-numbers {
+        max-width: 100%;
+        display: block;
+    }
+
+    li {
+        min-width: 3em;
     }
 }

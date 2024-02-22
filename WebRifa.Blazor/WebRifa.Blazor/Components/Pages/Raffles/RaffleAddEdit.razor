@@ -1,10 +1,13 @@
 ﻿@page "/raffle"
 @page "/raffle/{Id}"
+
 @attribute [Authorize]
 @rendermode InteractiveServer
+
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @using WebRifa.Blazor.Core.Requests.Queries.Raffle
+
 @inject IRaffleBlazorService _raffleService
 @inject NavigationManager _navigationManager
 
