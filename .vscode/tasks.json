@@ -1,14 +1,6 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-		{
-			"type": "msbuild",
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": "build",
-			"label": "build",
-			"detail": "Build the WebRifa.Blazor.csproj project using dotnet build"
-		}
+		
 	]
 }

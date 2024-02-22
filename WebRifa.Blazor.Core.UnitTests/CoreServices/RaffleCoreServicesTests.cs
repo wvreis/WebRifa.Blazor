@@ -76,7 +76,7 @@ public class RaffleCoreServicesTests
         Buyer buyer = new();
 
         _buyerRepositoryMock
-            .Setup(repo => repo.GetAsync(command.BuyerId.Value, It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(buyer);
 
         _receiptRepositoryMock
