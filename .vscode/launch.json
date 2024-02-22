@@ -11,7 +11,7 @@
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/WebRifa.Blazor/WebRifa.Blazor/bin/Debug/net8.0/WebRifa.Blazor.dll",
             "args": [],
-            "cwd": "${workspaceFolder}//WebRifa.Blazor/WebRifa.Blazor",
+            "cwd": "${workspaceFolder}/WebRifa.Blazor/WebRifa.Blazor",
             "stopAtEntry": false,
             "console": "internalConsole",
             "serverReadyAction": {
