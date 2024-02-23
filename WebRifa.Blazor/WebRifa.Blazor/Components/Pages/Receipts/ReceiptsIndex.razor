@@ -1,5 +1,7 @@
 ﻿@page "/receipts"
+
 @using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Components.Common.PopUp
 
 @attribute [Authorize]
 @rendermode InteractiveServer
@@ -34,9 +36,14 @@ else {
                     <td>@receipt.BuyerName</td>
                     <td>@GetNumbersAsString(receipt)</td>
                     <td>
+                        <button @onclick=@(() => PopUp.ToggleVisibilityAsync())>Detalhes</button>
                         <button @onclick="(() => DeleteReceiptAsync(receipt.Id))">Excluir Recibo</button>
                     </td>
                 </tr>
+
+                <PopUp Label="Recibo" Size="PopUpSize.Small" @ref=PopUp>
+                    <ReceiptDetail Id="@receipt.Id.ToString()"/>
+                </PopUp> 
             }
         </tbody>
     </table>

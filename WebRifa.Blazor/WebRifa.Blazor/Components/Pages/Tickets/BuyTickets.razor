@@ -132,7 +132,8 @@
 
         var result = await _raffleService.BuyRaffleTicketsAsync(buyCommand);
         if (result.IsSuccessStatusCode) {
-            _navigationManager.NavigateTo("");
+            var resultValue = await result.Content.ReadAsStringAsync(); //To-do: change back-end to retur Receipt Id.
+            _navigationManager.NavigateTo($"receipts");
         }
         else {
 

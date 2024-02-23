@@ -1,0 +1,130 @@
+﻿.popup {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0%;
+    left: 0%;
+    bottom: 0%;
+    right: 0%;
+    z-index: 100;
+}
+
+.popup-content {
+    position: relative;
+    border-radius: 5px;
+    padding: 0 .5rem;
+    height: auto;
+    max-height: 85vh;
+    overflow: auto;
+    box-shadow: 0 2px 5px var(--pp-box-shadow);
+    background-color: #fff;
+}
+
+.popup-header {
+    position: sticky;
+    top: 0;
+    font-size: large;
+    font-weight: 600;
+    background-color: #fff;
+    border-bottom: solid 1px gray;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: .5rem .2rem;
+    z-index: 1;
+}
+
+    .popup-header label {
+        color: var(--color-prim);
+    }
+
+.popup-body {
+    padding: .5rem .2rem;
+    height: fit-content;
+    /*overflow-y: auto;*/
+    max-height: -webkit-fill-available;
+}
+
+.btn-toggle {
+    background-color: var(--bg-prim);
+    border: none;
+    color: var(--btn-toggle-color);
+    transform: scale(100%);
+    transition: .2s;
+}
+
+    .btn-toggle:hover {
+        color: var(--btn-toggle-hover);
+        transform: scale(105%);
+    }
+
+.popup-sm {
+    min-width: 30vw;
+    max-width: 30vw;
+}
+
+.popup-md {
+    min-width: 60vw;
+    max-width: 60vw;
+}
+
+.popup-lg {
+    min-width: 90vw;
+    max-width: 90vw;
+}
+
+@media (max-width: 1100px) {
+    .popup-content {
+        min-width: 90vw;
+        max-width: 90vw;
+    }
+}
+
+* {
+    --btn-toggle-color: #c10000;
+    --btn-toggle-hover: #f90000;
+}
+
+[theme="dark"] * {
+    --btn-toggle-color: #fa4242;
+    --btn-toggle-hover: #de1717;
+}
+
+/* BACKGROUND FADES */
+.bg-fade-in {
+    animation: bg-change-in .15s ease-in-out forwards;
+}
+
+.bg-fade-out {
+    animation: bg-change-out .15s ease-in-out forwards;
+}
+
+    .bg-fade-out .popup-content {
+        animation: fadeOut .1s ease-in-out forwards;
+    }
+
+@keyframes bg-change-in {
+    0% {
+        background-color: transparent;
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, .5);
+    }
+}
+
+@keyframes bg-change-out {
+    0% {
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+* {
+    --pp-box-shadow: #505050;
+}

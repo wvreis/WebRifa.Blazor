@@ -1,0 +1,63 @@
+﻿@rendermode InteractiveAuto
+
+@if (IsVisible) {
+    <div class="popup @fadeCssClass" @onkeydown="@((e) => CloseESC(e))">
+        <div class="popup-content @GetSizeClass()">
+            <div class="popup-header">
+                <label>@Label</label>
+
+                <button type="button" class="btn-toggle" @onclick="(() => ToggleVisibilityAsync())">
+                    Fechar
+                </button>
+            </div>
+
+            <div class="popup-body">
+                @ChildContent
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; }
+    [Parameter] public PopUpSize Size { get; set; } = PopUpSize.Medium;
+    [Parameter] public EventCallback IsVisibleChanged { get; set; }
+
+    #region VISIBILIDADE
+    public bool IsVisible { get; set; }
+    string fadeCssClass { get; set; } = string.Empty;
+
+    public async Task ToggleVisibilityAsync(bool? value = null)
+    {
+        var isVisible = value.HasValue ? (bool)value : !IsVisible;
+
+        fadeCssClass = isVisible switch { true => "bg-fade-in", _ => "bg-fade-out" };
+        StateHasChanged();
+
+        if (!isVisible) {
+            await Task.Delay(200);
+        }
+
+        IsVisible = isVisible;
+        await IsVisibleChanged.InvokeAsync();
+    }
+    #endregion
+
+    #region AÇÕES
+    async Task CloseESC(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") 
+            await ToggleVisibilityAsync();
+    }
+    #endregion
+
+    #region VALIDAÇÕES
+    string GetSizeClass() => Size switch {
+            PopUpSize.Small => "popup-sm",
+            PopUpSize.Medium => "popup-md",
+            PopUpSize.Large => "popup-lg", 
+            _ => "popup-md"
+        };
+    #endregion
+}

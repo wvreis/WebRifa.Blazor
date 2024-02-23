@@ -1,3 +1,4 @@
+using WebRifa.Blazor.Components.Common.PopUp;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
@@ -7,6 +8,7 @@ namespace WebRifa.Blazor.Components.Pages.Receipts;
 public partial class ReceiptsIndex() {
     public List<ReceiptDto>? Receipts { get; set; }
     public ReceiptsGetFilteredQuery GetFilteredQuery { get; set; } = new();
+    PopUp PopUp { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
