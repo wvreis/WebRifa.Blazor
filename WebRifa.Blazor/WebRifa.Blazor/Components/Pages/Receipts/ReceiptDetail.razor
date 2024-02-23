@@ -1,27 +1,42 @@
-﻿@page "/receipt/{id}"
+﻿@page "/receipt/{Id}"
+
+@using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
+
+@inject IReceiptBlazorService receiptService
+@inject NavigationManager navigationManager
 
 <PageTitle>Recibo de Rifa</PageTitle>
 
-<div class="coupon">
-    <div class="header">
-        <h2>Recibo</h2>
-    </div>
-    <div class="content">
-        <p><strong>Comprador:</strong> {{buyerName}}</p>
-        <p><strong>Descrição do Rifa:</strong> {{raffleDescription}}</p>
-        <p><strong>Números dos Tickets:</strong></p>
-        <ul>
+@if (IsLoading()) {
+    <p>Carregando...</p>
+}
+else {
+    <div class="coupon">
+        <div class="header">
+            <h2>Recibo</h2>
+        </div>
+        <div class="content">
+            <div class="field">
+                <p><strong>Comprador</strong></p>
+                <span>@Receipt?.BuyerName</span>
+            </div>
             
-            <li>To-do: ticketNumber</li>
-            
-        </ul>
-        <div class="qr-code">
-            <!-- QR code gerado a partir do ID -->
-            <img src="https://api.qrserver.com/v1/create-qr-code/?data={{id}}&amp;size=100x100" alt="QR Code">
+            <div class="field">
+                <p><strong>Descrição do Rifa</strong></p>
+                <span>@Receipt?.RaffleDescription</span>
+            </div>
+
+            <p><strong>Números dos Bilhetes</strong></p>
+            <ul>
+                @foreach (var number in Receipt?.TicketsNumbers ?? new()) {
+                    <li>@number</li>
+                }
+            </ul>
+            <div class="qr-code">
+                <!-- QR code gerado a partir do ID -->
+                <img src="@($"https://api.qrserver.com/v1/create-qr-code/?data={GetLinkToQRCode()}&amp;size=100x100")" alt="QR Code">
+            </div
         </div>
     </div>
-</div>
-
-@code {
-
 }

@@ -26,6 +26,8 @@
                     <ValidationSummary/>
 
                     <div class="raffle-input">
+                        <h1>Dados</h1>
+
                         <input 
                             placeholder="Rifa" 
                             id="raffleInput" 
@@ -39,12 +41,14 @@
                         </dataList>
 
                         @if (SelectedRaffle is not null) {
-                            <label>
-                                @($"Descrição: {SelectedRaffle.Description}")
-                            </label>
-                            <label>
-                                @($"Preço do Bilhete: {SelectedRaffle.TicketPrice}")
-                            </label>
+                            <span>
+                                <strong>@("Descrição: ")</strong>
+                                @($"{SelectedRaffle.Description}")
+                            </span>
+                            <span>
+                                <strong>@("Preço do Bilhete: ")</strong>
+                                @($"{SelectedRaffle.TicketPrice}")
+                            </span>
                         }
                     </div>                    
 
@@ -66,21 +70,23 @@
                             </dataList>
 
                             @if (SelectedBuyer is not null) {
-                                <label>
-                                    @($"Nome: {SelectedBuyer.Name}")
-                                </label>
-                                <label>
-                                    @($"Telefone: {SelectedBuyer.PhoneNumber}")
-                                </label>
+                                <span>
+                                    <strong>@("Nome: ")</strong>
+                                    @($"{SelectedBuyer.Name}")
+                                </span>
+                                <span>
+                                    <strong>@("Telefone: ")</strong>
+                                    @($"{SelectedBuyer.PhoneNumber}")
+
+                                </span>
                             }
                         </div>
                     }
 
                     <br/>
                     <div class="info-container">
-                        <p>Números selecionados</p>
-
                         @if (buyCommand.NumbersToBuy.Any()) {
+                            <p>Números selecionados</p>
                             <p>@string.Join(", ", buyCommand.NumbersToBuy)</p>
 
                             @if (SelectedBuyer is not null) {

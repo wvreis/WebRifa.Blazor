@@ -24,7 +24,7 @@ public class ReceiptRepository(
 
     public override async Task<Receipt> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Receipts
+        var result = await _context.Receipts
             .IgnoreAutoIncludes()            
             .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
@@ -32,7 +32,13 @@ public class ReceiptRepository(
                 .ThenInclude(x => x.Raffle)
             .Where(receipt => receipt.Id == id)
             .Where(receipt =>  !receipt.IsDeleted)
-            .SingleAsync();
+            .FirstOrDefaultAsync();
+
+        if (result is null) {
+            throw new ArgumentNullException();
+        }
+
+        return result;
     }
 
     public async Task<List<Receipt>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellationToken)

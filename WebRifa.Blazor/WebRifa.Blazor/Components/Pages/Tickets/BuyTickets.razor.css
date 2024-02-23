@@ -11,7 +11,6 @@
 }
 
 .info-container {
-    background-color: #eee;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -20,6 +19,7 @@
 
 .info-container > p {
     text-align: center;
+    font-weight: bold;
 }
 
 .info-container > label {
@@ -35,14 +35,14 @@
 .raffle-buyer-fields {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
-/*    border: 1px solid #ccc;*/
     padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
 }
 
 .raffle-numbers {
     flex: 0 0 66.666667%;
     max-width: 66.666667%;
-/*    border: 1px solid #ccc;*/
     padding: 10px;
 }
 
@@ -53,14 +53,20 @@
     margin-bottom: 10px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+.raffle-input span,
+.buyer-input span {
+    width: 100%;
+    display: block;
 }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
 
     button:hover {
         background-color: #0056b3;
@@ -86,6 +92,7 @@ li {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
 }
     
 .available-number:hover {
@@ -100,7 +107,7 @@ li {
     background-color: red;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
     li {
         width: calc(20% - 20px);
     }
