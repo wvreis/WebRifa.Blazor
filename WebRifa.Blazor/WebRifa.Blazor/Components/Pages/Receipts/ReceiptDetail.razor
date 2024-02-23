@@ -12,7 +12,7 @@
     <p>Carregando...</p>
 }
 else {
-    <div class="coupon">
+    <div class="receipt">
         <div class="header">
             <h2>Recibo</h2>
         </div>
@@ -23,7 +23,7 @@ else {
             </div>
             
             <div class="field">
-                <p><strong>Descrição do Rifa</strong></p>
+                <p><strong>Descrição da Rifa</strong></p>
                 <span>@Receipt?.RaffleDescription</span>
             </div>
 
@@ -34,9 +34,10 @@ else {
                 }
             </ul>
             <div class="qr-code">
-                <!-- QR code gerado a partir do ID -->
-                <img src="@($"https://api.qrserver.com/v1/create-qr-code/?data={GetLinkToQRCode()}&amp;size=100x100")" alt="QR Code">
-            </div
+                <img 
+                    src="@($"https://api.qrserver.com/v1/create-qr-code/?data={GetLinkToQRCode()}&amp;size=100x100")" 
+                    alt="QR Code">
+            </div>
         </div>
     </div>
 }

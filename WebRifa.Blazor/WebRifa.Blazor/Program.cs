@@ -111,8 +111,14 @@ builder.Services.AddControllers().AddNewtonsoftJson(opt => {
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(SwaggerGenConfig());
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseNpgsql(
+        connectionString, 
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -185,17 +191,17 @@ static Action<SwaggerGenOptions> SwaggerGenConfig()
 {
     return c => {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "APILicitaSystem", Version = "v1" });
-        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-            Description =
-                "JWT Authorization Header - utilizado com Bearer Authentication.\r\n\r\n" +
-                "Digite 'Bearer' [espaço] e então seu token no campo abaixo.\r\n\r\n" +
-                "Exemplo (informar sem as aspas): 'Bearer 12345abcdef'",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-        });
+        //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+        //    Description =
+        //        "JWT Authorization Header - utilizado com Bearer Authentication.\r\n\r\n" +
+        //        "Digite 'Bearer' [espaço] e então seu token no campo abaixo.\r\n\r\n" +
+        //        "Exemplo (informar sem as aspas): 'Bearer 12345abcdef'",
+        //    Name = "Authorization",
+        //    In = ParameterLocation.Header,
+        //    Type = SecuritySchemeType.ApiKey,
+        //    Scheme = "Bearer",
+        //    BearerFormat = "JWT",
+        //}); To-do: for while using cookies.
         c.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
@@ -204,7 +210,7 @@ static Action<SwaggerGenOptions> SwaggerGenConfig()
                     Reference = new OpenApiReference
                     {
                         Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
+                        Id = "Cookie"
                     }
                 },
                 Array.Empty<string>()
