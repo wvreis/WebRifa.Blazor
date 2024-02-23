@@ -65,20 +65,6 @@ public class RaffleService : IRaffleService
         }
     }
 
-    public async Task<int> CarryOutTheDrawAsync(CarryOutTheDrawCommand command, CancellationToken cancellationToken)
-    {
-        try {
-            _logger.LogInformation("Sorteio executado para a rifa {RaflleId}", command.RaflleId);
-            var drawnTicketNumber  = await _raffleCoreService.CarryOutTheDrawAsync(command.RaflleId, cancellationToken);
-            await _unitOfWork.CommitAsync(cancellationToken);
-            return drawnTicketNumber;
-        }
-        catch (Exception) {
-
-            throw;
-        }
-    }
-
     public async Task<HashSet<int>> GetFreeNumbersAsync(RaffleGetQuery query, CancellationToken cancellationToken)
     {
         try {

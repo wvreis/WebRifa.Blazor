@@ -13,6 +13,7 @@ using WebRifa.Blazor.Components.Account;
 using WebRifa.Blazor.Core.CoreServices;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
+using WebRifa.Blazor.Core.Entities.DrawEntities;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
 using WebRifa.Blazor.Core.Entities.TicketEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
@@ -40,19 +41,21 @@ builder.Services.AddTransient<ICustomUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<IBuyerBlazorService, BuyerBlazorService>();
 builder.Services.AddScoped<IRaffleBlazorService, RaffleBlazorService>();
 builder.Services.AddScoped<IReceiptBlazorService, ReceiptBlazorService>();
+builder.Services.AddScoped<IDrawBlazorServices, DrawBlazorService>();
 
 builder.Services.AddScoped<IBuyerRepository, BuyerRepository>();
 builder.Services.AddScoped<IRaffleRepository, RaffleRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 builder.Services.AddScoped<IBuyerTicketReceiptRepository, BuyerTicketReceiptRepository>();
+builder.Services.AddScoped<IDrawRepository, DrawRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped<IRaffleService, RaffleService>();
 builder.Services.AddScoped<ITicketService, TicketService>();    
-builder.Services.AddScoped<IDrawRepository, DrawRepository>();
 builder.Services.AddScoped<IReceiptService, ReceiptService>();
+builder.Services.AddScoped<IDrawService, DrawService>();
 
 builder.Services.AddScoped<IRaffleCoreService,  RaffleCoreService>();
 builder.Services.AddScoped<IReceiptCoreService, ReceiptCoreService>();
@@ -99,6 +102,27 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
                     .Select(ticket => ticket!.Number)
                     .OrderBy(number => number)
                     .ToList())) 
+        .ReverseMap();
+
+    cfg.CreateMap<Draw, DrawDto>()
+        .ForMember(
+            m => m.RaffleDescription,
+            map => map.MapFrom(prop =>
+                prop.Raffle != null ?
+                prop.Raffle.Description :
+                string.Empty))
+        .ForMember(
+            m => m.DrawnTicketNumber,
+            map => map.MapFrom(prop =>
+                prop.DrawnTicket != null ?
+                prop.DrawnTicket.Number :
+                0))
+        .ForMember(
+            m => m.DrawnTicketBuyerName,
+            map => map.MapFrom(prop =>
+                prop.DrawnTicket != null ?
+                prop.DrawnTicket.BuyerTicketReceipt.FirstOrDefault()!.Buyer!.Name : 
+                string.Empty))
         .ReverseMap();
 })
     .CreateMapper());

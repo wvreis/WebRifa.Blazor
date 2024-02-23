@@ -6,7 +6,6 @@ namespace WebRifa.Blazor.BlazorServices;
 
 public class BuyerBlazorService(HttpClient httpClient) : IBuyerBlazorService {
     private readonly HttpClient _httpClient = httpClient;
-
     const string baseURI = "api/buyers";
 
     public async Task<List<BuyerDto>> GetAllBuyersAsync(BuyerSearchQuery? buyerSearchQuery = null)

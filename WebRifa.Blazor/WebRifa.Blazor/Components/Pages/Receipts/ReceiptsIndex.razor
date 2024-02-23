@@ -1,7 +1,6 @@
 ﻿@page "/receipts"
 
 @using WebRifa.Blazor.BlazorServices
-@using WebRifa.Blazor.Components.Common.PopUp
 
 @attribute [Authorize]
 @rendermode InteractiveServer
@@ -38,7 +37,7 @@ else {
                     <td>
                         <button
                             class="btn btn-info"
-                            @onclick=@(() => PopUp.ToggleVisibilityAsync())>
+                            @onclick=@(() => ShowReceiptDetails(receipt.Id) )>
                             
                             Detalhes
                         </button>
@@ -52,10 +51,11 @@ else {
                     </td>
                 </tr>
 
-                <PopUp Label="Recibo" Size="PopUpSize.Small" @ref=PopUp>
-                    <ReceiptDetail Id="@receipt.Id.ToString()"/>
-                </PopUp> 
             }
         </tbody>
     </table>
+
+    <PopUp Label="Recibo" Size="PopUpSize.Small" @ref=PopUp>
+        <ReceiptDetail Id="@SelectedReceiptId"/>
+    </PopUp> 
 }

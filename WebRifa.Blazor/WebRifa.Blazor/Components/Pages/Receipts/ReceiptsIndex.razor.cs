@@ -7,8 +7,9 @@ using WebRifa.Blazor.Helpers;
 namespace WebRifa.Blazor.Components.Pages.Receipts;
 public partial class ReceiptsIndex() {
     public List<ReceiptDto>? Receipts { get; set; }
+    public string SelectedReceiptId { get; set; }
     public ReceiptsGetFilteredQuery GetFilteredQuery { get; set; } = new();
-    PopUp PopUp { get; set; }
+    PopUp? PopUp { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,6 +31,12 @@ public partial class ReceiptsIndex() {
         if (result.IsSuccessStatusCode) {
             Receipts?.Remove(Receipts.FirstOrDefault(r => r.Id == command.ReceiptId)!);
         }
+    }
+
+    async Task ShowReceiptDetails(Guid receitpId)
+    {
+        SelectedReceiptId = receitpId.ToString();
+        await PopUp!.ToggleVisibilityAsync();
     }
 
     string GetNumbersAsString(ReceiptDto receipt) =>

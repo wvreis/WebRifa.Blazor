@@ -13,64 +13,55 @@ namespace WebRifa.Blazor.Controllers;
 public class RafflesController(
     ILogger<RafflesController> logger,
     IRaffleService raffleService) : ControllerBase {
-    private readonly ILogger<RafflesController> _logger = logger;
-    private readonly IRaffleService _raffleService = raffleService;
 
     [HttpGet]
     public async Task<ActionResult<List<RaffleDto>>> SearchRaffleAsync([FromQuery] RaffleSearchQuery query, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(SearchRaffleAsync)} executado");
-        return await _raffleService.SearchRaffleAsync(query, cancellationToken);
+        logger.LogInformation($"{nameof(SearchRaffleAsync)} executado");
+        return await raffleService.SearchRaffleAsync(query, cancellationToken);
     }
 
     [HttpGet]
     public async Task<ActionResult<RaffleDto>> GetRaffleAsync([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(GetRaffleAsync)} executado");
-        return await _raffleService.GetRaffleAsync(query, cancellationToken);
+        logger.LogInformation($"{nameof(GetRaffleAsync)} executado");
+        return await raffleService.GetRaffleAsync(query, cancellationToken);
     }
 
     [HttpGet]
     public async Task<ActionResult<HashSet<int>>> GetFreeNumbersAsync([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(GetFreeNumbersAsync)} executado");
-        return await _raffleService.GetFreeNumbersAsync(query, cancellationToken);
+        logger.LogInformation($"{nameof(GetFreeNumbersAsync)} executado");
+        return await raffleService.GetFreeNumbersAsync(query, cancellationToken);
     }
 
     [HttpPost]
     public async Task<ActionResult<Guid>> AddRaffleAsync([FromBody] RaffleDto raffleDto, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(AddRaffleAsync)} executado");
-        return await _raffleService.AddRaffleAsync(raffleDto, cancellationToken);
+        logger.LogInformation($"{nameof(AddRaffleAsync)} executado");
+        return await raffleService.AddRaffleAsync(raffleDto, cancellationToken);
     }
 
     [HttpPost]
     public async Task<ActionResult<Guid>> BuyRaffleTicketsAsync([FromBody] BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(BuyRaffleTicketsAsync)} executado");
-        return await _raffleService.BuyRaffleTicketsAsync(command, cancellationToken);
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<int>> CarryOutTheDrawAsync([FromBody] CarryOutTheDrawCommand command, CancellationToken cancellationToken)
-    {
-        _logger.LogInformation($"{nameof(CarryOutTheDrawAsync)} executado");
-        return await _raffleService.CarryOutTheDrawAsync(command, cancellationToken);
+        logger.LogInformation($"{nameof(BuyRaffleTicketsAsync)} executado");
+        return await raffleService.BuyRaffleTicketsAsync(command, cancellationToken);
     }
 
     [HttpPut]
     public async Task<ActionResult> UpdateRaffleAsync([FromBody] RaffleDto raffleDto, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(UpdateRaffleAsync)} executado");
-        await _raffleService.UpdateRaffleAsync(raffleDto, cancellationToken);
+        logger.LogInformation($"{nameof(UpdateRaffleAsync)} executado");
+        await raffleService.UpdateRaffleAsync(raffleDto, cancellationToken);
         return Ok();
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteRaffleAsync([FromBody] RaffleDto raffleDto, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"{nameof(DeleteRaffleAsync)} executado");
-        await _raffleService.DeleteRaffleAsync(raffleDto, cancellationToken);
+        logger.LogInformation($"{nameof(DeleteRaffleAsync)} executado");
+        await raffleService.DeleteRaffleAsync(raffleDto, cancellationToken);
         return NoContent();
     }
 }
