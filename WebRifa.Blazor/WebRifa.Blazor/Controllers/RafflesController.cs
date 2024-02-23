@@ -45,7 +45,7 @@ public class RafflesController(
     }
 
     [HttpPost]
-    public async Task<ActionResult<bool>> BuyRaffleTicketsAsync([FromBody] BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
+    public async Task<ActionResult<Guid>> BuyRaffleTicketsAsync([FromBody] BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(BuyRaffleTicketsAsync)} executado");
         return await _raffleService.BuyRaffleTicketsAsync(command, cancellationToken);

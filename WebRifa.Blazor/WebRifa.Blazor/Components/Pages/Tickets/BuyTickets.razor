@@ -9,6 +9,7 @@
 @inject IBuyerBlazorService _buyerService
 @inject IRaffleBlazorService _raffleService
 @inject NavigationManager _navigationManager
+@inject IJSRuntime JS
 
 @rendermode InteractiveServer
 
@@ -132,11 +133,11 @@
 
         var result = await _raffleService.BuyRaffleTicketsAsync(buyCommand);
         if (result.IsSuccessStatusCode) {
-            var resultValue = await result.Content.ReadAsStringAsync(); //To-do: change back-end to retur Receipt Id.
-            _navigationManager.NavigateTo($"receipts");
+            string resultValue = await result.Content.ReadAsStringAsync();
+            _navigationManager.NavigateTo($"receipt/{resultValue.RemoveQuotes()}");
         }
         else {
-
+            
         }
     }
 

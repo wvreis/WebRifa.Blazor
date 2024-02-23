@@ -48,14 +48,16 @@ public class RaffleService : IRaffleService
         }
     }
 
-    public async Task<bool> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
     {
         try {
-            await _raffleCoreService.BuyRaffleTicketsAsync(command, cancellationToken);
+            var result = await _raffleCoreService.BuyRaffleTicketsAsync(command, cancellationToken);
 
             _logger.LogInformation("Compra de Tickets Executada.");
 
-            return await _unitOfWork.CommitAsync(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
+
+            return result;
         }
         catch (Exception) {
 

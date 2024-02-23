@@ -1,7 +1,7 @@
 ﻿namespace WebRifa.Blazor.Core.Interfaces.Repositories;
 public interface IBaseRepository<T> where T : BaseEntity
 {
-    Task AddAsync(T entity, CancellationToken cancellationToken);
+    Task<Guid> AddAsync(T entity, CancellationToken cancellationToken);
     Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken);
     Task UpdateAsync(T entity, CancellationToken cancellationToken);
     Task DeleteAsync(T entity, CancellationToken cancellationToken);

@@ -8,9 +8,10 @@ public class BaseRepository<T>(
     ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity {
     protected readonly ApplicationDbContext _context = context;
 
-    public virtual async Task AddAsync(T entity, CancellationToken cancellationToken)
+    public virtual async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken)
     {        
         await _context.AddAsync(entity, cancellationToken);
+        return entity.Id;
     }
 
     public virtual async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken)

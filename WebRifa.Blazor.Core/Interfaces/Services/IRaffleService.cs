@@ -10,7 +10,7 @@ public interface IRaffleService {
     Task<Guid> AddRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
     Task UpdateRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
     Task<HashSet<int>> GetFreeNumbersAsync(RaffleGetQuery query, CancellationToken cancellationToken);
-    Task<bool> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken);
+    Task<Guid> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken);
     Task<int> CarryOutTheDrawAsync(CarryOutTheDrawCommand command, CancellationToken cancellationToken);
     Task DeleteRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
 }

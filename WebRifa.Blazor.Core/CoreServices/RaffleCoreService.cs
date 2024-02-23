@@ -26,7 +26,7 @@ public class RaffleCoreService : IRaffleCoreService {
         _buyerTicketReceiptRepository = buyerTicketReceiptRepository;
     }
 
-    public async Task BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken)
     {
         var freeNumbers = await GetFreeNumbersAsync(command.RaffleId!.Value, cancellationToken);
         bool areAllNumbersAvailable = command.NumbersToBuy.All(n => freeNumbers.Contains(n));
@@ -47,7 +47,7 @@ public class RaffleCoreService : IRaffleCoreService {
             receipt.AddBuyerTicketReceipt(new BuyerTicketReceipt(buyer, ticket, receipt));
         }
 
-        await _receiptRepository.AddAsync(receipt, cancellationToken);
+        return await _receiptRepository.AddAsync(receipt, cancellationToken);
     }
 
     public async Task<int> CarryOutTheDrawAsync(Guid raffleId, CancellationToken cancellationToken)
