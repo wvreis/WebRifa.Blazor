@@ -1,0 +1,38 @@
+﻿@page "/carryoutdraw"
+
+@using WebRifa.Blazor.BlazorServices
+
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+@inject IRaffleBlazorService raffleService
+@inject IDrawBlazorServices drawService
+
+<h3>Realizar Sorteio</h3>
+
+@if (Raffles is null) {
+    <p>Carregando...</p>
+}
+else {
+    <div class="container">
+        <input placeholder="Rifa"
+               id="raffleInput"
+               list="raffles"
+               @onchange="RaffleInputOnChange" />
+
+        <dataList id="raffles">
+            @foreach (var raffle in Raffles ?? new()) {
+                <option value="@raffle.Id">@raffle.Description</option>
+            }
+        </dataList>
+
+        <button class="btn btn-primary" @onclick="CarryOutTheDraw">
+            Realizar Sorteio
+        </button>
+
+        @if (DrawnNumber.HasValue) {
+            <p>Número Sorteado</p>
+            <p>@DrawnNumber</p>
+        }
+    </div>
+}
