@@ -9,7 +9,7 @@ public class DrawBlazorService(HttpClient httpClient) : IDrawBlazorServices {
     public async Task<List<DrawDto>> GetAllDrawsAsync()
     {
         return await httpClient.GetFromJsonAsync<List<DrawDto>>(
-            $"{baseURI}/Draws/GetAllDrawsAsync") ?? new();
+            $"{baseURI}/GetAllDraws") ?? new();
     }
 
     public async Task<HttpResponseMessage> CarryOutTheDrawAsync(CarryOutTheDrawCommand command)

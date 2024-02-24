@@ -1,3 +1,41 @@
-﻿<h3>Draws</h3>
+﻿@page "/draws"
 
+@using WebRifa.Blazor.BlazorServices
 
+@attribute [Authorize]
+@rendermode InteractiveAuto
+
+@inject IDrawBlazorServices drawService
+
+<h3>Sorteios</h3>
+
+@if (Draws is null) {
+    <p>Carregando...</p>
+}
+else if (!Draws.Any()) {
+    <p>Não há Sorteios Realizados.</p>
+}
+else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descrição da Rifa</th>
+                <th>Comprador</th>
+                <th>Número Vencedor</th>
+                <th>Realizado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var draw in Draws) {
+                <tr>
+                    <td>@draw.Id</td>
+                    <td>@draw.RaffleDescription</td>
+                    <td>@draw.DrawnTicketBuyerName</td>
+                    <td>@GetNumberAsString(draw)</td>
+                    <td>@draw.RaffledAt.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
