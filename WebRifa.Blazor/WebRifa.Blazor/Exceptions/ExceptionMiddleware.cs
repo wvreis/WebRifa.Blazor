@@ -1,30 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 
 namespace WebRifa.Blazor.Exceptions;
-public class ExceptionMiddleware {
-
-    private readonly RequestDelegate _next;
-    private readonly ILogger<ExceptionMiddleware> _logger;
-
-    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
-
+public class ExceptionMiddleware(
+    RequestDelegate next,
+    ILogger<ExceptionMiddleware> logger) {
     public async Task InvokeAsync(HttpContext context)
     {
         try {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex) {
-            await HandleExceptionAsync(context, ex);
+            bool isApiException = context.Request.Path.Value!.StartsWith("/api/");
+            var problemDetails = GetProblemDetail(context, ex);
+
+            if (isApiException) {
+                await HandleExceptionAsync(context, ex);
+            }
+            else {
+                context.Response.Redirect($"/Error?" +
+                $"&title={Uri.EscapeDataString(problemDetails.Title)}" +
+                $"&detail={Uri.EscapeDataString(problemDetails.Detail)}");
+            }
         }
     }
-
     private Task HandleExceptionAsync(HttpContext context, Exception ex)
+    {
+        ProblemDetails response = GetProblemDetail(context, ex);
+        return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+    }
+    private ProblemDetails GetProblemDetail(HttpContext context, Exception ex)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = GetStatusCodeAsync(ex);
@@ -36,9 +43,9 @@ public class ExceptionMiddleware {
             Status = GetStatusCodeAsync(ex)
         };
 
-        _logger.LogError(JsonConvert.SerializeObject(response, Formatting.Indented));
-
-        return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+        logger.LogError(JsonConvert.SerializeObject(response, Formatting.Indented));
+        context.Items["ErrorDetails"] = response;
+        return response;
     }
 
     int GetStatusCodeAsync(Exception ex)

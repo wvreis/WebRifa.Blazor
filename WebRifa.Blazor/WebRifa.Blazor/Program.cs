@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -23,6 +24,7 @@ using WebRifa.Blazor.Data;
 using WebRifa.Blazor.Exceptions;
 using WebRifa.Blazor.Repositories;
 using WebRifa.Blazor.Services;
+using WebRifa.Blazor.Services.ErrorServices;
 using WebRifa.Blazor.Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
