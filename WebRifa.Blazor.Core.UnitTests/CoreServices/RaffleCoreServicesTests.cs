@@ -45,7 +45,7 @@ public class RaffleCoreServicesTests
 
         _receiptRepositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<Receipt>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(new Guid());
 
         _raffleRepositoryMock
             .Setup(repo => repo.GetUsedNumbersAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
@@ -81,7 +81,7 @@ public class RaffleCoreServicesTests
 
         _receiptRepositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<Receipt>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(new Guid());
 
         _raffleRepositoryMock
             .Setup(repo => repo.GetUsedNumbersAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
@@ -128,7 +128,7 @@ public class RaffleCoreServicesTests
 
         _drawRepositoryMock
             .Setup(repo => repo.AddAsync(It.IsAny<Draw>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(new Guid());
 
         RaffleCoreService service = BuildCoreService();
 
