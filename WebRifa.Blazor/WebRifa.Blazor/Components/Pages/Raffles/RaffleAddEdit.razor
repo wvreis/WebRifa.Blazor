@@ -88,7 +88,7 @@ else {
             _navigationManager.NavigateTo("raffles");
         }
         else {
-            //to-do: put action with card pop up.
+            await JS.ShowErrorMessage(result.ReasonPhrase!);
         }
     }
 

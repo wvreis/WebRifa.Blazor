@@ -18,3 +18,13 @@ function showConfirmationMessage(title, message, acceptButtonMessage, declineBut
         });
     });
 }
+
+function showErrorMessage(title, message) {
+    return new Promise(() => {
+        Swal.fire({
+            icon: "error",
+            title: title,
+            text: message,
+        });
+    });
+}

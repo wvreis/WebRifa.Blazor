@@ -1,5 +1,7 @@
-﻿namespace WebRifa.Blazor.Core.Interfaces.Repositories;
+﻿using WebRifa.Blazor.Core.Requests.Queries.Draw;
 
-public interface IDrawRepository : IBaseRepository<Draw> 
-{
+namespace WebRifa.Blazor.Core.Interfaces.Repositories;
+
+public interface IDrawRepository : IBaseRepository<Draw> {
+    Task<bool> WasRaffleDrawDone(Guid raffleId, CancellationToken cancellationToken);
 }

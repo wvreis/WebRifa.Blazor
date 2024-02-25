@@ -229,7 +229,7 @@ static Action<SwaggerGenOptions> SwaggerGenConfig()
         //    Type = SecuritySchemeType.ApiKey,
         //    Scheme = "Bearer",
         //    BearerFormat = "JWT",
-        //}); To-do: for while using cookies.
+        //}); To-do: Create JWT Authentication. For while using cookies.
         c.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands;
+using WebRifa.Blazor.Helpers;
 
 namespace WebRifa.Blazor.Components.Pages.Draws;
 public partial class CarryOutDraw {
@@ -24,7 +26,7 @@ public partial class CarryOutDraw {
             StateHasChanged();
         }
         else {
-            //To-do: create SWAL to errors.
+            await JS.ShowErrorMessage(result.ReasonPhrase!);
         }
 
     }

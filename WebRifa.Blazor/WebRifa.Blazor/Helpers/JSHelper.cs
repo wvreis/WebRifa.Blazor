@@ -17,4 +17,15 @@ public static class JSHelper {
             acceptButtonMessage, 
             declineButtonMessage);
     }
+
+    public static ValueTask ShowErrorMessage(
+        this IJSRuntime runtime,
+        string message, 
+        string title = "Oops...")
+    {
+        return runtime.InvokeVoidAsync(
+            "showErrorMessage", 
+            title, 
+            message);
+    }
 }

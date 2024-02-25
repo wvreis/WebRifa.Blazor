@@ -2,8 +2,8 @@
 using WebRifa.Blazor.Core.Entities.DrawEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
+using WebRifa.Blazor.Core.Requests.Queries.Draw;
 using WebRifa.Blazor.Data;
-using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 
@@ -20,5 +20,13 @@ public class DrawRepository(
             .Include(x => x.Raffle)
             .Where(draw => !draw.IsDeleted)
             .ToListAsync();
+    }
+
+    public async Task<bool> WasRaffleDrawDone(Guid raffleId, CancellationToken cancellationToken)
+    {
+        return await _context.Draws
+            .AnyAsync(
+                draw => draw.RaffleId == raffleId,
+                cancellationToken);
     }
 }

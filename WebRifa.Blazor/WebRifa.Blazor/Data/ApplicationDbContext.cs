@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using WebRifa.Blazor.Core.Common;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Entities.DrawEntities;
@@ -103,6 +102,14 @@ public class ApplicationDbContext(
 
         #region DRAW
         builder.Entity<Draw>().HasKey(x => x.Id);
+
+        builder.Entity<Draw>()
+            .HasIndex(x => new
+            {
+                x.RaffleId,
+                x.IsDeleted
+            })
+            .IsUnique();
 
         builder.Entity<Draw>().HasQueryFilter(x => !x.IsDeleted);
 

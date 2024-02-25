@@ -1,11 +1,15 @@
 ﻿@page "/buyer"
 @page "/buyer/{Id}"
-@attribute [Authorize]
-@rendermode InteractiveServer
+
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
 @using WebRifa.Blazor.Core.Requests.Queries.Buyer
+
+@attribute [Authorize]
+@rendermode InteractiveServer
+
 @inject IBuyerBlazorService _buyerService
+@inject IJSRuntime JS
 @inject NavigationManager _navigationManager
 
 <h3>@GetPageHeader() Comprador</h3>
@@ -74,7 +78,7 @@ else {
             _navigationManager.NavigateTo("buyers");
         }
         else {
-            //to-do: put action with card pop up.
+            await JS.ShowErrorMessage(result.ReasonPhrase!);
         }
     }
 

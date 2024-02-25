@@ -54,6 +54,11 @@ public class RaffleCoreService : IRaffleCoreService {
     {
         Raffle raffle = await _raffleRepository.GetAsync(raffleId, cancellationToken);
 
+        bool wasDrawDone = await _drawRepository.WasRaffleDrawDone(raffleId, cancellationToken);
+        if (wasDrawDone) {
+            throw new InvalidOperationException("O sorteio dessa Rifa já foi realizado.");
+        }
+
         var usedNumbers = await GetUsedNumbersAsync(raffleId, cancellationToken);
         var randomIndex = new Random().Next(0, usedNumbers.Count);
 
