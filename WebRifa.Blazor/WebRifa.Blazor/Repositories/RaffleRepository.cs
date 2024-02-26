@@ -25,6 +25,13 @@ public class RaffleRepository(
         return result;
     }
 
+    public async Task<List<Raffle>> GetDrawPendingRaffle(CancellationToken cancellationToken)
+    {
+        return await _context.Raffles
+            .Where(raffle => raffle.CurrentState == Core.Enums.RaffleStates.DrawPending)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<HashSet<int>> GetUsedNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
     {        
         var result = await _context.Tickets

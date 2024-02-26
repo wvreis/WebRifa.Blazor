@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebRifa.Blazor.Core.Enums;
 
 namespace WebRifa.Blazor.Core.Dtos;
 public class RaffleDto {
@@ -10,6 +11,8 @@ public class RaffleDto {
     
     [Range(.01, double.MaxValue, ErrorMessage = "O Preço do Bilhete deve ser informado.")]
     public decimal TicketPrice { get; set; }
+
+    public RaffleStates CurrentState { get; set; }
     public string Observations { get; set; } = string.Empty;
 
     DateTime drawDateTime;

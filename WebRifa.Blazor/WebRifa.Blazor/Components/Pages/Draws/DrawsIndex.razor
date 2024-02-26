@@ -9,6 +9,10 @@
 
 <h3>Sorteios</h3>
 
+<button class="btn btn-primary" @onclick="TogglePopUp">
+    Realizar Sorteio
+</button>
+
 @if (Draws is null) {
     <p>Carregando...</p>
 }
@@ -38,4 +42,8 @@ else {
             }
         </tbody>
     </table>
+
+    <PopUp Label="Sorteio" IsVisibleChanged="LoadDraws" @ref="PopUp">
+        <CarryOutDraw/>
+    </PopUp>
 }

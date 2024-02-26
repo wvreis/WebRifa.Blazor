@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands;
 using WebRifa.Blazor.Helpers;
@@ -13,7 +12,7 @@ public partial class CarryOutDraw {
 
     protected async override Task OnInitializedAsync()
     {
-        Raffles = await raffleService.GetAllRafflesAsync();
+        Raffles = await raffleService.GetDrawPendingRaffleAsync();
     }
 
     public async Task CarryOutTheDraw()

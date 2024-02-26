@@ -27,7 +27,8 @@ else {
                 <th>Descrição</th>
                 <th>Preço do Bilhete</th>
                 <th>Total de Bilhetes</th>
-                <th>Data do Sorteio</th>
+                <th>Data para Sorteio</th>
+                <th>Situação do Sorteio</th>
                 <th></th>
             </tr>
         </thead>
@@ -38,6 +39,7 @@ else {
                     <td>@raffle.TicketPrice</td>
                     <td>@raffle.TotalNumberOfTickets</td>
                     <td>@raffle.DrawDateTime.ToShortDateString()</td>
+                    <td>@raffle.CurrentState</td>
                     <td>
                         <a href="@GetEditLink(raffle)">Editar</a>
                     </td>
@@ -47,14 +49,4 @@ else {
     </table>
 }
 
-@code {
-    public List<RaffleDto>? Raffles { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        Raffles = await _raffleService.GetAllRafflesAsync();
-    }
-
-    public string GetEditLink(RaffleDto raffleDto) =>
-        $"/raffle/{raffleDto.Id}";
-}

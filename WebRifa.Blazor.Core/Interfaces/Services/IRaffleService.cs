@@ -12,4 +12,5 @@ public interface IRaffleService {
     Task<HashSet<int>> GetFreeNumbersAsync(RaffleGetQuery query, CancellationToken cancellationToken);
     Task<Guid> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command, CancellationToken cancellationToken);
     Task DeleteRaffleAsync(RaffleDto raffleDto, CancellationToken cancellationToken);
+    Task<List<RaffleDto>> GetDrawPendingRaffleAsync(CancellationToken cancellationToken);
 }

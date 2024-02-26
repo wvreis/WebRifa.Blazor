@@ -9,6 +9,7 @@ public interface IRaffleBlazorService {
     Task<RaffleDto> GetRaffleAsync(RaffleGetQuery RaffleGetQuery);
     Task<HttpResponseMessage> AddRaffleAsync(RaffleDto RaffleDto);
     Task<HttpResponseMessage> UpdateRaffleAsync(RaffleDto RaffleDto);
-    Task<List<int>> GetFreeNumbers(RaffleGetQuery raffleGetQuery);
+    Task<List<int>> GetFreeNumbersAsync(RaffleGetQuery raffleGetQuery);
     Task<HttpResponseMessage> BuyRaffleTicketsAsync(BuyRaffleTicketsCommand command);
+    Task<List<RaffleDto>> GetDrawPendingRaffleAsync(RaffleSearchQuery? raffleSearchQuery = null);
 }

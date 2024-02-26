@@ -38,6 +38,9 @@ public class ApplicationDbContext(
         builder.Entity<Raffle>()
             .Navigation(x => x.Tickets)
             .AutoInclude();
+
+        builder.Entity<Raffle>()
+            .Ignore(x => x.State);
         #endregion
 
         #region BUYER

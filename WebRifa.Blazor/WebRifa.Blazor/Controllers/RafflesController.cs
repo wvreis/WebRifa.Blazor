@@ -29,6 +29,13 @@ public class RafflesController(
     }
 
     [HttpGet]
+    public async Task<ActionResult<List<RaffleDto>>> GetDrawPendingRaffleAsync([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
+    {
+        logger.LogInformation($"{nameof(GetDrawPendingRaffleAsync)} executado");
+        return await raffleService.GetDrawPendingRaffleAsync(cancellationToken);
+    }
+
+    [HttpGet]
     public async Task<ActionResult<HashSet<int>>> GetFreeNumbersAsync([FromQuery] RaffleGetQuery query, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(GetFreeNumbersAsync)} executado");

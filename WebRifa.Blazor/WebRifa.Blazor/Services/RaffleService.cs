@@ -92,6 +92,21 @@ public class RaffleService : IRaffleService
         }
     }
 
+    public async Task<List<RaffleDto>> GetDrawPendingRaffleAsync(CancellationToken cancellationToken)
+    {
+        try {
+            var raffles = await _raffleRepository.GetDrawPendingRaffle(cancellationToken);
+
+            _logger.LogInformation($"{nameof(GetDrawPendingRaffleAsync)} executado.");
+
+            return _mapper?.Map<List<Raffle>, List<RaffleDto>>(raffles) ?? throw new Exception();
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
     public async Task<List<RaffleDto>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         try {

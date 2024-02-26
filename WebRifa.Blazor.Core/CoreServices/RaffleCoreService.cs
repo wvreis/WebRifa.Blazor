@@ -83,6 +83,8 @@ public class RaffleCoreService : IRaffleCoreService {
         Draw draw = new(drawnTicket, raffle);
 
         await _drawRepository.AddAsync(draw, cancellationToken);
+        raffle.SetAsFinished();
+        await _raffleRepository.UpdateAsync(raffle, cancellationToken);
 
         return drawnTicketNumber;
     }

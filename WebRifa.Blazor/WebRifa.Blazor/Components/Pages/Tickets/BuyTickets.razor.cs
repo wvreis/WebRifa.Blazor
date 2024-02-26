@@ -15,7 +15,7 @@ public partial class BuyTickets {
 
     protected override async Task OnInitializedAsync()
     {
-        Raffles = await _raffleService.GetAllRafflesAsync();
+        Raffles = await _raffleService.GetDrawPendingRaffleAsync();
         Buyers = await _buyerService.GetAllBuyersAsync();
     }
 
@@ -43,7 +43,7 @@ public partial class BuyTickets {
         Guid.TryParse(args.Value.ToString(), out Guid raffleId);
         SelectedRaffle = Raffles.First(x => x.Id == raffleId);
         buyCommand.RaffleId = SelectedRaffle.Id;
-        FreeNumbers = await _raffleService.GetFreeNumbers(new() { RaffleId = raffleId });
+        FreeNumbers = await _raffleService.GetFreeNumbersAsync(new() { RaffleId = raffleId });
         Numbers = Enumerable.Range(1, SelectedRaffle.TotalNumberOfTickets).ToList();
         StateHasChanged();
     }
