@@ -20,12 +20,15 @@ public partial class DrawsIndex {
 
     async Task LoadDraws()
     {
-        if (PopUp is not null && PopUp.IsVisible) {
+        if (IsPopUpVisible()) {
             return;
         }
 
         Draws = await drawService.GetAllDrawsAsync();
     }
+
+    bool IsPopUpVisible() => 
+        PopUp is not null && PopUp.IsVisible;
 
     string GetNumberAsString(DrawDto draw) => 
         draw.DrawnTicketNumber.ToString();
