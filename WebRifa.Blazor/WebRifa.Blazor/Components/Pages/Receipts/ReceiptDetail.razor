@@ -5,6 +5,7 @@
 
 @inject IReceiptBlazorService receiptService
 @inject NavigationManager navigationManager
+@inject IJSRuntime JS
 
 <PageTitle>Recibo de Rifa</PageTitle>
 
@@ -12,7 +13,7 @@
     <p>Carregando...</p>
 }
 else {
-    <div class="receipt">
+    <div class="receipt" id="@ReceiptElementId">
         <div class="header">
             <h2>Recibo</h2>
         </div>
@@ -39,5 +40,14 @@ else {
                     alt="QR Code">
             </div>
         </div>
+
+        <div class="do-not-print">
+            <button @onclick="Export"
+                    class="btn btn-secondary">
+
+                <i class="bi bi-share-fill" />
+            </button>
+        </div>
     </div>
+
 }

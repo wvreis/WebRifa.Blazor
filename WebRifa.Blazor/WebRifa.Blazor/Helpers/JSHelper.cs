@@ -28,4 +28,15 @@ public static class JSHelper {
             title, 
             message);
     }
+
+    public static ValueTask ExportToPDF(
+        this IJSRuntime runtime,
+        string contentId,
+        string fileName)
+    {
+        return runtime.InvokeVoidAsync(
+            "exportToPDF",
+            contentId,
+            fileName);
+    }
 }
