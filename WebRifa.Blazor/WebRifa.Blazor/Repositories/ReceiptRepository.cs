@@ -41,6 +41,26 @@ public class ReceiptRepository(
         return result;
     }
 
+    public async Task<Receipt> GetPublicAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _context.Receipts
+            .IgnoreQueryFilters()
+            .IgnoreAutoIncludes()
+            .Include(x => x.BuyerTicketReceipts)
+                .ThenInclude(x => x.Buyer)
+            .Include(x => x.Tickets)
+                .ThenInclude(x => x.Raffle)
+            .Where(receipt => receipt.Id == id)
+            .Where(receipt => !receipt.IsDeleted)
+            .FirstOrDefaultAsync();
+
+        if (result is null) {
+            throw new ArgumentNullException();
+        }
+
+        return result;
+    }
+
     public async Task<List<Receipt>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Receipt, bool>> buyerIdFilter = receipt =>

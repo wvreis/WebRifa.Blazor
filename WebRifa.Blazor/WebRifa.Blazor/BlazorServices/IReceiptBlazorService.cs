@@ -9,4 +9,5 @@ public interface IReceiptBlazorService {
     Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query);
     Task<ReceiptDto> GetReceiptAsync(ReceiptGetQuery query);
     Task<HttpResponseMessage> DeleteReceiptAsync(ReceiptDeleteCommand command);
+    Task<ReceiptDto> GetPublicReceiptAsync(ReceiptGetQuery query);
 }

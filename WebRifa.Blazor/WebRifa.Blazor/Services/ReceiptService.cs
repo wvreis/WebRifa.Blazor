@@ -48,6 +48,19 @@ public class ReceiptService(
         }
     }
 
+    public async Task<ReceiptDto> GetPublicReceiptAsync(ReceiptGetQuery query, CancellationToken cancellation)
+    {
+        try {
+            var receipt = await _receiptRepository.GetPublicAsync(query.ReceiptId, cancellation);
+            _logger.LogInformation($"{nameof(GetPublicReceiptAsync)} foi executado.");
+            return _mapper.Map<ReceiptDto>(receipt) ?? throw new NullReferenceException();
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
     public async Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellation)
     {
         try {
@@ -86,4 +99,5 @@ public class ReceiptService(
             throw;
         }
     }
+
 }

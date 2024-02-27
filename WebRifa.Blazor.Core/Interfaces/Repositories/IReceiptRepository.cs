@@ -6,4 +6,5 @@ public interface IReceiptRepository : IBaseRepository<Receipt>
 {
     Task<List<Receipt>> GetReceiptsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken);
     Task<List<Receipt>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellationToken);
+    Task<Receipt> GetPublicAsync(Guid id, CancellationToken cancellationToken);
 }

@@ -29,6 +29,12 @@ public class ReceiptBlazorService(
             $"{baseURI}/GetReceipt" +
             $"{QueryStringBuilderHelper.GenerateQueryString(query)}") ?? new();
     }
+    public async Task<ReceiptDto> GetPublicReceiptAsync(ReceiptGetQuery query)
+    {
+        return await httpClient.GetFromJsonAsync<ReceiptDto>(
+            $"{baseURI}/GetPublicReceipt" +
+            $"{QueryStringBuilderHelper.GenerateQueryString(query)}") ?? new();
+    }
 
     public async Task<HttpResponseMessage> DeleteReceiptAsync(ReceiptDeleteCommand command)
     {

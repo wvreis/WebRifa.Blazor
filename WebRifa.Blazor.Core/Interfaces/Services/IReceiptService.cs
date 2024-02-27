@@ -7,6 +7,7 @@ namespace WebRifa.Blazor.Core.Interfaces.Services;
 public interface IReceiptService {
     Task<List<ReceiptDto>> GetAllReceiptsAsync(CancellationToken cancellation);
     Task<ReceiptDto> GetReceiptAsync(ReceiptGetQuery query, CancellationToken cancellation);
+    Task<ReceiptDto> GetPublicReceiptAsync(ReceiptGetQuery query, CancellationToken cancellation);
     Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellation);
     Task<List<ReceiptDto>> GetReceiptsFromRaffleAsync(RaffleGetQuery query, CancellationToken cancellation);
     Task DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation);

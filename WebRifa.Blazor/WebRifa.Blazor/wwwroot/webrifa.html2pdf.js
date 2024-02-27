@@ -5,10 +5,6 @@ function exportToPDF(contentId, fileName) {
             .set({
                 margin: 0,
                 filename: `${fileName}.pdf`,
-                image: {
-                    type: "jpeg",
-                    quality: 0.9,
-                },
             })
             .from(element)
             .save();

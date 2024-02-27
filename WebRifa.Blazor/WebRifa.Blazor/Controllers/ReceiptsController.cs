@@ -30,13 +30,21 @@ public class ReceiptsController(
         return await _receiptService.GetReceiptAsync(query, cancellationToken);
     }
 
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<ActionResult<ReceiptDto>> GetPublicReceipt([FromQuery] ReceiptGetQuery query, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(GetPublicReceipt)} executado.");
+        return await _receiptService.GetPublicReceiptAsync(query, cancellationToken);  
+    }
+
     [HttpGet]
     public async Task<ActionResult<List<ReceiptDto>>> GetFilteredReceiptsAsync([FromQuery] ReceiptsGetFilteredQuery query, CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(GetFilteredReceiptsAsync)} executado.");
         return await _receiptService.GetFilteredReceiptsAsync(query, cancellationToken);
     }
-
+    
     [HttpDelete]
     public async Task<ActionResult> DeleteReceiptAsync([FromQuery] ReceiptDeleteCommand command, CancellationToken cancellationToken)
     {

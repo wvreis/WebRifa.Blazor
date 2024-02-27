@@ -1,16 +1,20 @@
 ﻿@page "/receipt/{Id}"
 
+@rendermode InteractiveServer
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
+@using Net.Codecrete.QrCodeGenerator
+@using System
 
 @inject IReceiptBlazorService receiptService
 @inject NavigationManager navigationManager
 @inject IJSRuntime JS
+@inject HttpClient http
 
 <PageTitle>Recibo de Rifa</PageTitle>
 
 @if (IsLoading()) {
-    <p>Carregando...</p>
+    <Loading/>
 }
 else {
     <div class="receipt" id="@ReceiptElementId">
@@ -35,9 +39,7 @@ else {
                 }
             </ul>
             <div class="qr-code">
-                <img 
-                    src="@($"https://api.qrserver.com/v1/create-qr-code/?data={GetLinkToQRCode()}&amp;size=100x100")" 
-                    alt="QR Code">
+                <img src="data:image/Bmp;base64, @QrCodeBase64" />
             </div>
         </div>
 
