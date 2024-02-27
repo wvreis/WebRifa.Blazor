@@ -16,24 +16,44 @@
 }
 else {
     <div class="container">
-        <input placeholder="Rifa"
-               id="raffleInput"
-               list="raffles"
-               @onchange="RaffleInputOnChange" />
+        <div class="draw-fields">
+            <input placeholder="Rifa"
+                   id="raffleInput"
+                   list="raffles"
+                   @onchange="RaffleInputOnChange" />
 
-        <dataList id="raffles">
-            @foreach (var raffle in Raffles ?? new()) {
-                <option value="@raffle.Id">@raffle.Description</option>
+            <dataList id="raffles">
+                @foreach (var raffle in Raffles ?? new()) {
+                    <option value="@raffle.Id">@raffle.Description</option>
+                }
+            </dataList>
+
+            @if (SelectedRaffle is not null) {
+                <span>
+                    <strong>@("Descrição: ")</strong>
+                    @($"{SelectedRaffle.Description}")
+                </span>
+                <span>
+                    <strong>@("Preço do Bilhete: ")</strong>
+                    @($"{SelectedRaffle.TicketPrice}")
+                </span>
             }
-        </dataList>
 
-        <button class="btn btn-primary" @onclick="CarryOutTheDraw">
-            Realizar Sorteio
-        </button>
+            @if (!CarriengOut && !DrawnNumber.HasValue) {
+                <button class="btn btn-primary" @onclick="CarryOutTheDraw">
+                    Realizar Sorteio
+                </button>
+            }
 
-        @if (DrawnNumber.HasValue) {
-            <p>Número Sorteado</p>
-            <p>@DrawnNumber</p>
-        }
+            @if (CarriengOut) {
+                <Loading/>
+            }
+
+            @if (DrawnNumber.HasValue) {
+                <span>
+                    <strong>Número Sorteado: </strong> @DrawnNumber
+                </span>
+            }
+        </div>
     </div>
 }

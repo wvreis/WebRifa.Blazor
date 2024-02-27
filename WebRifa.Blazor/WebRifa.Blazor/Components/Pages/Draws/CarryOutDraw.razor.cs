@@ -7,8 +7,10 @@ namespace WebRifa.Blazor.Components.Pages.Draws;
 public partial class CarryOutDraw {
     public List<RaffleDto>? Raffles { get; set; }
     public RaffleDto? SelectedRaffle { get; set; }
-    public CarryOutTheDrawCommand carryOutCommand { get; set; } = new();
-    public int? DrawnNumber { get; set; }                                   
+    public CarryOutTheDrawCommand CarryOutCommand { get; set; } = new();
+    public int? DrawnNumber { get; set; }
+
+    bool CarriengOut;
 
     protected async override Task OnInitializedAsync()
     {
@@ -17,17 +19,19 @@ public partial class CarryOutDraw {
 
     public async Task CarryOutTheDraw()
     {
-        carryOutCommand.RaflleId = SelectedRaffle!.Id;
-        var result = await drawService.CarryOutTheDrawAsync(carryOutCommand);
+        await StartSpinAnimationAndWait();
+
+        CarryOutCommand.RaflleId = SelectedRaffle!.Id;
+        var result = await drawService.CarryOutTheDrawAsync(CarryOutCommand);
         if (result.IsSuccessStatusCode) {
             var drawnNumber = await result.Content.ReadAsStringAsync();
             DrawnNumber = Convert.ToInt32(drawnNumber);
+            CarriengOut = false;
             StateHasChanged();
         }
         else {
             await JS.ShowErrorMessage(result.ReasonPhrase!);
         }
-
     }
 
     void RaffleInputOnChange(ChangeEventArgs args)
@@ -40,6 +44,12 @@ public partial class CarryOutDraw {
         Guid.TryParse(args.Value.ToString(), out Guid raffleId);
         SelectedRaffle = Raffles.First(x => x.Id == raffleId);
         StateHasChanged();
+    }
+
+    async Task StartSpinAnimationAndWait()
+    {
+        CarriengOut = true;
+        await Task.Delay(5000);
     }
 
     void CleanScreen()
