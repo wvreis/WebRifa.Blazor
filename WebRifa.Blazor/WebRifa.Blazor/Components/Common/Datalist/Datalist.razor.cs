@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Components;
 
 namespace WebRifa.Blazor.Components.Common.Datalist;
-public partial class Datalist {
+public partial class Datalist<TItem> {
+    [Parameter, EditorRequired]
+    public List<TItem> Items { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public string PropertyName { get; set; } = string.Empty;
+    
     [Parameter]
     public string Placeholder { get; set; } = "Item...";
-    [Parameter]    
-    public List<Item> Items { get; set; } = new();
     public string SearchTerm { get; set; } = string.Empty;
-    public Item? SelectedItem { get; set; }
+    public TItem? SelectedItem { get; set; }
     public string SelectedItemValue { get; set; } = string.Empty;
 
     bool ShoulddShowItems { get; set; }
-
-
 
     void OnInputKeyUp(ChangeEventArgs args)
     {
@@ -21,10 +23,15 @@ public partial class Datalist {
             .ToLowerInvariant() ?? string.Empty;
     }
 
-    void OnClickItem(Item item)
+    void OnClickItem(TItem item)
     {
         SelectedItem = item;
-        SelectedItemValue = item?.Value ?? string.Empty;
+        SelectedItemValue = item?
+            .GetType()?
+            .GetProperty(PropertyName)?
+            .GetValue(item)?
+            .ToString() ?? string.Empty;
+
         ToggleItemsShow();
     }
     void ToggleItemsShow()
@@ -35,13 +42,14 @@ public partial class Datalist {
     string GetShowldShowItemsCSSClass() =>
         ShoulddShowItems ? "show" : string.Empty;
 
-    List<Item> GetFilteredList() =>
-        Items.Where(i =>
-            i.Value
-                .ToLowerInvariant()
-                .Contains(SearchTerm))
-            .ToList();
+
+
+    List<TItem> GetFilteredList() =>
+       Items;
+        //.Where(i =>
+        //   i.Value
+        //       .ToLowerInvariant()
+        //       .Contains(SearchTerm))
+        //   .ToList();
 
 }
-
-public record Item(string Key, string Value);

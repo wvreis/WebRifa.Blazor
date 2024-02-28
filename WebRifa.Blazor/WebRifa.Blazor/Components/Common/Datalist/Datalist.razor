@@ -1,4 +1,5 @@
 ﻿@rendermode InteractiveServer
+@typeparam TItem
 
 <div class="dropdown d-block">    
     <input type="text" 
@@ -13,7 +14,7 @@
             class="dropdown-content @GetShowldShowItemsCSSClass()">
         
         @foreach (var item in GetFilteredList()) {
-            <a @onclick="@(() => OnClickItem(item))">@item.Value</a>
+            <a @onclick="@(() => OnClickItem(item))">@item</a>
         }
     </div>
 </div>

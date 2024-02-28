@@ -1,6 +1,7 @@
 ﻿@page "/carryoutdraw"
 
 @using WebRifa.Blazor.BlazorServices
+@using WebRifa.Blazor.Core.Dtos
 
 @attribute [Authorize]
 @rendermode InteractiveServer
@@ -18,7 +19,11 @@ else {
     <div class="container">
         <div class="draw-fields">
 
-            <Datalist />
+            <Datalist 
+                Placeholder="Rifa..."
+                PropertyName="@(nameof(RaffleDto.Description))"
+                TItem="RaffleDto"
+                Items="Raffles"/>
 
             <input placeholder="Rifa"
                    id="raffleInput"
