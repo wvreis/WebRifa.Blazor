@@ -1,26 +1,18 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace WebRifa.Blazor.Components.Common.Datalist;
 public partial class Datalist {
     [Parameter]
-    public string Placeholder { get; set; } = "Pesquisar...";
-
+    public string Placeholder { get; set; } = "Item...";
+    [Parameter]    
+    public List<Item> Items { get; set; } = new();
     public string SearchTerm { get; set; } = string.Empty;
     public Item? SelectedItem { get; set; }
-    public string SelectedItemValue { 
-        get {
-            return SelectedItem?.Value ?? string.Empty;
-        }
-        set { }
-    }
-    
-    public List<Item> Items { get; set; } = new() {
-        new("item1ID", "Item 1"),
-        new("item2ID", "Item 2"),
-        new("item3ID", "Item 3"),
-        new("item4ID", "Item 4"),
-    };
+    public string SelectedItemValue { get; set; } = string.Empty;
+
+    bool ShoulddShowItems { get; set; }
+
+
 
     void OnInputKeyUp(ChangeEventArgs args)
     {
@@ -32,7 +24,16 @@ public partial class Datalist {
     void OnClickItem(Item item)
     {
         SelectedItem = item;
+        SelectedItemValue = item?.Value ?? string.Empty;
+        ToggleItemsShow();
     }
+    void ToggleItemsShow()
+    {
+        ShoulddShowItems = !ShoulddShowItems;
+    }
+
+    string GetShowldShowItemsCSSClass() =>
+        ShoulddShowItems ? "show" : string.Empty;
 
     List<Item> GetFilteredList() =>
         Items.Where(i =>
@@ -40,6 +41,7 @@ public partial class Datalist {
                 .ToLowerInvariant()
                 .Contains(SearchTerm))
             .ToList();
+
 }
 
 public record Item(string Key, string Value);

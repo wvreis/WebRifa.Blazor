@@ -1,20 +1,19 @@
 ﻿@rendermode InteractiveServer
 
-@if (SelectedItem is not null) {
-    <p>@SelectedItem.Key</p>
-}
-
-<div class="dropdown d-block">
-    <input type="text" class="myInput" @bind="SelectedItemValue" disabled/>
-    <div id="myDropdown" class="dropdown-content show">
-        <input type="text" 
-                placeholder="@Placeholder" 
-                id="myInput"
-                @oninput="@OnInputKeyUp">
+<div class="dropdown d-block">    
+    <input type="text" 
+            placeholder="@Placeholder" 
+            id="myInput"
+            @bind=SelectedItemValue
+            @oninput="@OnInputKeyUp"
+            @onfocusin="@ToggleItemsShow"
+            >
+    
+    <div id="myDropdown" 
+            class="dropdown-content @GetShowldShowItemsCSSClass()">
         
         @foreach (var item in GetFilteredList()) {
             <a @onclick="@(() => OnClickItem(item))">@item.Value</a>
         }
-
     </div>
 </div>
