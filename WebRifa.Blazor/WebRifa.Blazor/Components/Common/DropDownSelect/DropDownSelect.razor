@@ -1,12 +1,14 @@
 ﻿@typeparam TItem
 
-<div class="dropdown d-block">
+<div class="dropdown d-block"
+        @onfocusin="@ShowItems"
+        @onfocusout="@HideItems">
+
     <input type="text"
            placeholder="@Placeholder"
            id="myInput"
            @bind=SelectedItemValue
-           @oninput="@OnInputKeyUp"
-           @onfocusin="@ToggleItemsShow">
+           @oninput="@OnInputKeyUp">
 
     <div id="myDropdown"
          class="dropdown-content @GetShowldShowItemsCSSClass()">
@@ -16,5 +18,3 @@
         }
     </div>
 </div>
-
-

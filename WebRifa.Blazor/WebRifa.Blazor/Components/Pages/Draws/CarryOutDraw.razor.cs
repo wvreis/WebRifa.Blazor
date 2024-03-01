@@ -46,6 +46,12 @@ public partial class CarryOutDraw {
         StateHasChanged();
     }
 
+    void ReceiveSelectedRaffle(Object raffle)
+    {
+        SelectedRaffle = (RaffleDto)raffle;
+        StateHasChanged();
+    }
+
     async Task StartSpinAnimationAndWait()
     {
         CarriengOut = true;

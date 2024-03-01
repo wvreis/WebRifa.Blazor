@@ -8,6 +8,9 @@ public partial class DropDownSelect<TItem> {
     [Parameter, EditorRequired]
     public string PropertyName { get; set; } = string.Empty;
 
+    [Parameter, EditorRequired]
+    public EventCallback Callback { get; set; }
+
     [Parameter]
     public string Placeholder { get; set; } = "Item...";
     public string SearchTerm { get; set; } = string.Empty;
@@ -23,17 +26,33 @@ public partial class DropDownSelect<TItem> {
             .ToLowerInvariant() ?? string.Empty;
     }
 
-    void OnClickItem(TItem item)
+    public async Task OnClickItem(TItem item)
     {
         SelectedItem = item;
         SelectedItemValue = GetPropValue(item);
+        await Callback.InvokeAsync(item);
 
-        ToggleItemsShow();
+        await HideItems();
     }
 
-    void ToggleItemsShow()
+    void ShowItems()
     {
-        ShoulddShowItems = !ShoulddShowItems;
+        ShoulddShowItems = true;
+    }
+
+    async Task HideItems()
+    {
+        if (string.IsNullOrEmpty(SelectedItemValue)) {
+            SelectedItem = default;
+            await Callback.InvokeAsync(null);
+        }
+
+        if (SelectedItem is null) {
+            await Task.Delay(200);
+        }
+
+        ShoulddShowItems = false;
+        StateHasChanged();
     }
 
     string GetShowldShowItemsCSSClass() =>

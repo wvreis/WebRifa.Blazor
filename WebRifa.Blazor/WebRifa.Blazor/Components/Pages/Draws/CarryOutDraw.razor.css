@@ -22,3 +22,9 @@ button {
 span {
     display: block;
 }
+
+@media (max-width: 600px){
+    .draw-fields{
+        max-width: 90%;
+    }
+}

@@ -21,18 +21,8 @@ else {
 
             <DropDownSelect Placeholder="Rifa..."
                     PropertyName="@(nameof(RaffleDto.Description))"
-                    Items="Raffles"/>
-
-            <input placeholder="Rifa"
-                   id="raffleInput"
-                   list="raffles"
-                   @onchange="RaffleInputOnChange" />
-
-            <dataList id="raffles">
-                @foreach (var raffle in Raffles ?? new()) {
-                    <option value="@raffle.Id">@raffle.Description</option>
-                }
-            </dataList>
+                    Items="Raffles"
+                    Callback="ReceiveSelectedRaffle"/>
 
             @if (SelectedRaffle is not null) {
                 <span>
