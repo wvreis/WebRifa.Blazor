@@ -1,0 +1,20 @@
+﻿@typeparam TItem
+
+<div class="dropdown d-block">
+    <input type="text"
+           placeholder="@Placeholder"
+           id="myInput"
+           @bind=SelectedItemValue
+           @oninput="@OnInputKeyUp"
+           @onfocusin="@ToggleItemsShow">
+
+    <div id="myDropdown"
+         class="dropdown-content @GetShowldShowItemsCSSClass()">
+
+        @foreach (var item in GetFilteredList()) {
+            <a @onclick="@(() => OnClickItem(item))">@GetPropValue(item)</a>
+        }
+    </div>
+</div>
+
+

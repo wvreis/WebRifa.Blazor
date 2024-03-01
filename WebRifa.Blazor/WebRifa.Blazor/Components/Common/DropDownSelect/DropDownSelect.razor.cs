@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Components;
 
-namespace WebRifa.Blazor.Components.Common.Datalist;
-public partial class Datalist<TItem> {
+namespace WebRifa.Blazor.Components.Common.DropDownSelect;
+public partial class DropDownSelect<TItem> {
     [Parameter, EditorRequired]
-    public List<TItem> Items { get; set; } = new();
+    public List<TItem>? Items { get; set; }
 
     [Parameter, EditorRequired]
     public string PropertyName { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string Placeholder { get; set; } = "Item...";
     public string SearchTerm { get; set; } = string.Empty;
@@ -26,14 +26,11 @@ public partial class Datalist<TItem> {
     void OnClickItem(TItem item)
     {
         SelectedItem = item;
-        SelectedItemValue = item?
-            .GetType()?
-            .GetProperty(PropertyName)?
-            .GetValue(item)?
-            .ToString() ?? string.Empty;
+        SelectedItemValue = GetPropValue(item);
 
         ToggleItemsShow();
     }
+
     void ToggleItemsShow()
     {
         ShoulddShowItems = !ShoulddShowItems;
@@ -42,14 +39,20 @@ public partial class Datalist<TItem> {
     string GetShowldShowItemsCSSClass() =>
         ShoulddShowItems ? "show" : string.Empty;
 
-
+    private string GetPropValue(TItem item)
+    {
+        return item?
+            .GetType()?
+            .GetProperty(PropertyName)?
+            .GetValue(item)?
+            .ToString() ?? string.Empty;
+    }
 
     List<TItem> GetFilteredList() =>
-       Items;
-        //.Where(i =>
-        //   i.Value
-        //       .ToLowerInvariant()
-        //       .Contains(SearchTerm))
-        //   .ToList();
-
+        Items?
+    .Where(i =>
+       GetPropValue(i)
+           .ToLowerInvariant()
+           .Contains(SearchTerm))
+       .ToList() ?? [];
 }

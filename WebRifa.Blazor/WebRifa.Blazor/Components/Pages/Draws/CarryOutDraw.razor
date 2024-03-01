@@ -19,11 +19,9 @@ else {
     <div class="container">
         <div class="draw-fields">
 
-            <Datalist 
-                Placeholder="Rifa..."
-                PropertyName="@(nameof(RaffleDto.Description))"
-                TItem="RaffleDto"
-                Items="Raffles"/>
+            <DropDownSelect Placeholder="Rifa..."
+                    PropertyName="@(nameof(RaffleDto.Description))"
+                    Items="Raffles"/>
 
             <input placeholder="Rifa"
                    id="raffleInput"
