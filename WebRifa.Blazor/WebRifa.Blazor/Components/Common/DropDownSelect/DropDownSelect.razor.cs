@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace WebRifa.Blazor.Components.Common.DropDownSelect;
 public partial class DropDownSelect<TItem> {
@@ -17,6 +18,8 @@ public partial class DropDownSelect<TItem> {
     public TItem? SelectedItem { get; set; }
     public string SelectedItemValue { get; set; } = string.Empty;
 
+    int currentFocusIndexItem = default;
+
     bool ShoulddShowItems { get; set; }
 
     void OnInputKeyUp(ChangeEventArgs args)
@@ -26,7 +29,7 @@ public partial class DropDownSelect<TItem> {
             .ToLowerInvariant() ?? string.Empty;
     }
 
-    public async Task OnClickItem(TItem item)
+    public async Task SelectItem(TItem item)
     {
         SelectedItem = item;
         SelectedItemValue = GetPropValue(item);
@@ -55,16 +58,61 @@ public partial class DropDownSelect<TItem> {
         StateHasChanged();
     }
 
-    string GetShowldShowItemsCSSClass() =>
+    async Task OnDropDownOnKeyUp(KeyboardEventArgs args)
+    {
+        bool shouldIncrement = 
+            args.Key == "ArrowDown" && 
+            currentFocusIndexItem < GetFilteredList().Count() - 1;
+        
+        if (shouldIncrement) {
+            ShowItems();
+            currentFocusIndexItem++;
+        }
+
+        bool shouldDecrement =
+            args.Key == "ArrowUp" &&
+            currentFocusIndexItem > 0;
+
+        if (shouldDecrement) {
+            ShowItems();
+            currentFocusIndexItem--;
+        }
+
+        if (args.Key == "Enter") {
+            var item = GetItemFromIndex(currentFocusIndexItem);
+            await SelectItem(item);
+        }
+    }
+
+    void OnMouseOverIndex(int index) =>
+        currentFocusIndexItem = index;
+
+    string GetCSSClassInputFocus() =>
         ShoulddShowItems ? "show" : string.Empty;
 
-    private string GetPropValue(TItem item)
+    string GetPropValue(TItem item)
     {
         return item?
             .GetType()?
             .GetProperty(PropertyName)?
             .GetValue(item)?
             .ToString() ?? string.Empty;
+    }
+
+    string GetFocusCSSClass(int index) =>
+        index == currentFocusIndexItem ?
+        "input-focus" :
+        string.Empty;
+
+    int GetIndexFromItem(TItem item)
+    {
+        return GetFilteredList().IndexOf(item);
+    }
+
+    TItem GetItemFromIndex(int index)
+    {
+        return GetFilteredList()
+            .Single(i => GetFilteredList().IndexOf(i) == index);
     }
 
     List<TItem> GetFilteredList() =>

@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+.input-focus {
+    outline: 3px solid #ddd;
+}
+
     #myInput:focus {
         outline: 3px solid #ddd;
     }
