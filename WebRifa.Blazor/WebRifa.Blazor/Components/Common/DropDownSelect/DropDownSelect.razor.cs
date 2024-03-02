@@ -22,13 +22,6 @@ public partial class DropDownSelect<TItem> {
 
     bool ShoulddShowItems { get; set; }
 
-    void OnInputKeyUp(ChangeEventArgs args)
-    {
-        SearchTerm = args?.Value?
-            .ToString()?
-            .ToLowerInvariant() ?? string.Empty;
-    }
-
     public async Task SelectItem(TItem item)
     {
         SelectedItem = item;
@@ -56,32 +49,6 @@ public partial class DropDownSelect<TItem> {
 
         ShoulddShowItems = false;
         StateHasChanged();
-    }
-
-    async Task OnDropDownOnKeyUp(KeyboardEventArgs args)
-    {
-        bool shouldIncrement = 
-            args.Key == "ArrowDown" && 
-            currentFocusIndexItem < GetFilteredList().Count() - 1;
-        
-        if (shouldIncrement) {
-            ShowItems();
-            currentFocusIndexItem++;
-        }
-
-        bool shouldDecrement =
-            args.Key == "ArrowUp" &&
-            currentFocusIndexItem > 0;
-
-        if (shouldDecrement) {
-            ShowItems();
-            currentFocusIndexItem--;
-        }
-
-        if (args.Key == "Enter") {
-            var item = GetItemFromIndex(currentFocusIndexItem);
-            await SelectItem(item);
-        }
     }
 
     void OnMouseOverIndex(int index) =>
@@ -122,4 +89,39 @@ public partial class DropDownSelect<TItem> {
            .ToLowerInvariant()
            .Contains(SearchTerm))
        .ToList() ?? [];
+
+    #region EVENTS
+    async Task OnDropDownOnKeyUp(KeyboardEventArgs args)
+    {
+        bool shouldIncrement =
+            args.Key == "ArrowDown" &&
+            currentFocusIndexItem < GetFilteredList().Count() - 1;
+
+        if (shouldIncrement) {
+            ShowItems();
+            currentFocusIndexItem++;
+        }
+
+        bool shouldDecrement =
+            args.Key == "ArrowUp" &&
+            currentFocusIndexItem > 0;
+
+        if (shouldDecrement) {
+            ShowItems();
+            currentFocusIndexItem--;
+        }
+
+        if (args.Key == "Enter") {
+            var item = GetItemFromIndex(currentFocusIndexItem);
+            await SelectItem(item);
+        }
+    }
+
+    void OnInputKeyUp(ChangeEventArgs args)
+    {
+        SearchTerm = args?.Value?
+            .ToString()?
+            .ToLowerInvariant() ?? string.Empty;
+    }
+    #endregion
 }
