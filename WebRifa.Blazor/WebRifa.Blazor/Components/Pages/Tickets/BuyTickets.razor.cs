@@ -95,6 +95,11 @@ public partial class BuyTickets {
 
     async Task ReceiveSelectedRaffle(object raffleObj)
     {
+        if (raffleObj is null) {
+            CleanScreen();
+            return; 
+        }
+
         if (raffleObj is RaffleDto raffle) {
             SelectedRaffle = raffle;
             await RaffleInputOnChange();
