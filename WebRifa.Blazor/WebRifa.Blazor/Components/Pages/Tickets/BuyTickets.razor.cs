@@ -33,31 +33,27 @@ public partial class BuyTickets {
         }
     }
 
-    async void RaffleInputOnChange(ChangeEventArgs args)
+    async Task RaffleInputOnChange()
     {
-        if (string.IsNullOrEmpty(args.Value!.ToString()) || Raffles is null) {
+        if (Raffles is null) {
             CleanScreen();
             return;
         }
 
-        Guid.TryParse(args.Value.ToString(), out Guid raffleId);
-        SelectedRaffle = Raffles.First(x => x.Id == raffleId);
-        buyCommand.RaffleId = SelectedRaffle.Id;
-        FreeNumbers = await _raffleService.GetFreeNumbersAsync(new() { RaffleId = raffleId });
+        buyCommand.RaffleId = SelectedRaffle!.Id;
+        FreeNumbers = await _raffleService.GetFreeNumbersAsync(new() { RaffleId = SelectedRaffle.Id });
         Numbers = Enumerable.Range(1, SelectedRaffle.TotalNumberOfTickets).ToList();
         StateHasChanged();
     }
 
-    void BuyerInputOnChenge(ChangeEventArgs args)
+    void BuyerInputOnChenge()
     {
-        if (string.IsNullOrEmpty(args.Value!.ToString()) || Buyers is null) {
+        if (Buyers is null) {
             CleanSelectedBuyer();
             return;
         }
 
-        Guid.TryParse(args.Value.ToString(), out Guid buyerId);
-        SelectedBuyer = Buyers.First(x => x.Id == buyerId);
-        buyCommand.BuyerId = SelectedBuyer.Id;
+        buyCommand.BuyerId = SelectedBuyer!.Id;
         StateHasChanged();
     }
 
@@ -95,6 +91,22 @@ public partial class BuyTickets {
         }
 
         StateHasChanged();
+    }
+
+    async Task ReceiveSelectedRaffle(object raffleObj)
+    {
+        if (raffleObj is RaffleDto raffle) {
+            SelectedRaffle = raffle;
+            await RaffleInputOnChange();
+        }
+    }
+
+    void ReceiveSelectedBuyer(object buyerObj)
+    {
+        if (buyerObj is BuyerDto buyer) {
+            SelectedBuyer = buyer;
+            BuyerInputOnChenge();
+        }
     }
 
     bool IsFreeNumber(int number) =>

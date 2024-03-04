@@ -29,17 +29,11 @@
                     <div class="raffle-input">
                         <h1>Dados</h1>
 
-                        <input 
-                            placeholder="Rifa" 
-                            id="raffleInput" 
-                            list="raffles" 
-                            @onchange="RaffleInputOnChange" />
-
-                        <dataList id="raffles">
-                            @foreach (var raffle in Raffles ?? new()) {
-                                <option value="@raffle.Id">@raffle.Description</option>
-                            }
-                        </dataList>
+                        <DropDownSelect
+                            Items="Raffles"
+                            Callback="ReceiveSelectedRaffle"
+                            PropertyName="@nameof(RaffleDto.Description)"
+                            Placeholder="Rifa..."/>
 
                         @if (SelectedRaffle is not null) {
                             <span>
@@ -58,17 +52,11 @@
                     @if (SelectedRaffle is not null) {
                         <div class="buyer-input">
 
-                            <input 
-                                placeholder="Comprador" 
-                                id="buyerInput" 
-                                list="buyers" 
-                                @onchange="BuyerInputOnChenge" />
-
-                            <dataList id="buyers">
-                                @foreach (var buyer in Buyers ?? new()) {
-                                    <option value="@buyer.Id">@buyer.Name</option>
-                                }
-                            </dataList>
+                            <DropDownSelect
+                                Items="Buyers"
+                                Callback="ReceiveSelectedBuyer"
+                                PropertyName="@nameof(BuyerDto.Name)"
+                                Placeholder="Comprador..."/>
 
                             @if (SelectedBuyer is not null) {
                                 <span>
