@@ -25,7 +25,7 @@ public partial class DropDownSelect<TItem> {
     public async Task SelectItem(TItem item)
     {
         SelectedItem = item;
-        SelectedItemValue = GetPropValue(item);
+        SelectedItemValue = await Task.Run(() => GetPropValue(item));
         await Callback.InvokeAsync(item);
 
         await HideItems();
@@ -43,9 +43,7 @@ public partial class DropDownSelect<TItem> {
             await Callback.InvokeAsync(null);
         }
 
-        if (SelectedItem is null) {
-            await Task.Delay(200);
-        }
+        await Task.Delay(350);
 
         ShoulddShowItems = false;
         StateHasChanged();

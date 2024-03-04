@@ -18,7 +18,7 @@
 
         @foreach (var item in GetFilteredList()) {
             <a class="@GetFocusCSSClass(GetIndexFromItem(item))"
-                @onmouseover="(() => OnMouseOverIndex(GetIndexFromItem(item)))"
+                
                 @onclick="(() => SelectItem(item))">
                 
                 @GetPropValue(item)
