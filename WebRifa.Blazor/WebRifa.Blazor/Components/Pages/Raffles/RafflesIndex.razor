@@ -11,7 +11,7 @@
 <h3>Rifas</h3>
 
 <div>
-    <a href="./raffle">Novo Cadastro</a>
+    <a class="btn btn-primary" href="./raffle">Novo Cadastro</a>
 </div>
 
 @if (Raffles is null) {
@@ -42,7 +42,7 @@ else {
                     <td>@raffle.DrawDateTime.ToShortDateString()</td>
                     <td>@raffle.CurrentState</td>
                     <td>
-                        <a href="@GetEditLink(raffle)">Editar</a>
+                        <a class="btn btn-info" href="@GetEditLink(raffle)">Editar</a>
                     </td>
                 </tr>
             }

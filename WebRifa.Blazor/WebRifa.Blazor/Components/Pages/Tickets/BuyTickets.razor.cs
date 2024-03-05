@@ -29,7 +29,7 @@ public partial class BuyTickets {
             _navigationManager.NavigateTo($"receipt/{resultValue.RemoveQuotes()}");
         }
         else {
-
+            await JS.ShowErrorMessage(result.ReasonPhrase ?? string.Empty);
         }
     }
 

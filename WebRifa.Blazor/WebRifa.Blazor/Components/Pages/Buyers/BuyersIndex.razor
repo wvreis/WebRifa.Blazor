@@ -8,7 +8,7 @@
 <h3>Compradores</h3>
 
 <div>
-    <a href="./buyer">Novo Cadastro</a>
+    <a class="btn btn-primary" href="./buyer">Novo Cadastro</a>
 </div>
 
 @if (Buyers is null) {
@@ -35,7 +35,7 @@ else {
                     <td>@buyer.PhoneNumber</td>
                     <td>@buyer.Email</td>
                     <td>
-                        <a href="@GetEditLink(buyer)">Editar</a>
+                        <a class="btn btn-info" href="@GetEditLink(buyer)">Editar</a>
                     </td>
                 </tr>
             }
