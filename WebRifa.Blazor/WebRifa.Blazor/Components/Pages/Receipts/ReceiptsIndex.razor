@@ -17,7 +17,8 @@ else if (!Receipts!.Any()) {
     <p>Não há Recibos Cadastradas.</p>
 }
 else {
-    <table class="table">
+    <div class="table-responsive">
+        <table class="table">
         <thead>
             <tr>
                 <th>Código</th>
@@ -54,6 +55,7 @@ else {
             }
         </tbody>
     </table>
+    </div>
 
     <PopUp Label="Recibo" Size="PopUpSize.Small" @ref=PopUp>
         <ReceiptDetail Id="@SelectedReceiptId"/>

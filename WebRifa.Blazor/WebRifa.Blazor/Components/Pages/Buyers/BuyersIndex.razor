@@ -18,8 +18,8 @@ else if (!Buyers!.Any()) {
     <p>Não há Compradores Cadastrados</p>
 }
 else {
-
-    <table class="table">
+    <div class="table-responsive">
+        <table class="table">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -41,6 +41,7 @@ else {
             }
         </tbody>
     </table>
+    </div>
 }
 
 @code {

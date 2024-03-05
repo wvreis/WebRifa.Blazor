@@ -21,37 +21,37 @@ else {
     <EditForm Model="Raffle" OnValidSubmit="Save">
         <DataAnnotationsValidator />
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="description">Descrição:</label>
             <input type="text" class="form-control" id="description" @bind="Raffle!.Description" />
             <ValidationMessage For="() => Raffle.Description" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="ticketprice">Preço do Bilhete:</label>
             <input type="number" class="form-control" id="ticketprice" @bind="Raffle!.TicketPrice" />
             <ValidationMessage For="() => Raffle.TicketPrice" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="totalnumberofticktets">Total de Bilhetes:</label>
             <input type="number" class="form-control" id="totalnumberofticktets" @bind="Raffle!.TotalNumberOfTickets" />
             <ValidationMessage For="() => Raffle.TotalNumberOfTickets" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="drawdate">Data do Sorteio:</label>
             <input type="date" class="form-control" id="drawdate" @bind="Raffle!.DrawDateTime" />
             <ValidationMessage For="() => Raffle.DrawDateTime" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="observations">Observações:</label>
             <input type="text" class="form-control" id="observations" @bind="Raffle!.Observations" />
             <ValidationMessage For="() => Raffle.Observations" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-primary m-1">Salvar</button>
     </EditForm>
 }
 
