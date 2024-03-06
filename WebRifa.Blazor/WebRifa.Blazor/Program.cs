@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -10,6 +11,7 @@ using WebRifa.Blazor.BlazorServices;
 using WebRifa.Blazor.Client.Pages;
 using WebRifa.Blazor.Components;
 using WebRifa.Blazor.Components.Account;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.CoreServices;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
@@ -71,7 +73,11 @@ builder.Services.AddAuthentication(options => {
 
 builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
     cfg.CreateMap<Buyer, BuyerDto>().ReverseMap();
+    cfg.CreateMap<PaginatedList<Buyer>, PaginatedList<BuyerDto>>().ReverseMap();
+
     cfg.CreateMap<Raffle, RaffleDto>().ReverseMap();
+    cfg.CreateMap<PaginatedList<Raffle>, PaginatedList<RaffleDto>>().ReverseMap();
+
     cfg.CreateMap<Ticket, TicketDto>().ReverseMap();
     cfg.CreateMap<BuyerTicketReceipt, BuyerTicketReceiptDto>().ReverseMap();
     cfg.CreateMap<Receipt, ReceiptDto>()
@@ -107,6 +113,8 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
                     .ToList())) 
         .ReverseMap();
 
+    cfg.CreateMap<PaginatedList<Receipt>, PaginatedList<ReceiptDto>>().ReverseMap();
+
     cfg.CreateMap<Draw, DrawDto>()
         .ForMember(
             m => m.RaffleDescription,
@@ -127,6 +135,8 @@ builder.Services.AddSingleton(autoMapper => new MapperConfiguration(cfg => {
                 prop.DrawnTicket.BuyerTicketReceipt.FirstOrDefault()!.Buyer!.Name : 
                 string.Empty))
         .ReverseMap();
+
+    cfg.CreateMap<PaginatedList<Draw>, PaginatedList<DrawDto>>().ReverseMap();
 })
     .CreateMapper());
 

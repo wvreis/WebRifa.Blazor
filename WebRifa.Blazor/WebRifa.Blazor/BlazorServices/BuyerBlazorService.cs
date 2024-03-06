@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 using WebRifa.Blazor.Helpers;
 
@@ -8,11 +9,17 @@ public class BuyerBlazorService(HttpClient httpClient) : IBuyerBlazorService {
     private readonly HttpClient _httpClient = httpClient;
     const string baseURI = "api/buyers";
 
-    public async Task<List<BuyerDto>> GetAllBuyersAsync(BuyerSearchQuery? buyerSearchQuery = null)
+    public async Task<PaginatedList<BuyerDto>> GetSearchBuyersAsync(BuyerSearchQuery? buyerSearchQuery = null)
     {
-        return await _httpClient.GetFromJsonAsync<List<BuyerDto>>(
+        return await _httpClient.GetFromJsonAsync<PaginatedList<BuyerDto>>(
             $"{baseURI}/SearchBuyer" +
             $"{QueryStringBuilderHelper.GenerateQueryString(buyerSearchQuery)}") ?? new();
+    }
+
+    public async Task<List<BuyerDto>> GetAllBuyersAsync()
+    {
+        return await _httpClient.GetFromJsonAsync<List<BuyerDto>>(
+            $"{baseURI}/GetAllBuyers") ?? new();
     }
 
     public async Task<BuyerDto> GetBuyerAsync(BuyerGetQuery buyerGetQuery)

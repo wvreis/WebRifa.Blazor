@@ -27,7 +27,7 @@ public class TicketRepository(
             throw new KeyNotFoundException($"Rifa com Id {query.RaffleId} não existe");
         }
 
-        var result = await _context.Tickets
+        var result = await context.Tickets
             .Include(x => x.BuyerTicketReceipt)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.BuyerTicketReceipt)

@@ -1,8 +1,10 @@
 ﻿@page "/buyers"
+@page "/buyers/{CurrentPage:int}"
 @attribute [StreamRendering]
 @attribute [Authorize]
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
+@using WebRifa.Blazor.Core.Requests.Queries.Buyer
 @inject IBuyerBlazorService _buyerService
 
 <h3>Compradores</h3>
@@ -12,9 +14,9 @@
 </div>
 
 @if (Buyers is null) {
-    <p>Carregando...</p>
+    <Loading />    
 }
-else if (!Buyers!.Any()) {
+else if (!Buyers.Items!.Any()) {
     <p>Não há Compradores Cadastrados</p>
 }
 else {
@@ -29,7 +31,7 @@ else {
             </tr>
         </thead>
         <tbody>
-            @foreach (var buyer in Buyers) {
+            @foreach (var buyer in Buyers.Items) {
                 <tr>
                     <td>@buyer.Name</td>
                     <td>@buyer.PhoneNumber</td>
@@ -45,11 +47,16 @@ else {
 }
 
 @code {
-    public List<BuyerDto>? Buyers { get; set; }
+    [Parameter]
+    public int CurrentPage { get; set; }
+
+    public PaginatedList<BuyerDto>? Buyers { get; set; }
+    public BuyerSearchQuery Query { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Buyers = await _buyerService.GetAllBuyersAsync();
+        Query.CurrentPage = CurrentPage;
+        Buyers = await _buyerService.GetSearchBuyersAsync(Query);
     }
     
     public string GetEditLink(BuyerDto buyerDto) => 

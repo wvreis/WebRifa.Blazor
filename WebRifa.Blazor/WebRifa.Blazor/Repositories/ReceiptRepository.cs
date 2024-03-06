@@ -12,7 +12,7 @@ public class ReceiptRepository(
     ApplicationDbContext context) : BaseRepository<Receipt>(context), IReceiptRepository {
     public override async Task<List<Receipt>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Receipts
+        return await context.Receipts
             .IgnoreAutoIncludes()
             .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
@@ -24,7 +24,7 @@ public class ReceiptRepository(
 
     public override async Task<Receipt> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _context.Receipts
+        var result = await context.Receipts
             .IgnoreAutoIncludes()            
             .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
@@ -43,7 +43,7 @@ public class ReceiptRepository(
 
     public async Task<Receipt> GetPublicAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _context.Receipts
+        var result = await context.Receipts
             .IgnoreQueryFilters()
             .IgnoreAutoIncludes()
             .Include(x => x.BuyerTicketReceipts)
@@ -73,7 +73,7 @@ public class ReceiptRepository(
             receipt.BuyerTicketReceipts!.FirstOrDefault()!.Ticket!.RaffleId == query.RaffleId :
             true;
         
-        var result = await _context.Receipts
+        var result = await context.Receipts
             .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)
@@ -91,7 +91,7 @@ public class ReceiptRepository(
         Expression<Func<Receipt, bool>> fromRaffleId = receipt =>
             receipt.BuyerTicketReceipts.Any(btr => btr.Ticket!.RaffleId == raffleId);
 
-        var result = await _context.Receipts
+        var result = await context.Receipts
             .Include(x => x.BuyerTicketReceipts)
                 .ThenInclude(x => x.Buyer)
             .Include(x => x.Tickets)

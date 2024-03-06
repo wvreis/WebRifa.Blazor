@@ -12,7 +12,7 @@ public class DrawRepository(
 
     public override async Task<List<Draw>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Draws
+        return await context.Draws
             .IgnoreAutoIncludes()
             .Include(x => x.DrawnTicket)
                 .ThenInclude(x => x.BuyerTicketReceipt)
@@ -24,7 +24,7 @@ public class DrawRepository(
 
     public async Task<bool> WasRaffleDrawDone(Guid raffleId, CancellationToken cancellationToken)
     {
-        return await _context.Draws
+        return await context.Draws
             .AnyAsync(
                 draw => draw.RaffleId == raffleId,
                 cancellationToken);

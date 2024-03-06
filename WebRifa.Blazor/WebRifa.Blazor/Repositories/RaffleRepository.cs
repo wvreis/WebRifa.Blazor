@@ -18,7 +18,7 @@ public class RaffleRepository(
             raffle.Description.ToLower().Contains(query.SearchTerm.ToLower()) ||
             raffle.Observations.ToLower().Contains(query.SearchTerm.ToLower());
 
-        var result = await _context.Raffles
+        var result = await context.Raffles
             .Where(Search)
             .ToListAsync(cancellationToken);
 
@@ -27,14 +27,14 @@ public class RaffleRepository(
 
     public async Task<List<Raffle>> GetDrawPendingRaffle(CancellationToken cancellationToken)
     {
-        return await _context.Raffles
+        return await context.Raffles
             .Where(raffle => raffle.CurrentState == Core.Enums.RaffleStates.DrawPending)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<HashSet<int>> GetUsedNumbersAsync(Guid raffleId, CancellationToken cancellationToken)
     {        
-        var result = await _context.Tickets
+        var result = await context.Tickets
             .Where(ticket => !ticket.IsDeleted)
             .Where(ticket => ticket.RaffleId == raffleId)
             .Select(ticket => ticket.Number)
@@ -45,7 +45,7 @@ public class RaffleRepository(
 
     public async Task<int> GetTotalNumberOfTicketsFromRaffleAsync(Guid raffleId, CancellationToken cancellationToken)
     {
-        var result = await _context.Raffles
+        var result = await context.Raffles
             .Where(raffle => raffle.Id == raffleId)
             .Select(raffle => raffle.TotalNumberOfTickets)
             .FirstOrDefaultAsync(cancellationToken);

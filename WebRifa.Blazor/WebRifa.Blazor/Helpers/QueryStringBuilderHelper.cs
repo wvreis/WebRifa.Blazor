@@ -16,6 +16,10 @@ public static class QueryStringBuilderHelper {
         foreach (var property in properties) {
             var value = property.GetValue(model);
 
+            if (value is string vstring && string.IsNullOrEmpty(vstring)) {
+                break;
+            }
+
             if (value is not null) {
                 queryStringBuilder.Add(
                     property.Name, value.ToString() ?? string.Empty);

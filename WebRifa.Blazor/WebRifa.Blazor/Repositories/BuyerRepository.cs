@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Entities;
+using WebRifa.Blazor.Core.Interfaces.ApplicationModels;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
@@ -11,7 +13,7 @@ namespace WebRifa.Blazor.Repositories;
 
 public class BuyerRepository(
     ApplicationDbContext context) : BaseRepository<Buyer>(context), IBuyerRepository {
-    public async Task<List<Buyer>> SearchBuyersAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
+    public async Task<PaginatedList<Buyer>> SearchBuyersAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Buyer, bool>> Search = buyer =>
             string.IsNullOrEmpty(query.SearchTerm) ||
@@ -19,9 +21,7 @@ public class BuyerRepository(
             buyer.PhoneNumber.ToLower().Contains(query.SearchTerm.ToLower()) ||
             buyer.Email.ToLower().Contains(query.SearchTerm.ToLower());
 
-        var result = await _context.Buyers
-            .Where(Search)
-            .ToListAsync(cancellationToken);
+        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, context, cancellationToken, Search);
 
         return result;
     }

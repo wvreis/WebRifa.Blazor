@@ -4,6 +4,8 @@ using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Dtos;
 using AutoMapper;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
+using WebRifa.Blazor.Core.Interfaces.ApplicationModels;
+using WebRifa.Blazor.Core.ApplicationModels;
 
 namespace WebRifa.Blazor.Services;
 
@@ -26,7 +28,7 @@ public class BuyerService : IBuyerService
         _mapper = mapper;
     }
 
-    public async Task<List<BuyerDto>> SearchBuyerAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
+    public async Task<PaginatedList<BuyerDto>> SearchBuyerAsync(BuyerSearchQuery query, CancellationToken cancellationToken)
     {
         try
         {
@@ -34,10 +36,25 @@ public class BuyerService : IBuyerService
 
             _logger.LogInformation("Pesquisa de Compradores executada.");
 
-            return _mapper?.Map<List<Buyer>, List<BuyerDto>>(buyers) ?? throw new Exception();
+            return _mapper?.Map<PaginatedList<Buyer>, PaginatedList<BuyerDto>>(buyers) ?? throw new Exception();
         }
         catch (Exception)
         {
+
+            throw;
+        }
+    }
+
+    public async Task<List<BuyerDto>> GetAllBuyersAsync(CancellationToken cancellationToken)
+    {
+        try {
+            var buyers = await _buyerRepository.GetAllAsync(cancellationToken);
+
+            _logger.LogInformation("Pesquisa de Compradores executada.");
+
+            return _mapper?.Map<List<Buyer>, List<BuyerDto>>(buyers) ?? throw new Exception();
+        }
+        catch (Exception) {
 
             throw;
         }

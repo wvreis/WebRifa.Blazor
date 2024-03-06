@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
@@ -17,10 +17,17 @@ public class BuyersController(
     private readonly IBuyerService _buyerService = buyerService;
 
     [HttpGet]
-    public async Task<ActionResult<List<BuyerDto>>> SearchBuyerAsync([FromQuery] BuyerSearchQuery query, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<PaginatedList<BuyerDto>>> SearchBuyerAsync([FromQuery] BuyerSearchQuery query, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation($"{nameof(SearchBuyerAsync)} executado.");
         return await _buyerService.SearchBuyerAsync(query, cancellationToken);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<BuyerDto>>> GetAllBuyersAsync(CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation($"{nameof(SearchBuyerAsync)} executado.");
+        return await _buyerService.GetAllBuyersAsync(cancellationToken);
     }
 
     [HttpGet]
