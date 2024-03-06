@@ -1,6 +1,6 @@
 ﻿@page "/buyers"
 @page "/buyers/{CurrentPage:int}"
-@attribute [StreamRendering]
+@rendermode InteractiveServer
 @attribute [Authorize]
 @using WebRifa.Blazor.BlazorServices
 @using WebRifa.Blazor.Core.Dtos
@@ -11,7 +11,7 @@
 
 <h3>Compradores</h3>
 
-<div>
+<div class="mb-3">
     <a class="btn btn-primary" href="./buyer">Novo Cadastro</a>
 </div>
 
@@ -22,6 +22,8 @@ else if (!Buyers.Items!.Any()) {
     <p>Não há Compradores Cadastrados</p>
 }
 else {
+    <SearchField SearchCallBackEvent="ReceiveSeachFieldCallBack"/>
+
     <div class="table-responsive">
         <table class="table">
         <thead>
@@ -38,7 +40,7 @@ else {
                     <td>@buyer.Name</td>
                     <td>@buyer.PhoneNumber</td>
                     <td>@buyer.Email</td>
-                    <td>
+                    <td class="text-end">
                         <a class="btn btn-info" href="@GetEditLink(buyer)">Editar</a>
                     </td>
                 </tr>
@@ -62,7 +64,18 @@ else {
     protected override async Task OnInitializedAsync()
     {
         Query.CurrentPage = CurrentPage;
+        await GetBuyers();
+    }
+
+    async Task GetBuyers()
+    {
         Buyers = await _buyerService.GetSearchBuyersAsync(Query);
+    }
+
+    async Task ReceiveSeachFieldCallBack(string searchTerm)
+    {
+        Query.SearchTerm = searchTerm;
+        await GetBuyers();
     }
 
     public string GetEditLink(BuyerDto buyerDto) => 

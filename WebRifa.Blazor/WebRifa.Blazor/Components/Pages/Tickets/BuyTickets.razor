@@ -29,7 +29,7 @@
                     <ValidationSummary/>
 
                     <div class="raffle-input">
-                        <h1>Dados</h1>
+                        <h2>Dados</h2>
 
                         <DropDownSelect
                             Items="Raffles"
@@ -90,7 +90,7 @@
 
             <div class="raffle-numbers">
                 @if (Numbers.Any()) {
-                    <h1>Lista de Posições na Rifa</h1>
+                    <h2>Lista de Posições na Rifa</h2>
                     <ul>
                         @foreach (var number in Numbers) {
                             <li class="@GetNumberClass(number)" @onclick="(() => AddOrRemoveNumber(number))">@number</li>

@@ -1,0 +1,29 @@
+﻿<div class="mb-3 d-flex">
+    <input type="text"
+           class="form-control"
+           aria-describedby="searchTerm"
+           @bind="SearchTerm"
+           @onkeyup="OnKeyUpSearchEvent">
+
+    <button class="btn btn-secondary" @onclick="SearchCallBack">
+        <i class="bi bi-search" />
+    </button>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public EventCallback<string> SearchCallBackEvent { get; set; }
+    
+    public string SearchTerm { get; set; } = string.Empty;
+
+    async Task SearchCallBack()
+    {
+        await SearchCallBackEvent.InvokeAsync(SearchTerm);
+    }
+
+    async Task OnKeyUpSearchEvent(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+            await SearchCallBack();
+    }
+}
