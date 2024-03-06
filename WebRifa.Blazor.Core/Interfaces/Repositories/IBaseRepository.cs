@@ -1,4 +1,4 @@
-﻿using WebRifa.Blazor.Core.Interfaces.ApplicationModels;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
 
 namespace WebRifa.Blazor.Core.Interfaces.Repositories;
 public interface IBaseRepository<T> where T : BaseEntity
@@ -11,6 +11,6 @@ public interface IBaseRepository<T> where T : BaseEntity
     Task<T> GetAsync(Guid id, CancellationToken cancellationToken);
     Task<List<T>> GetAllAsync(CancellationToken cancellationToken);
     Task<bool> EntityExistsAsync(Guid entityId, CancellationToken cancellationToken);
-    Task<IPaginatedList<T>> GetAllAsync(int currentPage, CancellationToken cancellationToken);
+    Task<PaginatedList<T>> GetAllAsync(int currentPage, CancellationToken cancellationToken);
 }
 

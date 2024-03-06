@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
 using WebRifa.Blazor.Helpers;
@@ -14,6 +15,13 @@ public class ReceiptBlazorService(
     {
         return await httpClient
             .GetFromJsonAsync<List<ReceiptDto>>($"{baseURI}/GetAllReceipts") ?? new();
+    }
+
+    public async Task<PaginatedList<ReceiptDto>> GetAllReceiptsPaginatedAsync(ReceiptGetAllQuery query)
+    {
+        return await httpClient.GetFromJsonAsync<PaginatedList<ReceiptDto>>(
+            $"{baseURI}/GetAllPaginatedReceipts" +
+            $"{QueryStringBuilderHelper.GenerateQueryString(query)}") ?? new();
     }
 
     public async Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query)

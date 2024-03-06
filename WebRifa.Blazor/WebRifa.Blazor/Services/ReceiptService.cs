@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.CoreServices;
 using WebRifa.Blazor.Core.Dtos;
+using WebRifa.Blazor.Core.Entities.ReceiptEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
@@ -28,6 +30,19 @@ public class ReceiptService(
             var receipts = await _receiptRepository.GetAllAsync(cancellation);
             _logger.LogInformation($"{nameof(GetAllReceiptsAsync)} foi executado.");
             return _mapper.Map<List<ReceiptDto>>(receipts) ?? throw new NullReferenceException();
+        }
+        catch (Exception) {
+
+            throw;
+        }
+    }
+
+    public async Task<PaginatedList<ReceiptDto>> GetAllPaginatedAsync(ReceiptGetAllQuery query, CancellationToken cancellation)
+    {
+        try {
+            var receipts = await _receiptRepository.GetAllPaginatedAsync(query, cancellation);
+            _logger.LogInformation($"{nameof(GetAllPaginatedAsync)} foi executado.");
+            return _mapper.Map<PaginatedList<Receipt>, PaginatedList<ReceiptDto>>(receipts) ?? throw new NullReferenceException();
         }
         catch (Exception) {
 

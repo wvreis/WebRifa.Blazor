@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
@@ -11,4 +12,5 @@ public interface IReceiptService {
     Task<List<ReceiptDto>> GetFilteredReceiptsAsync(ReceiptsGetFilteredQuery query, CancellationToken cancellation);
     Task<List<ReceiptDto>> GetReceiptsFromRaffleAsync(RaffleGetQuery query, CancellationToken cancellation);
     Task DeleteReceiptAsync(ReceiptDeleteCommand command, CancellationToken cancellation);
+    Task<PaginatedList<ReceiptDto>> GetAllPaginatedAsync(ReceiptGetAllQuery query, CancellationToken cancellation);
 }

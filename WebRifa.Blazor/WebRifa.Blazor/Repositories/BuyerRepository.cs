@@ -18,7 +18,7 @@ public class BuyerRepository(
             buyer.PhoneNumber.ToLower().Contains(query.SearchTerm.ToLower()) ||
             buyer.Email.ToLower().Contains(query.SearchTerm.ToLower());
 
-        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, context, cancellationToken, Search);
+        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, cancellationToken, Search);
 
         return result;
     }

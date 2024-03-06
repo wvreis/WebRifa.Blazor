@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Components;
 using WebRifa.Blazor.Components.Common.PopUp;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
 using WebRifa.Blazor.Core.Requests.Queries.Receipt;
@@ -6,14 +8,19 @@ using WebRifa.Blazor.Helpers;
 
 namespace WebRifa.Blazor.Components.Pages.Receipts;
 public partial class ReceiptsIndex() {
-    public List<ReceiptDto>? Receipts { get; set; }
-    public string SelectedReceiptId { get; set; }
+    [Parameter]
+    public int CurrentPage { get; set; }
+
+    public PaginatedList<ReceiptDto>? Receipts { get; set; }
+    public string SelectedReceiptId { get; set; } = string.Empty;
     public ReceiptsGetFilteredQuery GetFilteredQuery { get; set; } = new();
     PopUp? PopUp { get; set; }
+    ReceiptGetAllQuery Query { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Receipts = await receiptService.GetFilteredReceiptsAsync(GetFilteredQuery);
+        Query.CurrentPage = CurrentPage;
+        Receipts = await receiptService.GetAllReceiptsPaginatedAsync(Query);
     }
 
     public async Task DeleteReceiptAsync(Guid receiptId)
@@ -29,7 +36,7 @@ public partial class ReceiptsIndex() {
 
         var result = await receiptService.DeleteReceiptAsync(command);
         if (result.IsSuccessStatusCode) {
-            Receipts?.Remove(Receipts.FirstOrDefault(r => r.Id == command.ReceiptId)!);
+            Receipts?.Items.Remove(Receipts.Items.FirstOrDefault(r => r.Id == command.ReceiptId)!);
         }
     }
 

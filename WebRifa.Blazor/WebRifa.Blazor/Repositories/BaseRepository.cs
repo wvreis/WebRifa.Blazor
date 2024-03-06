@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Common;
-using WebRifa.Blazor.Core.Interfaces.ApplicationModels;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Data;
 
@@ -10,7 +9,7 @@ namespace WebRifa.Blazor.Core.Repositories;
 public class BaseRepository<T>(
     ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity {
 
-    const int PageSize = 15;
+    protected const int PageSize = 10;
 
     public virtual async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken)
     {        
@@ -86,16 +85,15 @@ public class BaseRepository<T>(
         return await context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<IPaginatedList<T>> GetAllAsync(int currentPage, CancellationToken cancellationToken)
+    public virtual async Task<PaginatedList<T>> GetAllAsync(int currentPage, CancellationToken cancellationToken)
     {
-        PaginatedList<T> paginatedList = await GetPaginatedEntitiesAsync(currentPage, context, cancellationToken);
+        PaginatedList<T> paginatedList = await GetPaginatedEntitiesAsync(currentPage, cancellationToken);
 
         return paginatedList;
     }
 
     protected async Task<PaginatedList<T>> GetPaginatedEntitiesAsync(
         int currentPage,
-        ApplicationDbContext context,
         CancellationToken cancellationToken,
         Expression<Func<T, bool>>? predicate = null)
     {

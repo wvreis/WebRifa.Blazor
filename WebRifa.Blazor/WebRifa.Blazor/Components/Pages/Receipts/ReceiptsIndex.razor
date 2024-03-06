@@ -1,4 +1,5 @@
 ﻿@page "/receipts"
+@page "/receipts/{CurrentPage:int}"
 
 @using WebRifa.Blazor.BlazorServices
 
@@ -11,9 +12,9 @@
 <h3>Recibos</h3>
 
 @if (Receipts is null) {
-    <p>Carregando...</p>
+    <Loading/>
 }
-else if (!Receipts!.Any()) {
+else if (!Receipts!.Items.Any()) {
     <p>Não há Recibos Cadastradas.</p>
 }
 else {
@@ -29,7 +30,7 @@ else {
             </tr>
         </thead>
         <tbody>
-            @foreach (var receipt in Receipts) {
+            @foreach (var receipt in Receipts.Items) {
                 <tr>
                     <td>@receipt.Id</td>
                     <td>@receipt.RaffleDescription</td>
@@ -51,11 +52,14 @@ else {
                         </button>
                     </td>
                 </tr>
-
             }
         </tbody>
     </table>
     </div>
+
+    <Pagination CurrentPage="CurrentPage"
+            TotalPages="Receipts.TotalPages"
+            NavigationLink="./receipts"/>
 
     <PopUp Label="Recibo" Size="PopUpSize.Small" @ref=PopUp>
         <ReceiptDetail Id="@SelectedReceiptId"/>

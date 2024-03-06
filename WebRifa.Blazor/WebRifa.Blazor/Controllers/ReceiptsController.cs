@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands.Receipt;
@@ -21,6 +22,13 @@ public class ReceiptsController(
     {
         _logger.LogInformation($"{nameof(GetAllReceiptsAsync)} executado.");
         return await _receiptService.GetAllReceiptsAsync(cancellationToken);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PaginatedList<ReceiptDto>>> GetAllPaginatedReceiptsAsync([FromQuery] ReceiptGetAllQuery query , CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"{nameof(GetAllReceiptsAsync)} executado.");
+        return await _receiptService.GetAllPaginatedAsync(query, cancellationToken);
     }
 
     [HttpGet]

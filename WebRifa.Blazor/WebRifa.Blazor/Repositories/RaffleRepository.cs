@@ -19,7 +19,7 @@ public class RaffleRepository(
             raffle.Description.ToLower().Contains(query.SearchTerm.ToLower()) ||
             raffle.Observations.ToLower().Contains(query.SearchTerm.ToLower());
 
-        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, context, cancellationToken, Search);
+        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, cancellationToken, Search);
 
         return result;
     }

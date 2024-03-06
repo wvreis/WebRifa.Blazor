@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Entities.ReceiptEntities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
@@ -20,6 +21,32 @@ public class ReceiptRepository(
                 .ThenInclude(x => x.Raffle)
             .Where(receipt => !receipt.IsDeleted)
             .ToListAsync();
+    }
+
+    public async Task<PaginatedList<Receipt>> GetAllPaginatedAsync(ReceiptGetAllQuery query, CancellationToken cancellationToken)
+    {
+        List<Receipt> receipts = await context.Receipts
+            .IgnoreAutoIncludes()
+            .AsSingleQuery()
+            .Include(x => x.BuyerTicketReceipts)
+                .ThenInclude(x => x.Buyer)
+            .Include(x => x.Tickets)
+                .ThenInclude(x => x.Raffle)
+            .Where(receipt => !receipt.IsDeleted)
+            .Skip((query.CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToListAsync();
+
+        int totalCountItems = await context.Receipts
+            .Where(receipt => !receipt.IsDeleted)            
+            .CountAsync();
+
+        int totalPages = (int)Math.Ceiling(
+            Convert.ToDecimal(totalCountItems) /
+            Convert.ToDecimal(PageSize));
+
+        var paginatedList = new PaginatedList<Receipt>(query.CurrentPage, totalPages, PageSize, receipts);
+        return paginatedList;
     }
 
     public override async Task<Receipt> GetAsync(Guid id, CancellationToken cancellationToken)
