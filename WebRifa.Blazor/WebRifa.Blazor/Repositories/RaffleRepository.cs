@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
@@ -11,16 +12,14 @@ namespace WebRifa.Blazor.Repositories;
 public class RaffleRepository(
     ApplicationDbContext context) : BaseRepository<Raffle>(context), IRaffleRepository 
 {
-    public async Task<List<Raffle>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
+    public async Task<PaginatedList<Raffle>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         Expression<Func<Raffle, bool>> Search = raffle =>
             string.IsNullOrEmpty(query.SearchTerm) ||
             raffle.Description.ToLower().Contains(query.SearchTerm.ToLower()) ||
             raffle.Observations.ToLower().Contains(query.SearchTerm.ToLower());
 
-        var result = await context.Raffles
-            .Where(Search)
-            .ToListAsync(cancellationToken);
+        var result = await GetPaginatedEntitiesAsync(query.CurrentPage, context, cancellationToken, Search);
 
         return result;
     }

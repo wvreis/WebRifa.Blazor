@@ -1,4 +1,5 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 using WebRifa.Blazor.Helpers;
@@ -15,9 +16,9 @@ public class RaffleBlazorService : IRaffleBlazorService {
         _httpClient = httpClient;
     }
 
-    public async Task<List<RaffleDto>> GetAllRafflesAsync(RaffleSearchQuery? raffleSearchQuery = null)
+    public async Task<PaginatedList<RaffleDto>> GetAllRafflesAsync(RaffleSearchQuery? raffleSearchQuery = null)
     {
-        return await _httpClient.GetFromJsonAsync<List<RaffleDto>>(
+        return await _httpClient.GetFromJsonAsync<PaginatedList<RaffleDto>>(
             $"{baseURI}/SearchRaffle" +
             $"{QueryStringBuilderHelper.GenerateQueryString(raffleSearchQuery)}") ?? new();
     }

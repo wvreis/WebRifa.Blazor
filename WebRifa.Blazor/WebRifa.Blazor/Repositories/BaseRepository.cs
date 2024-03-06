@@ -10,8 +10,7 @@ namespace WebRifa.Blazor.Core.Repositories;
 public class BaseRepository<T>(
     ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity {
 
-    IPaginatedList<T> paginatedList;
-    const int PageSize = 25;
+    const int PageSize = 15;
 
     public virtual async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken)
     {        

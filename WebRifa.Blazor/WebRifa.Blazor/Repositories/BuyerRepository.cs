@@ -1,13 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Entities;
-using WebRifa.Blazor.Core.Interfaces.ApplicationModels;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Repositories;
 using WebRifa.Blazor.Core.Requests.Queries.Buyer;
 using WebRifa.Blazor.Data;
-using WebRifa.Blazor.Services.UserServices;
 
 namespace WebRifa.Blazor.Repositories;
 

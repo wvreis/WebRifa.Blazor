@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands;
@@ -15,7 +16,7 @@ public class RafflesController(
     IRaffleService raffleService) : ControllerBase {
 
     [HttpGet]
-    public async Task<ActionResult<List<RaffleDto>>> SearchRaffleAsync([FromQuery] RaffleSearchQuery query, CancellationToken cancellationToken)
+    public async Task<ActionResult<PaginatedList<RaffleDto>>> SearchRaffleAsync([FromQuery] RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(SearchRaffleAsync)} executado");
         return await raffleService.SearchRaffleAsync(query, cancellationToken);

@@ -1,11 +1,12 @@
-﻿using WebRifa.Blazor.Core.Dtos;
+﻿using WebRifa.Blazor.Core.ApplicationModels;
+using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Requests.Commands;
 using WebRifa.Blazor.Core.Requests.Queries.Raffle;
 
 namespace WebRifa.Blazor.BlazorServices;
 
 public interface IRaffleBlazorService {
-    Task<List<RaffleDto>> GetAllRafflesAsync(RaffleSearchQuery? RaffleSearchQuery = null);
+    Task<PaginatedList<RaffleDto>> GetAllRafflesAsync(RaffleSearchQuery? RaffleSearchQuery = null);
     Task<RaffleDto> GetRaffleAsync(RaffleGetQuery RaffleGetQuery);
     Task<HttpResponseMessage> AddRaffleAsync(RaffleDto RaffleDto);
     Task<HttpResponseMessage> UpdateRaffleAsync(RaffleDto RaffleDto);

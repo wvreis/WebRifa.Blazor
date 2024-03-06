@@ -1,4 +1,5 @@
 ﻿@page "/raffles"
+@page "/raffles/{CurrentPage:int}"
 
 @attribute [StreamRendering]
 @attribute [Authorize]
@@ -8,6 +9,8 @@
 
 @inject IRaffleBlazorService _raffleService
 
+<PageTitle>Rifas</PageTitle>
+
 <h3>Rifas</h3>
 
 <div>
@@ -15,9 +18,9 @@
 </div>
 
 @if (Raffles is null) {
-    <p>Carregando...</p>
+    <Loading/>
 }
-else if (!Raffles!.Any()) {
+else if (!Raffles!.Items.Any()) {
     <p>Não há Rifas Cadastradas.</p>
 }
 else {
@@ -34,7 +37,7 @@ else {
             </tr>
         </thead>
         <tbody>
-            @foreach (var raffle in Raffles) {
+            @foreach (var raffle in Raffles.Items) {
                 <tr>
                     <td>@raffle.Description</td>
                     <td>@raffle.TicketPrice</td>
@@ -49,6 +52,10 @@ else {
         </tbody>
     </table>
     </div>
+
+    <Pagination CurrentPage="CurrentPage" 
+            TotalPages="Raffles.TotalPages"
+            NavigationLink="./raffles"/>
 }
 
 

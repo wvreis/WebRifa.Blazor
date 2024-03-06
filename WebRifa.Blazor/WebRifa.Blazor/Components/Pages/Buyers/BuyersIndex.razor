@@ -7,6 +7,8 @@
 @using WebRifa.Blazor.Core.Requests.Queries.Buyer
 @inject IBuyerBlazorService _buyerService
 
+<PageTitle>Compradores</PageTitle>
+
 <h3>Compradores</h3>
 
 <div>
@@ -44,6 +46,10 @@ else {
         </tbody>
     </table>
     </div>
+
+    <Pagination CurrentPage="CurrentPage" 
+            TotalPages="Buyers.TotalPages"
+            NavigationLink="./buyers"/>
 }
 
 @code {
@@ -51,14 +57,14 @@ else {
     public int CurrentPage { get; set; }
 
     public PaginatedList<BuyerDto>? Buyers { get; set; }
-    public BuyerSearchQuery Query { get; set; } = new();
+    BuyerSearchQuery Query { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         Query.CurrentPage = CurrentPage;
         Buyers = await _buyerService.GetSearchBuyersAsync(Query);
     }
-    
+
     public string GetEditLink(BuyerDto buyerDto) => 
         $"/buyer/{buyerDto.Id}";
 }

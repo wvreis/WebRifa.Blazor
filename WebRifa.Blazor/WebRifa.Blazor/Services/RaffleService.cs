@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Entities;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
@@ -107,14 +108,14 @@ public class RaffleService : IRaffleService
         }
     }
 
-    public async Task<List<RaffleDto>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
+    public async Task<PaginatedList<RaffleDto>> SearchRaffleAsync(RaffleSearchQuery query, CancellationToken cancellationToken)
     {
         try {
             var raffles = await _raffleRepository.SearchRaffleAsync(query, cancellationToken);
 
             _logger.LogInformation("Pesquisa de Rifas executada.");
 
-            return _mapper?.Map<List<Raffle>, List<RaffleDto>>(raffles) ?? throw new Exception();
+            return _mapper?.Map<PaginatedList<Raffle>, PaginatedList<RaffleDto>>(raffles) ?? throw new Exception();
         }
         catch (Exception) {
 
