@@ -12,10 +12,12 @@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime JS
 
+<PageTitle>@GetPageHeader() Rifa</PageTitle>
+
 <h3>@GetPageHeader() Rifa</h3>
 
 @if (Raffle is null) {
-    <p>Carregando...</p>
+    <Loading />
 }
 else {
     <EditForm Model="Raffle" OnValidSubmit="Save">

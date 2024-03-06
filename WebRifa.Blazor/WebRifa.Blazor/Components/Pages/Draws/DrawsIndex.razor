@@ -1,4 +1,5 @@
 ﻿@page "/draws"
+@page "/draws/{CurrentPage:int}"
 
 @using WebRifa.Blazor.BlazorServices
 
@@ -7,6 +8,8 @@
 
 @inject IDrawBlazorServices drawService
 
+<PageTitle>Sorteios</PageTitle>
+
 <h3>Sorteios</h3>
 
 <button class="btn btn-primary" @onclick="TogglePopUp">
@@ -14,9 +17,9 @@
 </button>
 
 @if (Draws is null) {
-    <p>Carregando...</p>
+    <Loading/>
 }
-else if (!Draws.Any()) {
+else if (!Draws.Items.Any()) {
     <p>Não há Sorteios Realizados.</p>
 }
 else {
@@ -31,7 +34,7 @@ else {
             </tr>
         </thead>
         <tbody>
-            @foreach (var draw in Draws) {
+            @foreach (var draw in Draws.Items) {
                 <tr>
                     <td>@draw.Id</td>
                     <td>@draw.RaffleDescription</td>
@@ -42,6 +45,10 @@ else {
             }
         </tbody>
     </table>
+
+    <Pagination CurrentPage="CurrentPage"
+            TotalPages="Draws.TotalPages"
+            NavigationLink="./draws"/>
 }
 
 <PopUp Label="Sorteio" 

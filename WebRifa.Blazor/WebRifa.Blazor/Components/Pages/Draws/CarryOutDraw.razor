@@ -10,10 +10,12 @@
 @inject IDrawBlazorServices drawService
 @inject IJSRuntime JS
 
+<PageTitle>Realizar Sorteio</PageTitle>
+
 <h3>Realizar Sorteio</h3>
 
 @if (Raffles is null) {
-    <p>Carregando...</p>
+    <Loading />
 }
 else {
     <div class="container">
@@ -35,7 +37,7 @@ else {
                 </span>
             }
 
-            @if (!CarriengOut && !DrawnNumber.HasValue) {
+            @if (ShowCarryOutButton()) {
                 <button class="btn btn-primary" @onclick="CarryOutTheDraw">
                     Realizar Sorteio
                 </button>

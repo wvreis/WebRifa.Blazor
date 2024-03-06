@@ -15,25 +15,25 @@
 <h3>@GetPageHeader() Comprador</h3>
 
 @if (Buyer is null) {
-    <p>Carregando...</p>
+    <Loading />
 }
 else {
     <EditForm Model="Buyer" OnValidSubmit="Save" >
         <DataAnnotationsValidator/>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="name">Nome:</label>
             <input type="text" class="form-control" id="name" @bind="Buyer!.Name" />
             <ValidationMessage For="() => Buyer.Name" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="phoneNumber">Telefone:</label>
             <input type="text" class="form-control" id="phoneNumber" @bind="Buyer!.PhoneNumber" />
             <ValidationMessage For="() => Buyer.PhoneNumber"/>
         </div>
 
-        <div class="form-group">
+        <div class="form-group m-1">
             <label for="email">E-mail:</label>
             <input type="email" class="form-control" id="email" @bind="Buyer!.Email" />
             <ValidationMessage For="() => Buyer.Email" />

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Repositories;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands;
+using WebRifa.Blazor.Core.Requests.Queries.Draw;
 using WebRifa.Blazor.Core.Services;
 
 namespace WebRifa.Blazor.Services;
@@ -14,12 +16,12 @@ public class DrawService(
     IDrawRepository drawRepository,
     IMapper mapper) : IDrawService {
 
-    public async Task<List<DrawDto>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<PaginatedList<DrawDto>> GetAllPaginatedAsync(DrawGetAllQuery query, CancellationToken cancellationToken)
     {
         try {
-            logger.LogInformation($"{GetAllAsync} executado.");
-            var draws = await drawRepository.GetAllAsync(cancellationToken);
-            return mapper.Map<List<DrawDto>>(draws);
+            logger.LogInformation($"{GetAllPaginatedAsync} executado.");
+            var draws = await drawRepository.GetAllPaginatedAsync(query, cancellationToken);
+            return mapper.Map<PaginatedList<DrawDto>>(draws);
         }
         catch (Exception) {
 

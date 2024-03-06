@@ -62,4 +62,7 @@ public partial class CarryOutDraw {
     {
         SelectedRaffle = null;
     }
+
+    bool ShowCarryOutButton() =>
+        !CarriengOut && !DrawnNumber.HasValue && SelectedRaffle is not null;
 }

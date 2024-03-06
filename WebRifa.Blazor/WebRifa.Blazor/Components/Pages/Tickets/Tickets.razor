@@ -3,10 +3,12 @@
 
 @inject IReceiptBlazorService _receiptService
 
+<PageTitle>Bilhetes</PageTitle>
+
 <h3>Bilhetes</h3>
 
 @if (Receipts is null) {
-    <p>Carregando...</p>
+    <Loading/>
 }
 else if (!Receipts!.Any()) {
     <p>Não há Bilhetes Cadastradas.</p>

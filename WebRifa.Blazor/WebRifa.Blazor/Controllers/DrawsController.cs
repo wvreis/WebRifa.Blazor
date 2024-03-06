@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebRifa.Blazor.Core.ApplicationModels;
 using WebRifa.Blazor.Core.Dtos;
 using WebRifa.Blazor.Core.Interfaces.Services;
 using WebRifa.Blazor.Core.Requests.Commands;
+using WebRifa.Blazor.Core.Requests.Queries.Draw;
 
 namespace WebRifa.Blazor.Controllers;
 
@@ -14,10 +16,10 @@ public class DrawsController(
     IDrawService drawService) : ControllerBase {
 
     [HttpGet]
-    public async Task<ActionResult<List<DrawDto>>> GetAllDrawsAsync(CancellationToken cancellationToken)
+    public async Task<ActionResult<PaginatedList<DrawDto>>> GetAllDrawsAsync([FromQuery] DrawGetAllQuery query, CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(GetAllDrawsAsync)} executado.");
-        return await drawService.GetAllAsync(cancellationToken);
+        return await drawService.GetAllPaginatedAsync(query, cancellationToken);
     }
     
     [HttpPost]
