@@ -24,6 +24,7 @@ using WebRifa.Blazor.Data;
 using WebRifa.Blazor.Exceptions;
 using WebRifa.Blazor.Repositories;
 using WebRifa.Blazor.Services;
+using WebRifa.Blazor.Services.BackgroundServices;
 using WebRifa.Blazor.Services.ErrorServices;
 using WebRifa.Blazor.Services.UserServices;
 
@@ -150,9 +151,9 @@ builder.Services.AddSwaggerGen(SwaggerGenConfig());
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
-        connectionString, 
+        connectionString,
         o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -186,6 +187,8 @@ builder.Services.AddScoped(s => {
     }
     // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
 });
+
+builder.Services.AddHostedService<MigrateService>();
 
 var app = builder.Build();
 
