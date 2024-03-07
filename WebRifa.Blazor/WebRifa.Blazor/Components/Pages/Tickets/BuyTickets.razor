@@ -13,7 +13,7 @@
 
 @rendermode InteractiveServer
 
-<PageTitle>Compra de Tickets</PageTitle>
+<PageTitle>Compra de Bilhetes</PageTitle>
 
 <div class="container">
     @if (IsLoading()) {
@@ -88,16 +88,16 @@
                 </EditForm>
             </div>
 
-            <div class="raffle-numbers">
-                @if (Numbers.Any()) {
+            @if (Numbers.Any()) {
+                <div class="raffle-numbers">
                     <h2>Lista de Posições na Rifa</h2>
                     <ul>
                         @foreach (var number in Numbers) {
                             <li class="@GetNumberClass(number)" @onclick="(() => AddOrRemoveNumber(number))">@number</li>
                         }
                     </ul>
-                }
-            </div>
+                </div>
+            }
         </div>
     }
 </div>

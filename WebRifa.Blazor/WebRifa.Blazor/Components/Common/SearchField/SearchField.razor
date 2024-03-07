@@ -2,6 +2,7 @@
     <input type="text"
            class="form-control"
            aria-describedby="searchTerm"
+           placeholder="@Placeholder"
            @bind="SearchTerm"
            @onkeyup="OnKeyUpSearchEvent">
 
@@ -13,7 +14,10 @@
 @code {
     [Parameter, EditorRequired]
     public EventCallback<string> SearchCallBackEvent { get; set; }
-    
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Pesquisa...";
+
     public string SearchTerm { get; set; } = string.Empty;
 
     async Task SearchCallBack()
