@@ -2,36 +2,12 @@
     <ul class="pagination">
         @for (int i = 1; i <= TotalPages; i++) {
             <li class="page-item @ActivePageLinkCssClass(i)" aria-current="page">
-                <a class="page-link" href="@NavigationLink/@i">@i</a>
+                <a class="page-link" href="">@i</a>
             </li>
         }
     </ul>
 </nav>
 
 @code {
-    [Parameter, EditorRequired]
-    public int CurrentPage { get; set; }
 
-    [Parameter, EditorRequired]
-    public int TotalPages { get; set; }
-
-    [Parameter, EditorRequired]
-    public string NavigationLink { get; set; } = string.Empty;
-
-    string ActivePageLinkCssClass(int page) => 
-        IsActivePage(page) ? "active" : string.Empty;
-
-    bool IsCurrentPage(int page) =>
-        CurrentPage == page;
-
-    bool IsFirstPageWihtoutRouterValue(int page) =>
-        CurrentPage == 0 && page == 1;
-
-    bool IsLastPageWithRouterValueExceedingTotal(int page) =>
-        CurrentPage > TotalPages && page == TotalPages;
-
-    bool IsActivePage(int page) =>
-        IsCurrentPage(page) ||
-        IsFirstPageWihtoutRouterValue(page) ||
-        IsLastPageWithRouterValueExceedingTotal(page);
 }
